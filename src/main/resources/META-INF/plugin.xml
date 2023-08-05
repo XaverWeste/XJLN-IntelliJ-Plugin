@@ -31,5 +31,8 @@
         <lang.parserDefinition
                 language="XJLN"
                 implementationClass="com.github.xjln.xjlnintellijplugin.XJLNParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="XJLN"
+                implementationClass="com.github.xjln.xjlnintellijplugin.XJLNSyntaxHighlighterFactory"/>
     </extensions>
 </idea-plugin>
