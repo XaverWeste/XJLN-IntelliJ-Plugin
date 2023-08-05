@@ -21,11 +21,12 @@
     INT = "regexp:[0-9]+"
     CHAR = "regexp:'.'"
     COMMENT = "regexp:#[^\n]*"
+    STRING = "regexp:\"[^\"]*\""
   ]
 }
 
-xjlnFile ::= (argument  (NEW_LINE argument)*)?
-private argument ::= (COMMENT | NEW_LINE | enum | class | field | use | method | main)
+xjlnFile ::= (NEW_LINE* argument  (NEW_LINE argument?)*)?
+private argument ::= (COMMENT | use | main | enum | class | method | field)
 private use ::= 'use' (('{' IDENTIFIER (',' IDENTIFIER)* '}' 'from' IDENTIFIER ('/' IDENTIFIER)*) | (IDENTIFIER (('/' IDENTIFIER)+ | ('from' IDENTIFIER ("/" IDENTIFIER)*)) ('as' IDENTIFIER)?))
 private enum ::= 'def' IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
 private class ::= 'def' IDENTIFIER '[' parameterList? ']' ('->' methodCall)? ('=>' objectCreation (',' objectCreation)*)? NEW_LINE (statement NEW_LINE)* 'end'
@@ -33,7 +34,8 @@ private parameterList ::= field (',' field)*
 private field ::= 'inner'? 'const'? ((type IDENTIFIER ('=' calc)?) | (IDENTIFIER '=' calc))
 private type ::= (IDENTIFIER | ('[' IDENTIFIER ']'))
 private statement ::= (COMMENT | NEW_LINE | field | method)
-private calc ::= call (OPPERATOR call)*
+private calc ::= calcArg (OPPERATOR calcArg)*
+private calcArg ::= (INT | DOUBLE | STRING | CHAR | call)
 private call ::= (methodCall | objectCreation | arrayCreation | IDENTIFIER) (':' (methodCall | IDENTIFIER))*
 private methodCall ::= IDENTIFIER '(' (calc (',' calc)*)? ')'
 private objectCreation ::= IDENTIFIER '[' (calc (',' calc)*)? ']'

@@ -36,18 +36,17 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COMMENT | NEW_LINE | enum | class | field | use | method | main
+  // COMMENT | use | main | enum | class | method | field
   static boolean argument(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument")) return false;
     boolean r;
     r = consumeToken(b, COMMENT);
-    if (!r) r = consumeToken(b, NEW_LINE);
+    if (!r) r = use(b, l + 1);
+    if (!r) r = main(b, l + 1);
     if (!r) r = enum_$(b, l + 1);
     if (!r) r = class_$(b, l + 1);
-    if (!r) r = field(b, l + 1);
-    if (!r) r = use(b, l + 1);
     if (!r) r = method(b, l + 1);
-    if (!r) r = main(b, l + 1);
+    if (!r) r = field(b, l + 1);
     return r;
   }
 
@@ -90,18 +89,18 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // call (OPPERATOR call)*
+  // calcArg (OPPERATOR calcArg)*
   static boolean calc(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calc")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = call(b, l + 1);
+    r = calcArg(b, l + 1);
     r = r && calc_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (OPPERATOR call)*
+  // (OPPERATOR calcArg)*
   private static boolean calc_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calc_1")) return false;
     while (true) {
@@ -112,14 +111,27 @@ public class XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // OPPERATOR call
+  // OPPERATOR calcArg
   private static boolean calc_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calc_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OPPERATOR);
-    r = r && call(b, l + 1);
+    r = r && calcArg(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // INT | DOUBLE | STRING | CHAR | call
+  static boolean calcArg(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "calcArg")) return false;
+    boolean r;
+    r = consumeToken(b, INT);
+    if (!r) r = consumeToken(b, DOUBLE);
+    if (!r) r = consumeToken(b, STRING);
+    if (!r) r = consumeToken(b, CHAR);
+    if (!r) r = call(b, l + 1);
     return r;
   }
 
@@ -935,44 +947,63 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (argument  (NEW_LINE argument)*)?
+  // (NEW_LINE* argument  (NEW_LINE argument?)*)?
   static boolean xjlnFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile")) return false;
     xjlnFile_0(b, l + 1);
     return true;
   }
 
-  // argument  (NEW_LINE argument)*
+  // NEW_LINE* argument  (NEW_LINE argument?)*
   private static boolean xjlnFile_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = argument(b, l + 1);
-    r = r && xjlnFile_0_1(b, l + 1);
+    r = xjlnFile_0_0(b, l + 1);
+    r = r && argument(b, l + 1);
+    r = r && xjlnFile_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (NEW_LINE argument)*
-  private static boolean xjlnFile_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "xjlnFile_0_1")) return false;
+  // NEW_LINE*
+  private static boolean xjlnFile_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_0_0")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!xjlnFile_0_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "xjlnFile_0_1", c)) break;
+      if (!consumeToken(b, NEW_LINE)) break;
+      if (!empty_element_parsed_guard_(b, "xjlnFile_0_0", c)) break;
     }
     return true;
   }
 
-  // NEW_LINE argument
-  private static boolean xjlnFile_0_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "xjlnFile_0_1_0")) return false;
+  // (NEW_LINE argument?)*
+  private static boolean xjlnFile_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_0_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!xjlnFile_0_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "xjlnFile_0_2", c)) break;
+    }
+    return true;
+  }
+
+  // NEW_LINE argument?
+  private static boolean xjlnFile_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, NEW_LINE);
-    r = r && argument(b, l + 1);
+    r = r && xjlnFile_0_2_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // argument?
+  private static boolean xjlnFile_0_2_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_0_2_0_1")) return false;
+    argument(b, l + 1);
+    return true;
   }
 
 }

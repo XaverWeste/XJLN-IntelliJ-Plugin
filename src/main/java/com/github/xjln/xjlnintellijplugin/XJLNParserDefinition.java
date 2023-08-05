@@ -1,8 +1,8 @@
 package com.github.xjln.xjlnintellijplugin;
 
-import com.github.xjln.xjlnintellijplugin.psi.XJLNTypes;
 import com.github.xjln.xjlnintellijplugin.psi.XJLNFile;
 import com.github.xjln.xjlnintellijplugin.psi.XJLNTokenSets;
+import com.github.xjln.xjlnintellijplugin.psi.XJLNTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
