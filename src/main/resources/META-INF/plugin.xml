@@ -28,5 +28,8 @@
                 fieldName="INSTANCE"
                 language="XJLN"
                 extensions="xjln"/>
+        <lang.parserDefinition
+                language="XJLN"
+                implementationClass="com.github.xjln.xjlnintellijplugin.XJLNParserDefinition"/>
     </extensions>
 </idea-plugin>

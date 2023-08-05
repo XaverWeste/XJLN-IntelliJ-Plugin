@@ -1,5 +1,7 @@
-package com.github.xjln.xjlnintellijplugin;
+package com.github.xjln.xjlnintellijplugin.psi;
 
+import com.github.xjln.xjlnintellijplugin.XJLNFileType;
+import com.github.xjln.xjlnintellijplugin.XJLNLanguage;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
