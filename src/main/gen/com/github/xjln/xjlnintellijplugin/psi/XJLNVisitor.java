@@ -7,14 +7,6 @@ import com.intellij.psi.PsiElement;
 
 public class XJLNVisitor extends PsiElementVisitor {
 
-  public void visitProperty(@NotNull XJLNProperty o) {
-    visitNamedElement(o);
-  }
-
-  public void visitNamedElement(@NotNull XJLNNamedElement o) {
-    visitPsiElement(o);
-  }
-
   public void visitPsiElement(@NotNull PsiElement o) {
     visitElement(o);
   }

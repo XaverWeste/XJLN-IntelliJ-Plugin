@@ -14,6 +14,19 @@
   tokenTypeClass="com.github.xjln.xjlnintellijplugin.psi.XJLNTokenType"
 
   tokens = [
+    //Keywords
+    USE = "use"
+    FROM = "from"
+    AS = "as"
+    DEF = "def"
+    INNER = "inner"
+    CONST = "const"
+    VAR = "var"
+    MAIN = "main"
+    END = "end"
+
+    COMMA = ","
+
     NEW_LINE = "regexp:\n"
     IDENTIFIER = "regexp:[a-zA-Z][a-zA-Z0-9]*"
     OPPERATOR = "regexp:[-+*/%&|<>=!^]+"
@@ -25,20 +38,20 @@
   ]
 }
 
-xjlnFile ::= (NEW_LINE* argument  (NEW_LINE argument?)*)?
-private argument ::= (COMMENT | use | main | enum | class | method | field)
-private use ::= 'use' (('{' IDENTIFIER (',' IDENTIFIER)* '}' 'from' IDENTIFIER ('/' IDENTIFIER)*) | (IDENTIFIER (('/' IDENTIFIER)+ | ('from' IDENTIFIER ("/" IDENTIFIER)*)) ('as' IDENTIFIER)?))
-private enum ::= 'def' IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
-private class ::= 'def' IDENTIFIER '[' parameterList? ']' ('->' methodCall)? ('=>' objectCreation (',' objectCreation)*)? NEW_LINE (statement NEW_LINE)* 'end'
-private parameterList ::= field (',' field)*
-private field ::= 'inner'? 'const'? ((type IDENTIFIER ('=' calc)?) | (IDENTIFIER '=' calc))
-private type ::= (IDENTIFIER | ('[' IDENTIFIER ']'))
-private statement ::= (COMMENT | NEW_LINE | field | method)
+xjlnFile ::= ((NEW_LINE* argument?)+)?
+private argument ::= (COMMENT | NEW_LINE | use | main | enum | class | method | field)
+private use ::= USE (('{' IDENTIFIER (COMMA IDENTIFIER)* '}' FROM IDENTIFIER ('/' IDENTIFIER)*) | (IDENTIFIER (('/' IDENTIFIER)+ | (FROM IDENTIFIER ("/" IDENTIFIER)*)) (AS IDENTIFIER)?))
+private enum ::= DEF IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
+private class ::= DEF IDENTIFIER '[' (('/') | (parameterList?))']' ('->' methodCall)? ('=>' objectCreation (COMMA objectCreation)*)? NEW_LINE (statement? NEW_LINE)* END
+private parameterList ::= field (COMMA field)*
+private field ::= INNER? CONNST? ((type IDENTIFIER ('=' calc)?) | (IDENTIFIER '=' calc))
+private type ::= (IDENTIFIER | ('[' IDENTIFIER ']') | VAR | ('{' IDENTIFIER (COMMA IDENTIFIER)*'}'))
+private statement ::= (COMMENT | field | method)
 private calc ::= calcArg (OPPERATOR calcArg)*
 private calcArg ::= (INT | DOUBLE | STRING | CHAR | call)
 private call ::= (methodCall | objectCreation | arrayCreation | IDENTIFIER) (':' (methodCall | IDENTIFIER))*
-private methodCall ::= IDENTIFIER '(' (calc (',' calc)*)? ')'
-private objectCreation ::= IDENTIFIER '[' (calc (',' calc)*)? ']'
-private arrayCreation ::= '[' IDENTIFIER ',' INT (',' INT)* ']'
-private method ::= 'def' IDENTIFIER '(' parameterList ')' ('::' IDENTIFIER)? ((('=' | '->') calc) | (NEW_LINE (statement NEW_LINE)* 'end'))
-private main ::= 'main' (('->' calc) | (NEW_LINE (statement NEW_LINE)* 'end'))
+private methodCall ::= IDENTIFIER '(' (calc (COMMA calc)*)? ')'
+private objectCreation ::= IDENTIFIER '[' (calc (COMMA calc)*)? ']'
+private arrayCreation ::= '[' IDENTIFIER COMMA INT (COMMA INT)* ']'
+private method ::= DEF INNER? IDENTIFIER '(' parameterList? ')' ('::' IDENTIFIER)? ((('=' | '->') calc) | (NEW_LINE (statement? NEW_LINE)* END))
+private main ::= MAIN (('->' calc) | (NEW_LINE (statement NEW_LINE)* END))
