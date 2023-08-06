@@ -38,8 +38,8 @@
   ]
 }
 
-xjlnFile ::= ((NEW_LINE* argument?)+)?
-private argument ::= (COMMENT | NEW_LINE | use | main | enum | class | method | field)
+xjlnFile ::= argument? (NEW_LINE argument?)*
+private argument ::= (COMMENT | use | main | enum | class | method | field)
 private use ::= USE (('{' IDENTIFIER (COMMA IDENTIFIER)* '}' FROM IDENTIFIER ('/' IDENTIFIER)*) | (IDENTIFIER (('/' IDENTIFIER)+ | (FROM IDENTIFIER ("/" IDENTIFIER)*)) (AS IDENTIFIER)?))
 private enum ::= DEF IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
 private class ::= DEF IDENTIFIER '[' (('/') | (parameterList?))']' ('->' methodCall)? ('=>' objectCreation (COMMA objectCreation)*)? NEW_LINE (statement? NEW_LINE)* END
