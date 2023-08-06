@@ -37,31 +37,32 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COMMENT | use | main | enum | class | method | field
-  static boolean argument(PsiBuilder b, int l) {
+  // useArg | mainArg | enum | clas | method | field
+  public static boolean argument(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument")) return false;
     boolean r;
-    r = consumeToken(b, COMMENT);
-    if (!r) r = use(b, l + 1);
-    if (!r) r = main(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, ARGUMENT, "<argument>");
+    r = useArg(b, l + 1);
+    if (!r) r = mainArg(b, l + 1);
     if (!r) r = enum_$(b, l + 1);
-    if (!r) r = class_$(b, l + 1);
+    if (!r) r = clas(b, l + 1);
     if (!r) r = method(b, l + 1);
     if (!r) r = field(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
   // '[' IDENTIFIER COMMA INT (COMMA INT)* ']'
-  static boolean arrayCreation(PsiBuilder b, int l) {
+  public static boolean arrayCreation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayCreation")) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, ARRAY_CREATION, "<array creation>");
     r = consumeToken(b, "[");
     r = r && consumeTokens(b, 0, IDENTIFIER, COMMA, INT);
     r = r && arrayCreation_4(b, l + 1);
     r = r && consumeToken(b, "]");
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -88,13 +89,13 @@ public class XJLNParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // calcArg (OPPERATOR calcArg)*
-  static boolean calc(PsiBuilder b, int l) {
+  public static boolean calc(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calc")) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, CALC, "<calc>");
     r = calcArg(b, l + 1);
     r = r && calc_1(b, l + 1);
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -122,26 +123,28 @@ public class XJLNParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // INT | DOUBLE | STRING | CHAR | call
-  static boolean calcArg(PsiBuilder b, int l) {
+  public static boolean calcArg(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calcArg")) return false;
     boolean r;
+    Marker m = enter_section_(b, l, _NONE_, CALC_ARG, "<calc arg>");
     r = consumeToken(b, INT);
     if (!r) r = consumeToken(b, DOUBLE);
     if (!r) r = consumeToken(b, STRING);
     if (!r) r = consumeToken(b, CHAR);
     if (!r) r = call(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
   // (methodCall | objectCreation | arrayCreation | IDENTIFIER) (':' (methodCall | IDENTIFIER))*
-  static boolean call(PsiBuilder b, int l) {
+  public static boolean call(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "call")) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, CALL, "<call>");
     r = call_0(b, l + 1);
     r = r && call_1(b, l + 1);
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -188,39 +191,40 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DEF IDENTIFIER '[' (('/') | (parameterList?))']' ('->' methodCall)? ('=>' objectCreation (COMMA objectCreation)*)? NEW_LINE (statement? NEW_LINE)* END
-  static boolean class_$(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_$")) return false;
-    if (!nextTokenIs(b, DEF)) return false;
+  // docs DEF IDENTIFIER '[' (('/') | (parameterList?))']' ('->' methodCall)? ('=>' objectCreation (COMMA objectCreation)*)? NEW_LINE (statement? NEW_LINE)* END
+  public static boolean clas(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas")) return false;
+    if (!nextTokenIs(b, "<clas>", DEF, DOC)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DEF, IDENTIFIER);
+    Marker m = enter_section_(b, l, _NONE_, CLAS, "<clas>");
+    r = docs(b, l + 1);
+    r = r && consumeTokens(b, 0, DEF, IDENTIFIER);
     r = r && consumeToken(b, "[");
-    r = r && class_3(b, l + 1);
+    r = r && clas_4(b, l + 1);
     r = r && consumeToken(b, "]");
-    r = r && class_5(b, l + 1);
-    r = r && class_6(b, l + 1);
+    r = r && clas_6(b, l + 1);
+    r = r && clas_7(b, l + 1);
     r = r && consumeToken(b, NEW_LINE);
-    r = r && class_8(b, l + 1);
+    r = r && clas_9(b, l + 1);
     r = r && consumeToken(b, END);
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   // ('/') | (parameterList?)
-  private static boolean class_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_3")) return false;
+  private static boolean clas_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_4")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = class_3_0(b, l + 1);
-    if (!r) r = class_3_1(b, l + 1);
+    r = clas_4_0(b, l + 1);
+    if (!r) r = clas_4_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // ('/')
-  private static boolean class_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_3_0")) return false;
+  private static boolean clas_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_4_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "/");
@@ -229,22 +233,22 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // parameterList?
-  private static boolean class_3_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_3_1")) return false;
+  private static boolean clas_4_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_4_1")) return false;
     parameterList(b, l + 1);
     return true;
   }
 
   // ('->' methodCall)?
-  private static boolean class_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_5")) return false;
-    class_5_0(b, l + 1);
+  private static boolean clas_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_6")) return false;
+    clas_6_0(b, l + 1);
     return true;
   }
 
   // '->' methodCall
-  private static boolean class_5_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_5_0")) return false;
+  private static boolean clas_6_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_6_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "->");
@@ -254,38 +258,38 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // ('=>' objectCreation (COMMA objectCreation)*)?
-  private static boolean class_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_6")) return false;
-    class_6_0(b, l + 1);
+  private static boolean clas_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_7")) return false;
+    clas_7_0(b, l + 1);
     return true;
   }
 
   // '=>' objectCreation (COMMA objectCreation)*
-  private static boolean class_6_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_6_0")) return false;
+  private static boolean clas_7_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_7_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "=>");
     r = r && objectCreation(b, l + 1);
-    r = r && class_6_0_2(b, l + 1);
+    r = r && clas_7_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // (COMMA objectCreation)*
-  private static boolean class_6_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_6_0_2")) return false;
+  private static boolean clas_7_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_7_0_2")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!class_6_0_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "class_6_0_2", c)) break;
+      if (!clas_7_0_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "clas_7_0_2", c)) break;
     }
     return true;
   }
 
   // COMMA objectCreation
-  private static boolean class_6_0_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_6_0_2_0")) return false;
+  private static boolean clas_7_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_7_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COMMA);
@@ -295,63 +299,107 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // (statement? NEW_LINE)*
-  private static boolean class_8(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_8")) return false;
+  private static boolean clas_9(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_9")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!class_8_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "class_8", c)) break;
+      if (!clas_9_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "clas_9", c)) break;
     }
     return true;
   }
 
   // statement? NEW_LINE
-  private static boolean class_8_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_8_0")) return false;
+  private static boolean clas_9_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_9_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = class_8_0_0(b, l + 1);
+    r = clas_9_0_0(b, l + 1);
     r = r && consumeToken(b, NEW_LINE);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // statement?
-  private static boolean class_8_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "class_8_0_0")) return false;
+  private static boolean clas_9_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "clas_9_0_0")) return false;
     statement(b, l + 1);
     return true;
   }
 
   /* ********************************************************** */
-  // DEF IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
-  static boolean enum_$(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "enum_$")) return false;
-    if (!nextTokenIs(b, DEF)) return false;
+  // (DOC (NEW_LINE DOC)* NEW_LINE)?
+  public static boolean docs(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "docs")) return false;
+    Marker m = enter_section_(b, l, _NONE_, DOCS, "<docs>");
+    docs_0(b, l + 1);
+    exit_section_(b, l, m, true, false, null);
+    return true;
+  }
+
+  // DOC (NEW_LINE DOC)* NEW_LINE
+  private static boolean docs_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "docs_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DEF, IDENTIFIER);
-    r = r && consumeToken(b, "=");
-    r = r && consumeToken(b, IDENTIFIER);
-    r = r && enum_4(b, l + 1);
+    r = consumeToken(b, DOC);
+    r = r && docs_0_1(b, l + 1);
+    r = r && consumeToken(b, NEW_LINE);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ('|' IDENTIFIER)*
-  private static boolean enum_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "enum_4")) return false;
+  // (NEW_LINE DOC)*
+  private static boolean docs_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "docs_0_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!enum_4_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "enum_4", c)) break;
+      if (!docs_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "docs_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // NEW_LINE DOC
+  private static boolean docs_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "docs_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, NEW_LINE, DOC);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // docs DEF IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
+  public static boolean enum_$(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_$")) return false;
+    if (!nextTokenIs(b, "<enum $>", DEF, DOC)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ENUM, "<enum $>");
+    r = docs(b, l + 1);
+    r = r && consumeTokens(b, 0, DEF, IDENTIFIER);
+    r = r && consumeToken(b, "=");
+    r = r && consumeToken(b, IDENTIFIER);
+    r = r && enum_5(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ('|' IDENTIFIER)*
+  private static boolean enum_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_5")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!enum_5_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "enum_5", c)) break;
     }
     return true;
   }
 
   // '|' IDENTIFIER
-  private static boolean enum_4_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "enum_4_0")) return false;
+  private static boolean enum_5_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "enum_5_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "|");
@@ -362,14 +410,14 @@ public class XJLNParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // INNER? CONNST? ((type IDENTIFIER ('=' calc)?) | (IDENTIFIER '=' calc))
-  static boolean field(PsiBuilder b, int l) {
+  public static boolean field(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "field")) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, FIELD, "<field>");
     r = field_0(b, l + 1);
     r = r && field_1(b, l + 1);
     r = r && field_2(b, l + 1);
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -442,31 +490,31 @@ public class XJLNParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // MAIN (('->' calc) | (NEW_LINE (statement NEW_LINE)* END))
-  static boolean main(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "main")) return false;
+  public static boolean mainArg(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mainArg")) return false;
     if (!nextTokenIs(b, MAIN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, MAIN);
-    r = r && main_1(b, l + 1);
-    exit_section_(b, m, null, r);
+    r = r && mainArg_1(b, l + 1);
+    exit_section_(b, m, MAIN_ARG, r);
     return r;
   }
 
   // ('->' calc) | (NEW_LINE (statement NEW_LINE)* END)
-  private static boolean main_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "main_1")) return false;
+  private static boolean mainArg_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mainArg_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = main_1_0(b, l + 1);
-    if (!r) r = main_1_1(b, l + 1);
+    r = mainArg_1_0(b, l + 1);
+    if (!r) r = mainArg_1_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // '->' calc
-  private static boolean main_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "main_1_0")) return false;
+  private static boolean mainArg_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mainArg_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "->");
@@ -476,31 +524,31 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // NEW_LINE (statement NEW_LINE)* END
-  private static boolean main_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "main_1_1")) return false;
+  private static boolean mainArg_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mainArg_1_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, NEW_LINE);
-    r = r && main_1_1_1(b, l + 1);
+    r = r && mainArg_1_1_1(b, l + 1);
     r = r && consumeToken(b, END);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // (statement NEW_LINE)*
-  private static boolean main_1_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "main_1_1_1")) return false;
+  private static boolean mainArg_1_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mainArg_1_1_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!main_1_1_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "main_1_1_1", c)) break;
+      if (!mainArg_1_1_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "mainArg_1_1_1", c)) break;
     }
     return true;
   }
 
   // statement NEW_LINE
-  private static boolean main_1_1_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "main_1_1_1_0")) return false;
+  private static boolean mainArg_1_1_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mainArg_1_1_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = statement(b, l + 1);
@@ -510,48 +558,49 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DEF INNER? IDENTIFIER '(' parameterList? ')' ('::' IDENTIFIER)? ((('=' | '->') calc) | (NEW_LINE (statement? NEW_LINE)* END))
-  static boolean method(PsiBuilder b, int l) {
+  // docs DEF INNER? IDENTIFIER '(' parameterList? ')' ('::' IDENTIFIER)? ((('=' | '->') calc) | (NEW_LINE (statement? NEW_LINE)* END))
+  public static boolean method(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "method")) return false;
-    if (!nextTokenIs(b, DEF)) return false;
+    if (!nextTokenIs(b, "<method>", DEF, DOC)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, DEF);
-    r = r && method_1(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, METHOD, "<method>");
+    r = docs(b, l + 1);
+    r = r && consumeToken(b, DEF);
+    r = r && method_2(b, l + 1);
     r = r && consumeToken(b, IDENTIFIER);
     r = r && consumeToken(b, "(");
-    r = r && method_4(b, l + 1);
+    r = r && method_5(b, l + 1);
     r = r && consumeToken(b, ")");
-    r = r && method_6(b, l + 1);
     r = r && method_7(b, l + 1);
-    exit_section_(b, m, null, r);
+    r = r && method_8(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   // INNER?
-  private static boolean method_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_1")) return false;
+  private static boolean method_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_2")) return false;
     consumeToken(b, INNER);
     return true;
   }
 
   // parameterList?
-  private static boolean method_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_4")) return false;
+  private static boolean method_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_5")) return false;
     parameterList(b, l + 1);
     return true;
   }
 
   // ('::' IDENTIFIER)?
-  private static boolean method_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_6")) return false;
-    method_6_0(b, l + 1);
+  private static boolean method_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_7")) return false;
+    method_7_0(b, l + 1);
     return true;
   }
 
   // '::' IDENTIFIER
-  private static boolean method_6_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_6_0")) return false;
+  private static boolean method_7_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_7_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "::");
@@ -561,30 +610,30 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // (('=' | '->') calc) | (NEW_LINE (statement? NEW_LINE)* END)
-  private static boolean method_7(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_7")) return false;
+  private static boolean method_8(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_8")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = method_7_0(b, l + 1);
-    if (!r) r = method_7_1(b, l + 1);
+    r = method_8_0(b, l + 1);
+    if (!r) r = method_8_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // ('=' | '->') calc
-  private static boolean method_7_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_7_0")) return false;
+  private static boolean method_8_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_8_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = method_7_0_0(b, l + 1);
+    r = method_8_0_0(b, l + 1);
     r = r && calc(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // '=' | '->'
-  private static boolean method_7_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_7_0_0")) return false;
+  private static boolean method_8_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_8_0_0")) return false;
     boolean r;
     r = consumeToken(b, "=");
     if (!r) r = consumeToken(b, "->");
@@ -592,49 +641,49 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // NEW_LINE (statement? NEW_LINE)* END
-  private static boolean method_7_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_7_1")) return false;
+  private static boolean method_8_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_8_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, NEW_LINE);
-    r = r && method_7_1_1(b, l + 1);
+    r = r && method_8_1_1(b, l + 1);
     r = r && consumeToken(b, END);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // (statement? NEW_LINE)*
-  private static boolean method_7_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_7_1_1")) return false;
+  private static boolean method_8_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_8_1_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!method_7_1_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "method_7_1_1", c)) break;
+      if (!method_8_1_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "method_8_1_1", c)) break;
     }
     return true;
   }
 
   // statement? NEW_LINE
-  private static boolean method_7_1_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_7_1_1_0")) return false;
+  private static boolean method_8_1_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_8_1_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = method_7_1_1_0_0(b, l + 1);
+    r = method_8_1_1_0_0(b, l + 1);
     r = r && consumeToken(b, NEW_LINE);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // statement?
-  private static boolean method_7_1_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_7_1_1_0_0")) return false;
+  private static boolean method_8_1_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "method_8_1_1_0_0")) return false;
     statement(b, l + 1);
     return true;
   }
 
   /* ********************************************************** */
   // IDENTIFIER '(' (calc (COMMA calc)*)? ')'
-  static boolean methodCall(PsiBuilder b, int l) {
+  public static boolean methodCall(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "methodCall")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
@@ -643,7 +692,7 @@ public class XJLNParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, "(");
     r = r && methodCall_2(b, l + 1);
     r = r && consumeToken(b, ")");
-    exit_section_(b, m, null, r);
+    exit_section_(b, m, METHOD_CALL, r);
     return r;
   }
 
@@ -689,7 +738,7 @@ public class XJLNParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // IDENTIFIER '[' (calc (COMMA calc)*)? ']'
-  static boolean objectCreation(PsiBuilder b, int l) {
+  public static boolean objectCreation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "objectCreation")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
@@ -698,7 +747,7 @@ public class XJLNParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, "[");
     r = r && objectCreation_2(b, l + 1);
     r = r && consumeToken(b, "]");
-    exit_section_(b, m, null, r);
+    exit_section_(b, m, OBJECT_CREATION, r);
     return r;
   }
 
@@ -744,13 +793,13 @@ public class XJLNParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // field (COMMA field)*
-  static boolean parameterList(PsiBuilder b, int l) {
+  public static boolean parameterList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameterList")) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, PARAMETER_LIST, "<parameter list>");
     r = field(b, l + 1);
     r = r && parameterList_1(b, l + 1);
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -778,32 +827,35 @@ public class XJLNParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // COMMENT | field | method
-  static boolean statement(PsiBuilder b, int l) {
+  public static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STATEMENT, "<statement>");
     r = consumeToken(b, COMMENT);
     if (!r) r = field(b, l + 1);
     if (!r) r = method(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // IDENTIFIER | ('[' IDENTIFIER ']') | VAR | ('{' IDENTIFIER (COMMA IDENTIFIER)*'}')
-  static boolean type(PsiBuilder b, int l) {
+  // PRIMITIVETYPE | IDENTIFIER | ('[' IDENTIFIER ']') | VAR | ('{' IDENTIFIER (COMMA IDENTIFIER)*'}')
+  public static boolean type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
-    if (!r) r = type_1(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, TYPE, "<type>");
+    r = consumeToken(b, PRIMITIVETYPE);
+    if (!r) r = consumeToken(b, IDENTIFIER);
+    if (!r) r = type_2(b, l + 1);
     if (!r) r = consumeToken(b, VAR);
-    if (!r) r = type_3(b, l + 1);
-    exit_section_(b, m, null, r);
+    if (!r) r = type_4(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   // '[' IDENTIFIER ']'
-  private static boolean type_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_1")) return false;
+  private static boolean type_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "[");
@@ -814,32 +866,32 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // '{' IDENTIFIER (COMMA IDENTIFIER)*'}'
-  private static boolean type_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_3")) return false;
+  private static boolean type_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_4")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "{");
     r = r && consumeToken(b, IDENTIFIER);
-    r = r && type_3_2(b, l + 1);
+    r = r && type_4_2(b, l + 1);
     r = r && consumeToken(b, "}");
     exit_section_(b, m, null, r);
     return r;
   }
 
   // (COMMA IDENTIFIER)*
-  private static boolean type_3_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_3_2")) return false;
+  private static boolean type_4_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_4_2")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!type_3_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "type_3_2", c)) break;
+      if (!type_4_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "type_4_2", c)) break;
     }
     return true;
   }
 
   // COMMA IDENTIFIER
-  private static boolean type_3_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_3_2_0")) return false;
+  private static boolean type_4_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_4_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, COMMA, IDENTIFIER);
@@ -849,57 +901,57 @@ public class XJLNParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // USE (('{' IDENTIFIER (COMMA IDENTIFIER)* '}' FROM IDENTIFIER ('/' IDENTIFIER)*) | (IDENTIFIER (('/' IDENTIFIER)+ | (FROM IDENTIFIER ("/" IDENTIFIER)*)) (AS IDENTIFIER)?))
-  static boolean use(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use")) return false;
+  public static boolean useArg(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg")) return false;
     if (!nextTokenIs(b, USE)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, USE);
-    r = r && use_1(b, l + 1);
-    exit_section_(b, m, null, r);
+    r = r && useArg_1(b, l + 1);
+    exit_section_(b, m, USE_ARG, r);
     return r;
   }
 
   // ('{' IDENTIFIER (COMMA IDENTIFIER)* '}' FROM IDENTIFIER ('/' IDENTIFIER)*) | (IDENTIFIER (('/' IDENTIFIER)+ | (FROM IDENTIFIER ("/" IDENTIFIER)*)) (AS IDENTIFIER)?)
-  private static boolean use_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1")) return false;
+  private static boolean useArg_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = use_1_0(b, l + 1);
-    if (!r) r = use_1_1(b, l + 1);
+    r = useArg_1_0(b, l + 1);
+    if (!r) r = useArg_1_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // '{' IDENTIFIER (COMMA IDENTIFIER)* '}' FROM IDENTIFIER ('/' IDENTIFIER)*
-  private static boolean use_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_0")) return false;
+  private static boolean useArg_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "{");
     r = r && consumeToken(b, IDENTIFIER);
-    r = r && use_1_0_2(b, l + 1);
+    r = r && useArg_1_0_2(b, l + 1);
     r = r && consumeToken(b, "}");
     r = r && consumeTokens(b, 0, FROM, IDENTIFIER);
-    r = r && use_1_0_6(b, l + 1);
+    r = r && useArg_1_0_6(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // (COMMA IDENTIFIER)*
-  private static boolean use_1_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_0_2")) return false;
+  private static boolean useArg_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_0_2")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!use_1_0_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "use_1_0_2", c)) break;
+      if (!useArg_1_0_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "useArg_1_0_2", c)) break;
     }
     return true;
   }
 
   // COMMA IDENTIFIER
-  private static boolean use_1_0_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_0_2_0")) return false;
+  private static boolean useArg_1_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, COMMA, IDENTIFIER);
@@ -908,19 +960,19 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // ('/' IDENTIFIER)*
-  private static boolean use_1_0_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_0_6")) return false;
+  private static boolean useArg_1_0_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_0_6")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!use_1_0_6_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "use_1_0_6", c)) break;
+      if (!useArg_1_0_6_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "useArg_1_0_6", c)) break;
     }
     return true;
   }
 
   // '/' IDENTIFIER
-  private static boolean use_1_0_6_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_0_6_0")) return false;
+  private static boolean useArg_1_0_6_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_0_6_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "/");
@@ -930,46 +982,46 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // IDENTIFIER (('/' IDENTIFIER)+ | (FROM IDENTIFIER ("/" IDENTIFIER)*)) (AS IDENTIFIER)?
-  private static boolean use_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1")) return false;
+  private static boolean useArg_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, IDENTIFIER);
-    r = r && use_1_1_1(b, l + 1);
-    r = r && use_1_1_2(b, l + 1);
+    r = r && useArg_1_1_1(b, l + 1);
+    r = r && useArg_1_1_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // ('/' IDENTIFIER)+ | (FROM IDENTIFIER ("/" IDENTIFIER)*)
-  private static boolean use_1_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_1")) return false;
+  private static boolean useArg_1_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_1_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = use_1_1_1_0(b, l + 1);
-    if (!r) r = use_1_1_1_1(b, l + 1);
+    r = useArg_1_1_1_0(b, l + 1);
+    if (!r) r = useArg_1_1_1_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // ('/' IDENTIFIER)+
-  private static boolean use_1_1_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_1_0")) return false;
+  private static boolean useArg_1_1_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_1_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = use_1_1_1_0_0(b, l + 1);
+    r = useArg_1_1_1_0_0(b, l + 1);
     while (r) {
       int c = current_position_(b);
-      if (!use_1_1_1_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "use_1_1_1_0", c)) break;
+      if (!useArg_1_1_1_0_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "useArg_1_1_1_0", c)) break;
     }
     exit_section_(b, m, null, r);
     return r;
   }
 
   // '/' IDENTIFIER
-  private static boolean use_1_1_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_1_0_0")) return false;
+  private static boolean useArg_1_1_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_1_1_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "/");
@@ -979,30 +1031,30 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // FROM IDENTIFIER ("/" IDENTIFIER)*
-  private static boolean use_1_1_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_1_1")) return false;
+  private static boolean useArg_1_1_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_1_1_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, FROM, IDENTIFIER);
-    r = r && use_1_1_1_1_2(b, l + 1);
+    r = r && useArg_1_1_1_1_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // ("/" IDENTIFIER)*
-  private static boolean use_1_1_1_1_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_1_1_2")) return false;
+  private static boolean useArg_1_1_1_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_1_1_1_2")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!use_1_1_1_1_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "use_1_1_1_1_2", c)) break;
+      if (!useArg_1_1_1_1_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "useArg_1_1_1_1_2", c)) break;
     }
     return true;
   }
 
   // "/" IDENTIFIER
-  private static boolean use_1_1_1_1_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_1_1_2_0")) return false;
+  private static boolean useArg_1_1_1_1_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_1_1_1_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "/");
@@ -1012,15 +1064,15 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // (AS IDENTIFIER)?
-  private static boolean use_1_1_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_2")) return false;
-    use_1_1_2_0(b, l + 1);
+  private static boolean useArg_1_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_1_2")) return false;
+    useArg_1_1_2_0(b, l + 1);
     return true;
   }
 
   // AS IDENTIFIER
-  private static boolean use_1_1_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_2_0")) return false;
+  private static boolean useArg_1_1_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "useArg_1_1_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, AS, IDENTIFIER);
@@ -1029,7 +1081,7 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // argument? (NEW_LINE argument?)*
+  // (COMMENT | argument)? (NEW_LINE (COMMENT | argument)?)*
   static boolean xjlnFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile")) return false;
     boolean r;
@@ -1040,14 +1092,23 @@ public class XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // argument?
+  // (COMMENT | argument)?
   private static boolean xjlnFile_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile_0")) return false;
-    argument(b, l + 1);
+    xjlnFile_0_0(b, l + 1);
     return true;
   }
 
-  // (NEW_LINE argument?)*
+  // COMMENT | argument
+  private static boolean xjlnFile_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, COMMENT);
+    if (!r) r = argument(b, l + 1);
+    return r;
+  }
+
+  // (NEW_LINE (COMMENT | argument)?)*
   private static boolean xjlnFile_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile_1")) return false;
     while (true) {
@@ -1058,7 +1119,7 @@ public class XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // NEW_LINE argument?
+  // NEW_LINE (COMMENT | argument)?
   private static boolean xjlnFile_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile_1_0")) return false;
     boolean r;
@@ -1069,11 +1130,20 @@ public class XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // argument?
+  // (COMMENT | argument)?
   private static boolean xjlnFile_1_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile_1_0_1")) return false;
-    argument(b, l + 1);
+    xjlnFile_1_0_1_0(b, l + 1);
     return true;
+  }
+
+  // COMMENT | argument
+  private static boolean xjlnFile_1_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_1_0_1_0")) return false;
+    boolean r;
+    r = consumeToken(b, COMMENT);
+    if (!r) r = argument(b, l + 1);
+    return r;
   }
 
 }

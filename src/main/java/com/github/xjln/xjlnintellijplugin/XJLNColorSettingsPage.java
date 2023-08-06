@@ -18,7 +18,8 @@ public class XJLNColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Comment", XJLNSyntaxHighlighter.COMMENT),
             new AttributesDescriptor("String", XJLNSyntaxHighlighter.STRING),
             new AttributesDescriptor("Number", XJLNSyntaxHighlighter.NUMBER),
-            new AttributesDescriptor("Identifier", XJLNSyntaxHighlighter.IDENTIFIER)
+            new AttributesDescriptor("Identifier", XJLNSyntaxHighlighter.IDENTIFIER),
+            new AttributesDescriptor("Document", XJLNSyntaxHighlighter.DOCUMENT)
     };
 
     @Nullable

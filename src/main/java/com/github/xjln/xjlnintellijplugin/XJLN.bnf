@@ -24,6 +24,7 @@
     VAR = "var"
     MAIN = "main"
     END = "end"
+    PRIMITIVETYPE = "regexp:(int) | (double) | (float) | (long) | (short) | (boolean) | (char) | (byte)"
 
     COMMA = ","
 
@@ -33,25 +34,27 @@
     DOUBLE = "regexp:[0-9]+\.[0-9]+"
     INT = "regexp:[0-9]+"
     CHAR = "regexp:'.'"
-    COMMENT = "regexp:#[^\n]*"
+    DOC = "regexp:##[^\n]*"
+    COMMENT = "regexp:#[^[#\n]][^\n]*"
     STRING = "regexp:\"[^\"]*\""
   ]
 }
 
-xjlnFile ::= argument? (NEW_LINE argument?)*
-private argument ::= (COMMENT | use | main | enum | class | method | field)
-private use ::= USE (('{' IDENTIFIER (COMMA IDENTIFIER)* '}' FROM IDENTIFIER ('/' IDENTIFIER)*) | (IDENTIFIER (('/' IDENTIFIER)+ | (FROM IDENTIFIER ("/" IDENTIFIER)*)) (AS IDENTIFIER)?))
-private enum ::= DEF IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
-private class ::= DEF IDENTIFIER '[' (('/') | (parameterList?))']' ('->' methodCall)? ('=>' objectCreation (COMMA objectCreation)*)? NEW_LINE (statement? NEW_LINE)* END
-private parameterList ::= field (COMMA field)*
-private field ::= INNER? CONNST? ((type IDENTIFIER ('=' calc)?) | (IDENTIFIER '=' calc))
-private type ::= (IDENTIFIER | ('[' IDENTIFIER ']') | VAR | ('{' IDENTIFIER (COMMA IDENTIFIER)*'}'))
-private statement ::= (COMMENT | field | method)
-private calc ::= calcArg (OPPERATOR calcArg)*
-private calcArg ::= (INT | DOUBLE | STRING | CHAR | call)
-private call ::= (methodCall | objectCreation | arrayCreation | IDENTIFIER) (':' (methodCall | IDENTIFIER))*
-private methodCall ::= IDENTIFIER '(' (calc (COMMA calc)*)? ')'
-private objectCreation ::= IDENTIFIER '[' (calc (COMMA calc)*)? ']'
-private arrayCreation ::= '[' IDENTIFIER COMMA INT (COMMA INT)* ']'
-private method ::= DEF INNER? IDENTIFIER '(' parameterList? ')' ('::' IDENTIFIER)? ((('=' | '->') calc) | (NEW_LINE (statement? NEW_LINE)* END))
-private main ::= MAIN (('->' calc) | (NEW_LINE (statement NEW_LINE)* END))
+xjlnFile ::= (COMMENT | argument)? (NEW_LINE (COMMENT | argument)?)*
+argument ::= (useArg | mainArg | enum | clas | method | field)
+useArg ::= USE (('{' IDENTIFIER (COMMA IDENTIFIER)* '}' FROM IDENTIFIER ('/' IDENTIFIER)*) | (IDENTIFIER (('/' IDENTIFIER)+ | (FROM IDENTIFIER ("/" IDENTIFIER)*)) (AS IDENTIFIER)?))
+enum ::= docs DEF IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
+clas ::= docs DEF IDENTIFIER '[' (('/') | (parameterList?))']' ('->' methodCall)? ('=>' objectCreation (COMMA objectCreation)*)? NEW_LINE (statement? NEW_LINE)* END
+parameterList ::= field (COMMA field)*
+field ::= INNER? CONNST? ((type IDENTIFIER ('=' calc)?) | (IDENTIFIER '=' calc))
+type ::= (PRIMITIVETYPE | IDENTIFIER | ('[' IDENTIFIER ']') | VAR | ('{' IDENTIFIER (COMMA IDENTIFIER)*'}'))
+statement ::= (COMMENT | field | method)
+calc ::= calcArg (OPPERATOR calcArg)*
+calcArg ::= (INT | DOUBLE | STRING | CHAR | call)
+call ::= (methodCall | objectCreation | arrayCreation | IDENTIFIER) (':' (methodCall | IDENTIFIER))*
+methodCall ::= IDENTIFIER '(' (calc (COMMA calc)*)? ')'
+objectCreation ::= IDENTIFIER '[' (calc (COMMA calc)*)? ']'
+arrayCreation ::= '[' IDENTIFIER COMMA INT (COMMA INT)* ']'
+method ::= docs DEF INNER? IDENTIFIER '(' parameterList? ')' ('::' IDENTIFIER)? ((('=' | '->') calc) | (NEW_LINE (statement? NEW_LINE)* END))
+docs ::= (DOC (NEW_LINE DOC)* NEW_LINE)?
+mainArg ::= MAIN (('->' calc) | (NEW_LINE (statement NEW_LINE)* END))

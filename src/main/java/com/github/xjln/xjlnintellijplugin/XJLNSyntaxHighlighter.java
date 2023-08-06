@@ -1,5 +1,6 @@
 package com.github.xjln.xjlnintellijplugin;
 
+import com.github.xjln.xjlnintellijplugin.psi.XJLNType;
 import com.github.xjln.xjlnintellijplugin.psi.XJLNTypes;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
@@ -15,15 +16,17 @@ public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey NUMBER = TextAttributesKey.createTextAttributesKey("XJLN_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
     public static final TextAttributesKey COMMENT = TextAttributesKey.createTextAttributesKey("XJLN_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey IDENTIFIER = TextAttributesKey.createTextAttributesKey("XJLN_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER);
+    public static final TextAttributesKey DOCUMENT = TextAttributesKey.createTextAttributesKey("XJLN_DOC", DefaultLanguageHighlighterColors.DOC_COMMENT);
 
     private static final TextAttributesKey[] KEYWORDS = new TextAttributesKey[]{KEYWORD};
     private static final TextAttributesKey[] STRINGS = new TextAttributesKey[]{STRING};
     private static final TextAttributesKey[] NUMBERS = new TextAttributesKey[]{NUMBER};
     private static final TextAttributesKey[] COMMENTS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] IDENTIFIERS = new TextAttributesKey[]{IDENTIFIER};
+    private static final TextAttributesKey[] DOCUMENTS = new TextAttributesKey[]{DOCUMENT};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
-    private final Set<IElementType> keywordTypes = Set.of(XJLNTypes.USE, XJLNTypes.FROM, XJLNTypes.AS, XJLNTypes.DEF, XJLNTypes.END, XJLNTypes.INNER, XJLNTypes.CONST, XJLNTypes.VAR, XJLNTypes.COMMA);
+    private final Set<IElementType> keywordTypes = Set.of(XJLNTypes.PRIMITIVETYPE, XJLNTypes.USE, XJLNTypes.FROM, XJLNTypes.AS, XJLNTypes.DEF, XJLNTypes.END, XJLNTypes.INNER, XJLNTypes.CONST, XJLNTypes.VAR, XJLNTypes.COMMA);
 
     @Override
     public @NotNull Lexer getHighlightingLexer() {
@@ -40,6 +43,8 @@ public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
             return NUMBERS;
         if(tokenType.equals(XJLNTypes.COMMENT))
             return COMMENTS;
+        if(tokenType.equals(XJLNTypes.DOC))
+            return DOCUMENTS;
         if(tokenType.equals(XJLNTypes.IDENTIFIER))
             return IDENTIFIERS;
         return EMPTY_KEYS;
