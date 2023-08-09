@@ -36,5 +36,8 @@
                 implementationClass="com.github.xjln.xjlnintellijplugin.XJLNSyntaxHighlighterFactory"/>
         <colorSettingsPage
                 implementation="com.github.xjln.xjlnintellijplugin.XJLNColorSettingsPage"/>
+        <lang.commenter
+                language="XJLN"
+                implementationClass="com.github.xjln.xjlnintellijplugin.XJLNCommenter"/>
     </extensions>
 </idea-plugin>

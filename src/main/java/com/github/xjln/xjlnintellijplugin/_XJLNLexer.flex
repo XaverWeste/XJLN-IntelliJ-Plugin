@@ -27,10 +27,11 @@ WHITE_SPACE=[\t\ ]+
 
 PRIMITIVETYPE=(int) | (double) | (float) | (long) | (short) | (boolean) | (char) | (byte)
 NEW_LINE=\n
+PATH=[a-zA-Z]+("/"[a-zA-Z]+)+
 IDENTIFIER=[a-zA-Z][a-zA-Z0-9]*
 OPPERATOR=[-+*/%&|<>=!\^]+
-DOUBLE=[0-9]+\.[0-9]+
-INT=[0-9]+
+DIGITS_FLOATING_POINT=[0-9]+\.[0-9]+
+DIGITS=[0-9]+
 CHAR='.'
 DOC=##[^\n]*
 COMMENT=#[^[#\n]][^\n]*
@@ -38,30 +39,33 @@ STRING=\"[^\"]*\"
 
 %%
 <YYINITIAL> {
-  {WHITE_SPACE}        { return WHITE_SPACE; }
+  {WHITE_SPACE}                { return WHITE_SPACE; }
 
-  "use"                { return USE; }
-  "from"               { return FROM; }
-  "as"                 { return AS; }
-  "def"                { return DEF; }
-  "inner"              { return INNER; }
-  "const"              { return CONST; }
-  "var"                { return VAR; }
-  "main"               { return MAIN; }
-  "end"                { return END; }
-  ","                  { return COMMA; }
-  "CONNST"             { return CONNST; }
+  "use"                        { return KEYWORD_USE; }
+  "from"                       { return KEYWORD_FROM; }
+  "as"                         { return KEYWORD_AS; }
+  "def"                        { return KEYWORD_DEF; }
+  "abstract"                   { return KEYWORD_ABSTRACT; }
+  "inner"                      { return KEYWORD_INNER; }
+  "const"                      { return KEYWORD_CONST; }
+  "var"                        { return KEYWORD_VAR; }
+  "main"                       { return KEYWORD_MAIN; }
+  "init"                       { return KEYWORD_INIT; }
+  "return"                     { return KEYWORD_RETURN; }
+  "end"                        { return KEYWORD_END; }
+  ","                          { return COMMA; }
 
-  {PRIMITIVETYPE}      { return PRIMITIVETYPE; }
-  {NEW_LINE}           { return NEW_LINE; }
-  {IDENTIFIER}         { return IDENTIFIER; }
-  {OPPERATOR}          { return OPPERATOR; }
-  {DOUBLE}             { return DOUBLE; }
-  {INT}                { return INT; }
-  {CHAR}               { return CHAR; }
-  {DOC}                { return DOC; }
-  {COMMENT}            { return COMMENT; }
-  {STRING}             { return STRING; }
+  {PRIMITIVETYPE}              { return PRIMITIVETYPE; }
+  {NEW_LINE}                   { return NEW_LINE; }
+  {PATH}                       { return PATH; }
+  {IDENTIFIER}                 { return IDENTIFIER; }
+  {OPPERATOR}                  { return OPPERATOR; }
+  {DIGITS_FLOATING_POINT}      { return DIGITS_FLOATING_POINT; }
+  {DIGITS}                     { return DIGITS; }
+  {CHAR}                       { return CHAR; }
+  {DOC}                        { return DOC; }
+  {COMMENT}                    { return COMMENT; }
+  {STRING}                     { return STRING; }
 
 }
 

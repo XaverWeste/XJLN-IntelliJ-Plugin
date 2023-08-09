@@ -26,7 +26,7 @@ public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] DOCUMENTS = new TextAttributesKey[]{DOCUMENT};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
-    private final Set<IElementType> keywordTypes = Set.of(XJLNTypes.PRIMITIVETYPE, XJLNTypes.USE, XJLNTypes.FROM, XJLNTypes.AS, XJLNTypes.DEF, XJLNTypes.END, XJLNTypes.INNER, XJLNTypes.CONST, XJLNTypes.VAR, XJLNTypes.COMMA);
+    private final Set<IElementType> keywordTypes = Set.of(XJLNTypes.PRIMITIVETYPE, XJLNTypes.KEYWORD_AS, XJLNTypes.KEYWORD_USE, XJLNTypes.KEYWORD_ABSTRACT, XJLNTypes.KEYWORD_RETURN, XJLNTypes.KEYWORD_END, XJLNTypes.KEYWORD_CONST, XJLNTypes.KEYWORD_FROM, XJLNTypes.KEYWORD_INNER, XJLNTypes.KEYWORD_VAR, XJLNTypes.KEYWORD_DEF, XJLNTypes.COMMA);
 
     @Override
     public @NotNull Lexer getHighlightingLexer() {
@@ -35,11 +35,13 @@ public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
+        if(tokenType.equals(XJLNTypes.KEYWORD_MAIN) || tokenType.equals(XJLNTypes.KEYWORD_INIT))
+            return new TextAttributesKey[]{TextAttributesKey.createTextAttributesKey("XJLN_MAIN", DefaultLanguageHighlighterColors.CONSTANT)};
         if(keywordTypes.contains(tokenType))
             return KEYWORDS;
         if(tokenType.equals(XJLNTypes.STRING) || tokenType.equals(XJLNTypes.CHAR))
             return STRINGS;
-        if(tokenType.equals(XJLNTypes.INT) || tokenType.equals(XJLNTypes.DOUBLE))
+        if(tokenType.equals(XJLNTypes.DIGITS) || tokenType.equals(XJLNTypes.DIGITS_FLOATING_POINT))
             return NUMBERS;
         if(tokenType.equals(XJLNTypes.COMMENT))
             return COMMENTS;

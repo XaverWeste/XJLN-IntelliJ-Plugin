@@ -8,16 +8,19 @@ import com.intellij.psi.PsiElement;
 public interface XJLNCalcArg extends PsiElement {
 
   @Nullable
+  XJLNCalc getCalc();
+
+  @Nullable
   XJLNCall getCall();
 
   @Nullable
   PsiElement getChar();
 
   @Nullable
-  PsiElement getDouble();
+  PsiElement getDigits();
 
   @Nullable
-  PsiElement getInt();
+  PsiElement getDigitsFloatingPoint();
 
   @Nullable
   PsiElement getString();

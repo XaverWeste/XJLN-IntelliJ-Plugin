@@ -15,24 +15,28 @@
 
   tokens = [
     //Keywords
-    USE = "use"
-    FROM = "from"
-    AS = "as"
-    DEF = "def"
-    INNER = "inner"
-    CONST = "const"
-    VAR = "var"
-    MAIN = "main"
-    END = "end"
+    KEYWORD_USE = "use"
+    KEYWORD_FROM = "from"
+    KEYWORD_AS = "as"
+    KEYWORD_DEF = "def"
+    KEYWORD_ABSTRACT = "abstract"
+    KEYWORD_INNER = "inner"
+    KEYWORD_CONST = "const"
+    KEYWORD_VAR = "var"
+    KEYWORD_MAIN = "main"
+    KEYWORD_INIT = "init"
+    KEYWORD_RETURN = "return"
+    KEYWORD_END = "end"
     PRIMITIVETYPE = "regexp:(int) | (double) | (float) | (long) | (short) | (boolean) | (char) | (byte)"
 
     COMMA = ","
 
     NEW_LINE = "regexp:\n"
+    PATH = "regexp:[a-zA-Z]+(/[a-zA-Z]+)+"
     IDENTIFIER = "regexp:[a-zA-Z][a-zA-Z0-9]*"
     OPPERATOR = "regexp:[-+*/%&|<>=!^]+"
-    DOUBLE = "regexp:[0-9]+\.[0-9]+"
-    INT = "regexp:[0-9]+"
+    DIGITS_FLOATING_POINT = "regexp:[0-9]+\.[0-9]+"
+    DIGITS = "regexp:[0-9]+"
     CHAR = "regexp:'.'"
     DOC = "regexp:##[^\n]*"
     COMMENT = "regexp:#[^[#\n]][^\n]*"
@@ -40,21 +44,41 @@
   ]
 }
 
-xjlnFile ::= (COMMENT | argument)? (NEW_LINE (COMMENT | argument)?)*
-argument ::= (useArg | mainArg | enum | clas | method | field)
-useArg ::= USE (('{' IDENTIFIER (COMMA IDENTIFIER)* '}' FROM IDENTIFIER ('/' IDENTIFIER)*) | (IDENTIFIER (('/' IDENTIFIER)+ | (FROM IDENTIFIER ("/" IDENTIFIER)*)) (AS IDENTIFIER)?))
-enum ::= docs DEF IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
-clas ::= docs DEF IDENTIFIER '[' (('/') | (parameterList?))']' ('->' methodCall)? ('=>' objectCreation (COMMA objectCreation)*)? NEW_LINE (statement? NEW_LINE)* END
-parameterList ::= field (COMMA field)*
-field ::= INNER? CONNST? ((type IDENTIFIER ('=' calc)?) | (IDENTIFIER '=' calc))
-type ::= (PRIMITIVETYPE | IDENTIFIER | ('[' IDENTIFIER ']') | VAR | ('{' IDENTIFIER (COMMA IDENTIFIER)*'}'))
-statement ::= (COMMENT | field | method)
-calc ::= calcArg (OPPERATOR calcArg)*
-calcArg ::= (INT | DOUBLE | STRING | CHAR | call)
-call ::= (methodCall | objectCreation | arrayCreation | IDENTIFIER) (':' (methodCall | IDENTIFIER))*
-methodCall ::= IDENTIFIER '(' (calc (COMMA calc)*)? ')'
-objectCreation ::= IDENTIFIER '[' (calc (COMMA calc)*)? ']'
-arrayCreation ::= '[' IDENTIFIER COMMA INT (COMMA INT)* ']'
-method ::= docs DEF INNER? IDENTIFIER '(' parameterList? ')' ('::' IDENTIFIER)? ((('=' | '->') calc) | (NEW_LINE (statement? NEW_LINE)* END))
-docs ::= (DOC (NEW_LINE DOC)* NEW_LINE)?
-mainArg ::= MAIN (('->' calc) | (NEW_LINE (statement NEW_LINE)* END))
+xjlnFile ::= (argument_ (NEW_LINE argument_)*)?
+private argument_ ::= (COMMENT | NEW_LINE | use | enum | record | clazz | field | main | methodDefMain)
+private docs ::= (DOC NEW_LINE)*
+
+use ::= docs KEYWORD_USE ((PATH) | (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH) (KEYWORD_AS IDENTIFIER)?
+enum ::= docs KEYWORD_DEF IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
+record ::= docs KEYWORD_DEF IDENTIFIER '=' '[' parameterList ']'
+clazz ::= docs (KEYWORD_DEF | KEYWORD_ABSTRACT) IDENTIFIER '[' parameterList ']' ('=>' )? NEW_LINE (methodDef | abstractMethod | init | (field NEW_LINE) | NEW_LINE)* KEYWORD_END
+
+main ::= KEYWORD_MAIN (methodShort | methodCode)
+methodDefMain ::= KEYWORD_DEF IDENTIFIER '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (methodShort | methodEquals | methodCode)
+
+parameterList ::= (var (COMMA var)*)?
+var ::= KEYWORD_CONST? ((type IDENTIFIER) | (type? IDENTIFIER '=' calc))
+field ::= KEYWORD_INNER? var
+type ::= (PRIMITIVETYPE | IDENTIFIER | '[' IDENTIFIER ']')
+
+methodDef ::= KEYWORD_DEF (IDENTIFIER | OPPERATOR) '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (((methodShort | methodEquals) NEW_LINE)  | methodCode)
+abstractMethod ::= KEYWORD_ABSTRACT (IDENTIFIER | OPPERATOR) '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? NEW_LINE
+init ::= KEYWORD_INIT (methodShort | methodCode) NEW_LINE
+
+varCall ::= IDENTIFIER
+methodCall ::= IDENTIFIER '(' parameterListArguments ')'
+parameterListArguments ::= (calc (COMMA calc)*)?
+
+objCreation ::= IDENTIFIER '[' parameterListArguments ']'
+arrCreation ::= '[' IDENTIFIER (COMMA DIGITS)+']'
+
+call ::= (methodCall | varCall | objCreation | arrCreation) (':' (methodCall | varCall))*
+
+calc ::= OPPERATOR? calcArg (OPPERATOR OPPERATOR? calcArg)*
+calcArg ::= (call | ('(' calc ')') | STRING | CHAR | DIGITS | DIGITS_FLOATING_POINT)
+
+methodShort ::= '->' statement
+methodEquals ::= '=' call
+methodCode ::= NEW_LINE (statement NEW_LINE)* KEYWORD_END
+
+statement ::= ((KEYWORD_RETURN (call | calc)) | var | calc | call)

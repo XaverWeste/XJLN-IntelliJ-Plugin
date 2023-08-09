@@ -29,8 +29,8 @@ public class XJLNParameterListImpl extends ASTWrapperPsiElement implements XJLNP
 
   @Override
   @NotNull
-  public List<XJLNField> getFieldList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNField.class);
+  public List<XJLNVar> getVarList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNVar.class);
   }
 
 }

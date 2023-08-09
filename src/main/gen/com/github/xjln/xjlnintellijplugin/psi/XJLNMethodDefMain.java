@@ -5,24 +5,21 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface XJLNArgument extends PsiElement {
+public interface XJLNMethodDefMain extends PsiElement {
 
   @Nullable
-  XJLNClas getClas();
+  XJLNMethodCode getMethodCode();
 
   @Nullable
-  XJLNEnum getEnum();
+  XJLNMethodEquals getMethodEquals();
 
   @Nullable
-  XJLNField getField();
+  XJLNMethodShort getMethodShort();
+
+  @NotNull
+  XJLNParameterList getParameterList();
 
   @Nullable
-  XJLNMainArg getMainArg();
-
-  @Nullable
-  XJLNMethod getMethod();
-
-  @Nullable
-  XJLNUseArg getUseArg();
+  PsiElement getPrimitivetype();
 
 }

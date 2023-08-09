@@ -27,10 +27,4 @@ public class XJLNEnumImpl extends ASTWrapperPsiElement implements XJLNEnum {
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public XJLNDocs getDocs() {
-    return findNotNullChildByClass(XJLNDocs.class);
-  }
-
 }

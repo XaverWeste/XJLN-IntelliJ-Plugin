@@ -29,8 +29,8 @@ public class XJLNCallImpl extends ASTWrapperPsiElement implements XJLNCall {
 
   @Override
   @Nullable
-  public XJLNArrayCreation getArrayCreation() {
-    return findChildByClass(XJLNArrayCreation.class);
+  public XJLNArrCreation getArrCreation() {
+    return findChildByClass(XJLNArrCreation.class);
   }
 
   @Override
@@ -41,8 +41,14 @@ public class XJLNCallImpl extends ASTWrapperPsiElement implements XJLNCall {
 
   @Override
   @Nullable
-  public XJLNObjectCreation getObjectCreation() {
-    return findChildByClass(XJLNObjectCreation.class);
+  public XJLNObjCreation getObjCreation() {
+    return findChildByClass(XJLNObjCreation.class);
+  }
+
+  @Override
+  @NotNull
+  public List<XJLNVarCall> getVarCallList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNVarCall.class);
   }
 
 }

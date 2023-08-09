@@ -11,20 +11,26 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.xjln.xjlnintellijplugin.psi.*;
 
-public class XJLNDocsImpl extends ASTWrapperPsiElement implements XJLNDocs {
+public class XJLNUseImpl extends ASTWrapperPsiElement implements XJLNUse {
 
-  public XJLNDocsImpl(@NotNull ASTNode node) {
+  public XJLNUseImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull XJLNVisitor visitor) {
-    visitor.visitDocs(this);
+    visitor.visitUse(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof XJLNVisitor) accept((XJLNVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getPath() {
+    return findNotNullChildByType(PATH);
   }
 
 }

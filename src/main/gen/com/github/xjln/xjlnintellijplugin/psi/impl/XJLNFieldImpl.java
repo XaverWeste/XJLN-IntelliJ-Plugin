@@ -28,21 +28,9 @@ public class XJLNFieldImpl extends ASTWrapperPsiElement implements XJLNField {
   }
 
   @Override
-  @Nullable
-  public XJLNCalc getCalc() {
-    return findChildByClass(XJLNCalc.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNType getType() {
-    return findChildByClass(XJLNType.class);
-  }
-
-  @Override
   @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  public XJLNVar getVar() {
+    return findNotNullChildByClass(XJLNVar.class);
   }
 
 }

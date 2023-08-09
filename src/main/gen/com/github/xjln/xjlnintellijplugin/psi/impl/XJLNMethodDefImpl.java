@@ -11,14 +11,14 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.xjln.xjlnintellijplugin.psi.*;
 
-public class XJLNCalcArgImpl extends ASTWrapperPsiElement implements XJLNCalcArg {
+public class XJLNMethodDefImpl extends ASTWrapperPsiElement implements XJLNMethodDef {
 
-  public XJLNCalcArgImpl(@NotNull ASTNode node) {
+  public XJLNMethodDefImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull XJLNVisitor visitor) {
-    visitor.visitCalcArg(this);
+    visitor.visitMethodDef(this);
   }
 
   @Override
@@ -29,38 +29,44 @@ public class XJLNCalcArgImpl extends ASTWrapperPsiElement implements XJLNCalcArg
 
   @Override
   @Nullable
-  public XJLNCalc getCalc() {
-    return findChildByClass(XJLNCalc.class);
+  public XJLNMethodCode getMethodCode() {
+    return findChildByClass(XJLNMethodCode.class);
   }
 
   @Override
   @Nullable
-  public XJLNCall getCall() {
-    return findChildByClass(XJLNCall.class);
+  public XJLNMethodEquals getMethodEquals() {
+    return findChildByClass(XJLNMethodEquals.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getChar() {
-    return findChildByType(CHAR);
+  public XJLNMethodShort getMethodShort() {
+    return findChildByClass(XJLNMethodShort.class);
+  }
+
+  @Override
+  @NotNull
+  public XJLNParameterList getParameterList() {
+    return findNotNullChildByClass(XJLNParameterList.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getDigits() {
-    return findChildByType(DIGITS);
+  public PsiElement getNewLine() {
+    return findChildByType(NEW_LINE);
   }
 
   @Override
   @Nullable
-  public PsiElement getDigitsFloatingPoint() {
-    return findChildByType(DIGITS_FLOATING_POINT);
+  public PsiElement getOpperator() {
+    return findChildByType(OPPERATOR);
   }
 
   @Override
   @Nullable
-  public PsiElement getString() {
-    return findChildByType(STRING);
+  public PsiElement getPrimitivetype() {
+    return findChildByType(PRIMITIVETYPE);
   }
 
 }

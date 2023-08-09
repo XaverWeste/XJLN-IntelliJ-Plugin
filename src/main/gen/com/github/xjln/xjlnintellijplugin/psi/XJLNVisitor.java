@@ -7,11 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public class XJLNVisitor extends PsiElementVisitor {
 
-  public void visitArgument(@NotNull XJLNArgument o) {
+  public void visitAbstractMethod(@NotNull XJLNAbstractMethod o) {
     visitPsiElement(o);
   }
 
-  public void visitArrayCreation(@NotNull XJLNArrayCreation o) {
+  public void visitArrCreation(@NotNull XJLNArrCreation o) {
     visitPsiElement(o);
   }
 
@@ -27,11 +27,7 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitClas(@NotNull XJLNClas o) {
-    visitPsiElement(o);
-  }
-
-  public void visitDocs(@NotNull XJLNDocs o) {
+  public void visitClazz(@NotNull XJLNClazz o) {
     visitPsiElement(o);
   }
 
@@ -43,11 +39,11 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitMainArg(@NotNull XJLNMainArg o) {
+  public void visitInit(@NotNull XJLNInit o) {
     visitPsiElement(o);
   }
 
-  public void visitMethod(@NotNull XJLNMethod o) {
+  public void visitMain(@NotNull XJLNMain o) {
     visitPsiElement(o);
   }
 
@@ -55,11 +51,39 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitObjectCreation(@NotNull XJLNObjectCreation o) {
+  public void visitMethodCode(@NotNull XJLNMethodCode o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMethodDef(@NotNull XJLNMethodDef o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMethodDefMain(@NotNull XJLNMethodDefMain o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMethodEquals(@NotNull XJLNMethodEquals o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMethodShort(@NotNull XJLNMethodShort o) {
+    visitPsiElement(o);
+  }
+
+  public void visitObjCreation(@NotNull XJLNObjCreation o) {
     visitPsiElement(o);
   }
 
   public void visitParameterList(@NotNull XJLNParameterList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParameterListArguments(@NotNull XJLNParameterListArguments o) {
+    visitPsiElement(o);
+  }
+
+  public void visitRecord(@NotNull XJLNRecord o) {
     visitPsiElement(o);
   }
 
@@ -71,7 +95,15 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitUseArg(@NotNull XJLNUseArg o) {
+  public void visitUse(@NotNull XJLNUse o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVar(@NotNull XJLNVar o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVarCall(@NotNull XJLNVarCall o) {
     visitPsiElement(o);
   }
 

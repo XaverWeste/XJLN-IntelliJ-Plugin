@@ -11,14 +11,14 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.xjln.xjlnintellijplugin.psi.*;
 
-public class XJLNStatementImpl extends ASTWrapperPsiElement implements XJLNStatement {
+public class XJLNMainImpl extends ASTWrapperPsiElement implements XJLNMain {
 
-  public XJLNStatementImpl(@NotNull ASTNode node) {
+  public XJLNMainImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull XJLNVisitor visitor) {
-    visitor.visitStatement(this);
+    visitor.visitMain(this);
   }
 
   @Override
@@ -29,20 +29,14 @@ public class XJLNStatementImpl extends ASTWrapperPsiElement implements XJLNState
 
   @Override
   @Nullable
-  public XJLNCalc getCalc() {
-    return findChildByClass(XJLNCalc.class);
+  public XJLNMethodCode getMethodCode() {
+    return findChildByClass(XJLNMethodCode.class);
   }
 
   @Override
   @Nullable
-  public XJLNCall getCall() {
-    return findChildByClass(XJLNCall.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNVar getVar() {
-    return findChildByClass(XJLNVar.class);
+  public XJLNMethodShort getMethodShort() {
+    return findChildByClass(XJLNMethodShort.class);
   }
 
 }

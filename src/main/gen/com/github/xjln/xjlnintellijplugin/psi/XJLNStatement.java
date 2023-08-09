@@ -8,12 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface XJLNStatement extends PsiElement {
 
   @Nullable
-  XJLNField getField();
+  XJLNCalc getCalc();
 
   @Nullable
-  XJLNMethod getMethod();
+  XJLNCall getCall();
 
   @Nullable
-  PsiElement getComment();
+  XJLNVar getVar();
 
 }

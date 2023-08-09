@@ -11,14 +11,14 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.xjln.xjlnintellijplugin.psi.*;
 
-public class XJLNMainArgImpl extends ASTWrapperPsiElement implements XJLNMainArg {
+public class XJLNMethodDefMainImpl extends ASTWrapperPsiElement implements XJLNMethodDefMain {
 
-  public XJLNMainArgImpl(@NotNull ASTNode node) {
+  public XJLNMethodDefMainImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull XJLNVisitor visitor) {
-    visitor.visitMainArg(this);
+    visitor.visitMethodDefMain(this);
   }
 
   @Override
@@ -29,14 +29,32 @@ public class XJLNMainArgImpl extends ASTWrapperPsiElement implements XJLNMainArg
 
   @Override
   @Nullable
-  public XJLNCalc getCalc() {
-    return findChildByClass(XJLNCalc.class);
+  public XJLNMethodCode getMethodCode() {
+    return findChildByClass(XJLNMethodCode.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNMethodEquals getMethodEquals() {
+    return findChildByClass(XJLNMethodEquals.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNMethodShort getMethodShort() {
+    return findChildByClass(XJLNMethodShort.class);
   }
 
   @Override
   @NotNull
-  public List<XJLNStatement> getStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNStatement.class);
+  public XJLNParameterList getParameterList() {
+    return findNotNullChildByClass(XJLNParameterList.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getPrimitivetype() {
+    return findChildByType(PRIMITIVETYPE);
   }
 
 }

@@ -5,6 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface XJLNDocs extends PsiElement {
+public interface XJLNMethodCode extends PsiElement {
+
+  @NotNull
+  List<XJLNStatement> getStatementList();
 
 }

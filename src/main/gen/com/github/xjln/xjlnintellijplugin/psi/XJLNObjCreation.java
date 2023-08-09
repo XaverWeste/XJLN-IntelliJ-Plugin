@@ -5,18 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface XJLNMethod extends PsiElement {
-
-  @Nullable
-  XJLNCalc getCalc();
+public interface XJLNObjCreation extends PsiElement {
 
   @NotNull
-  XJLNDocs getDocs();
-
-  @Nullable
-  XJLNParameterList getParameterList();
+  XJLNParameterListArguments getParameterListArguments();
 
   @NotNull
-  List<XJLNStatement> getStatementList();
+  PsiElement getIdentifier();
 
 }
