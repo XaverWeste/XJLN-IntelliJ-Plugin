@@ -35,6 +35,12 @@ public class XJLNMethodDefImpl extends ASTWrapperPsiElement implements XJLNMetho
 
   @Override
   @Nullable
+  public XJLNMethodDefMulti getMethodDefMulti() {
+    return findChildByClass(XJLNMethodDefMulti.class);
+  }
+
+  @Override
+  @Nullable
   public XJLNMethodEquals getMethodEquals() {
     return findChildByClass(XJLNMethodEquals.class);
   }

@@ -11,6 +11,9 @@ public interface XJLNMethodDefMain extends PsiElement {
   XJLNMethodCode getMethodCode();
 
   @Nullable
+  XJLNMethodDefMulti getMethodDefMulti();
+
+  @Nullable
   XJLNMethodEquals getMethodEquals();
 
   @Nullable
@@ -18,6 +21,9 @@ public interface XJLNMethodDefMain extends PsiElement {
 
   @NotNull
   XJLNParameterList getParameterList();
+
+  @Nullable
+  PsiElement getNewLine();
 
   @Nullable
   PsiElement getPrimitivetype();

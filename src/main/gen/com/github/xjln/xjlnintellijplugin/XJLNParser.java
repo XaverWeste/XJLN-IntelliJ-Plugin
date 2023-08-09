@@ -500,7 +500,7 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // NEW_LINE (statement NEW_LINE)* KEYWORD_END
+  // NEW_LINE (statement NEW_LINE)* KEYWORD_END NEW_LINE
   public static boolean methodCode(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "methodCode")) return false;
     if (!nextTokenIs(b, NEW_LINE)) return false;
@@ -508,7 +508,7 @@ public class XJLNParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, NEW_LINE);
     r = r && methodCode_1(b, l + 1);
-    r = r && consumeToken(b, KEYWORD_END);
+    r = r && consumeTokens(b, 0, KEYWORD_END, NEW_LINE);
     exit_section_(b, m, METHOD_CODE, r);
     return r;
   }
@@ -536,7 +536,7 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KEYWORD_DEF (IDENTIFIER | OPPERATOR) '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (((methodShort | methodEquals) NEW_LINE)  | methodCode)
+  // KEYWORD_DEF (IDENTIFIER | OPPERATOR) '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (((methodShort | methodEquals) NEW_LINE)  | methodCode | methodDefMulti)
   public static boolean methodDef(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "methodDef")) return false;
     if (!nextTokenIs(b, KEYWORD_DEF)) return false;
@@ -589,13 +589,14 @@ public class XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ((methodShort | methodEquals) NEW_LINE)  | methodCode
+  // ((methodShort | methodEquals) NEW_LINE)  | methodCode | methodDefMulti
   private static boolean methodDef_6(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "methodDef_6")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = methodDef_6_0(b, l + 1);
     if (!r) r = methodCode(b, l + 1);
+    if (!r) r = methodDefMulti(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -621,7 +622,7 @@ public class XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KEYWORD_DEF IDENTIFIER '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (methodShort | methodEquals | methodCode)
+  // KEYWORD_DEF IDENTIFIER '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (((methodShort | methodEquals) NEW_LINE) | methodCode | methodDefMulti)
   public static boolean methodDefMain(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "methodDefMain")) return false;
     if (!nextTokenIs(b, KEYWORD_DEF)) return false;
@@ -664,24 +665,116 @@ public class XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // methodShort | methodEquals | methodCode
+  // ((methodShort | methodEquals) NEW_LINE) | methodCode | methodDefMulti
   private static boolean methodDefMain_6(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "methodDefMain_6")) return false;
     boolean r;
+    Marker m = enter_section_(b);
+    r = methodDefMain_6_0(b, l + 1);
+    if (!r) r = methodCode(b, l + 1);
+    if (!r) r = methodDefMulti(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (methodShort | methodEquals) NEW_LINE
+  private static boolean methodDefMain_6_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "methodDefMain_6_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = methodDefMain_6_0_0(b, l + 1);
+    r = r && consumeToken(b, NEW_LINE);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // methodShort | methodEquals
+  private static boolean methodDefMain_6_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "methodDefMain_6_0_0")) return false;
+    boolean r;
     r = methodShort(b, l + 1);
     if (!r) r = methodEquals(b, l + 1);
-    if (!r) r = methodCode(b, l + 1);
     return r;
   }
 
   /* ********************************************************** */
-  // '=' call
+  // '{' ('(' calc ')' ((methodShort | methodEquals) NEW_LINE) | methodCode)* NEW_LINE '}' NEW_LINE
+  public static boolean methodDefMulti(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "methodDefMulti")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, METHOD_DEF_MULTI, "<method def multi>");
+    r = consumeToken(b, "{");
+    r = r && methodDefMulti_1(b, l + 1);
+    r = r && consumeToken(b, NEW_LINE);
+    r = r && consumeToken(b, "}");
+    r = r && consumeToken(b, NEW_LINE);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ('(' calc ')' ((methodShort | methodEquals) NEW_LINE) | methodCode)*
+  private static boolean methodDefMulti_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "methodDefMulti_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!methodDefMulti_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "methodDefMulti_1", c)) break;
+    }
+    return true;
+  }
+
+  // '(' calc ')' ((methodShort | methodEquals) NEW_LINE) | methodCode
+  private static boolean methodDefMulti_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "methodDefMulti_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = methodDefMulti_1_0_0(b, l + 1);
+    if (!r) r = methodCode(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '(' calc ')' ((methodShort | methodEquals) NEW_LINE)
+  private static boolean methodDefMulti_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "methodDefMulti_1_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, "(");
+    r = r && calc(b, l + 1);
+    r = r && consumeToken(b, ")");
+    r = r && methodDefMulti_1_0_0_3(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (methodShort | methodEquals) NEW_LINE
+  private static boolean methodDefMulti_1_0_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "methodDefMulti_1_0_0_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = methodDefMulti_1_0_0_3_0(b, l + 1);
+    r = r && consumeToken(b, NEW_LINE);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // methodShort | methodEquals
+  private static boolean methodDefMulti_1_0_0_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "methodDefMulti_1_0_0_3_0")) return false;
+    boolean r;
+    r = methodShort(b, l + 1);
+    if (!r) r = methodEquals(b, l + 1);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // '=' calc
   public static boolean methodEquals(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "methodEquals")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, METHOD_EQUALS, "<method equals>");
     r = consumeToken(b, "=");
-    r = r && call(b, l + 1);
+    r = r && calc(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

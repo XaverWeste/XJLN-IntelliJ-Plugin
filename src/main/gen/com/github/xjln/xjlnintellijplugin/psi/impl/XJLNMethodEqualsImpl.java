@@ -29,8 +29,8 @@ public class XJLNMethodEqualsImpl extends ASTWrapperPsiElement implements XJLNMe
 
   @Override
   @NotNull
-  public XJLNCall getCall() {
-    return findNotNullChildByClass(XJLNCall.class);
+  public XJLNCalc getCalc() {
+    return findNotNullChildByClass(XJLNCalc.class);
   }
 
 }

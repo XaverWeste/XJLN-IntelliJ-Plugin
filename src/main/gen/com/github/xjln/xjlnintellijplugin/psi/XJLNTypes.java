@@ -22,6 +22,7 @@ public interface XJLNTypes {
   IElementType METHOD_CODE = new XJLNElementType("METHOD_CODE");
   IElementType METHOD_DEF = new XJLNElementType("METHOD_DEF");
   IElementType METHOD_DEF_MAIN = new XJLNElementType("METHOD_DEF_MAIN");
+  IElementType METHOD_DEF_MULTI = new XJLNElementType("METHOD_DEF_MULTI");
   IElementType METHOD_EQUALS = new XJLNElementType("METHOD_EQUALS");
   IElementType METHOD_SHORT = new XJLNElementType("METHOD_SHORT");
   IElementType OBJ_CREATION = new XJLNElementType("OBJ_CREATION");
@@ -103,6 +104,9 @@ public interface XJLNTypes {
       }
       else if (type == METHOD_DEF_MAIN) {
         return new XJLNMethodDefMainImpl(node);
+      }
+      else if (type == METHOD_DEF_MULTI) {
+        return new XJLNMethodDefMultiImpl(node);
       }
       else if (type == METHOD_EQUALS) {
         return new XJLNMethodEqualsImpl(node);

@@ -35,6 +35,12 @@ public class XJLNMethodDefMainImpl extends ASTWrapperPsiElement implements XJLNM
 
   @Override
   @Nullable
+  public XJLNMethodDefMulti getMethodDefMulti() {
+    return findChildByClass(XJLNMethodDefMulti.class);
+  }
+
+  @Override
+  @Nullable
   public XJLNMethodEquals getMethodEquals() {
     return findChildByClass(XJLNMethodEquals.class);
   }
@@ -49,6 +55,12 @@ public class XJLNMethodDefMainImpl extends ASTWrapperPsiElement implements XJLNM
   @NotNull
   public XJLNParameterList getParameterList() {
     return findNotNullChildByClass(XJLNParameterList.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getNewLine() {
+    return findChildByType(NEW_LINE);
   }
 
   @Override

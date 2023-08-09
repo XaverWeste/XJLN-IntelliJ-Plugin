@@ -63,6 +63,10 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMethodDefMulti(@NotNull XJLNMethodDefMulti o) {
+    visitPsiElement(o);
+  }
+
   public void visitMethodEquals(@NotNull XJLNMethodEquals o) {
     visitPsiElement(o);
   }

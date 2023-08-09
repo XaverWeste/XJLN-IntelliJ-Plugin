@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface XJLNMethodEquals extends PsiElement {
 
   @NotNull
-  XJLNCall getCall();
+  XJLNCalc getCalc();
 
 }

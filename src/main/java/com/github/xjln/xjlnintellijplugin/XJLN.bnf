@@ -54,14 +54,14 @@ record ::= docs KEYWORD_DEF IDENTIFIER '=' '[' parameterList ']'
 clazz ::= docs (KEYWORD_DEF | KEYWORD_ABSTRACT) IDENTIFIER '[' parameterList ']' ('=>' )? NEW_LINE (methodDef | abstractMethod | init | (field NEW_LINE) | NEW_LINE)* KEYWORD_END
 
 main ::= KEYWORD_MAIN (methodShort | methodCode)
-methodDefMain ::= KEYWORD_DEF IDENTIFIER '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (methodShort | methodEquals | methodCode)
+methodDefMain ::= KEYWORD_DEF IDENTIFIER '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (((methodShort | methodEquals) NEW_LINE) | methodCode | methodDefMulti)
 
 parameterList ::= (var (COMMA var)*)?
 var ::= KEYWORD_CONST? ((type IDENTIFIER) | (type? IDENTIFIER '=' calc))
 field ::= KEYWORD_INNER? var
 type ::= (PRIMITIVETYPE | IDENTIFIER | '[' IDENTIFIER ']')
 
-methodDef ::= KEYWORD_DEF (IDENTIFIER | OPPERATOR) '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (((methodShort | methodEquals) NEW_LINE)  | methodCode)
+methodDef ::= KEYWORD_DEF (IDENTIFIER | OPPERATOR) '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (((methodShort | methodEquals) NEW_LINE)  | methodCode | methodDefMulti)
 abstractMethod ::= KEYWORD_ABSTRACT (IDENTIFIER | OPPERATOR) '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? NEW_LINE
 init ::= KEYWORD_INIT (methodShort | methodCode) NEW_LINE
 
@@ -77,8 +77,10 @@ call ::= (methodCall | varCall | objCreation | arrCreation) (':' (methodCall | v
 calc ::= OPPERATOR? calcArg (OPPERATOR OPPERATOR? calcArg)*
 calcArg ::= (call | ('(' calc ')') | STRING | CHAR | DIGITS | DIGITS_FLOATING_POINT)
 
+methodDefMulti ::= '{' ('(' calc ')' ((methodShort | methodEquals) NEW_LINE) | methodCode)* NEW_LINE '}' NEW_LINE
+
 methodShort ::= '->' statement
-methodEquals ::= '=' call
-methodCode ::= NEW_LINE (statement NEW_LINE)* KEYWORD_END
+methodEquals ::= '=' calc
+methodCode ::= NEW_LINE (statement NEW_LINE)* KEYWORD_END NEW_LINE
 
 statement ::= ((KEYWORD_RETURN (call | calc)) | var | calc | call)
