@@ -44,8 +44,8 @@
   ]
 }
 
-xjlnFile ::= (argument_ (NEW_LINE argument_)*)?
-private argument_ ::= (COMMENT | NEW_LINE | use | enum | record | clazz | field | main | methodDefMain)
+xjlnFile ::= (argument_? (NEW_LINE argument_?)*)?
+private argument_ ::= (COMMENT | use | enum | record | clazz | field | main | methodDefMain)
 private docs ::= (DOC NEW_LINE)*
 
 use ::= docs KEYWORD_USE ((PATH) | (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH) (KEYWORD_AS IDENTIFIER)?
