@@ -40,7 +40,7 @@ public class XJLNParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public PsiParser createParser(final Project project) {
-        return new XJLNParser();
+        return new _XJLNParser();
     }
 
     @NotNull

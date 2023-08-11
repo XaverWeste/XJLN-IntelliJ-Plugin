@@ -1,5 +1,5 @@
 {
-  parserClass="com.github.xjln.xjlnintellijplugin.XJLNParser"
+  parserClass="com.github.xjln.xjlnintellijplugin._XJLNParser"
   parserUtilClass="com.github.xjln.xjlnintellijplugin.XJLNParserUtil"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
