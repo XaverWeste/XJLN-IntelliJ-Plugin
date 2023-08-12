@@ -48,7 +48,7 @@ xjlnFile ::= (argument_? (NEW_LINE argument_?)*)?
 private argument_ ::= (COMMENT | use | enum | record | clazz | field | main | methodDefMain)
 private docs ::= (DOC NEW_LINE)*
 
-use ::= docs KEYWORD_USE ((PATH) | (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH) (KEYWORD_AS IDENTIFIER)?
+use ::= KEYWORD_USE ((PATH) | (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH) (KEYWORD_AS IDENTIFIER)?
 enum ::= docs KEYWORD_DEF IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
 record ::= docs KEYWORD_DEF IDENTIFIER '=' '[' parameterList ']'
 clazz ::= docs (KEYWORD_DEF | KEYWORD_ABSTRACT) IDENTIFIER '[' parameterList ']' ('=>' )? NEW_LINE (methodDef | abstractMethod | init | (field NEW_LINE) | NEW_LINE)* KEYWORD_END

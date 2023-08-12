@@ -8,6 +8,7 @@ import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
 
 import com.intellij.psi.tree.IElementType;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.lang.PsiParser;
 import com.intellij.lang.LightPsiParser;
 
@@ -90,12 +91,11 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COMMENT | NEW_LINE | use | enum | record | clazz | field | main | methodDefMain
+  // COMMENT | use | enum | record | clazz | field | main | methodDefMain
   static boolean argument_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_")) return false;
     boolean r;
     r = consumeToken(b, COMMENT);
-    if (!r) r = consumeToken(b, NEW_LINE);
     if (!r) r = use(b, l + 1);
     if (!r) r = enum_$(b, l + 1);
     if (!r) r = record(b, l + 1);
@@ -968,80 +968,79 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // docs KEYWORD_USE ((PATH) | (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH) (KEYWORD_AS IDENTIFIER)?
+  // KEYWORD_USE ((PATH) | (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH) (KEYWORD_AS IDENTIFIER)?
   public static boolean use(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "use")) return false;
-    if (!nextTokenIs(b, "<use>", DOC, KEYWORD_USE)) return false;
+    if (!nextTokenIs(b, KEYWORD_USE)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, USE, "<use>");
-    r = docs(b, l + 1);
-    r = r && consumeToken(b, KEYWORD_USE);
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KEYWORD_USE);
+    r = r && use_1(b, l + 1);
     r = r && use_2(b, l + 1);
-    r = r && use_3(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, USE, r);
     return r;
   }
 
   // (PATH) | (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH
-  private static boolean use_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_2")) return false;
+  private static boolean use_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, PATH);
-    if (!r) r = use_2_1(b, l + 1);
+    if (!r) r = use_1_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH
-  private static boolean use_2_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_2_1")) return false;
+  private static boolean use_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = use_2_1_0(b, l + 1);
+    r = use_1_1_0(b, l + 1);
     r = r && consumeTokens(b, 0, KEYWORD_FROM, PATH);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // ('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)
-  private static boolean use_2_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_2_1_0")) return false;
+  private static boolean use_1_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = use_2_1_0_0(b, l + 1);
+    r = use_1_1_0_0(b, l + 1);
     if (!r) r = consumeToken(b, IDENTIFIER);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // '{' IDENTIFIER (COMMA IDENTIFIER)* '}'
-  private static boolean use_2_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_2_1_0_0")) return false;
+  private static boolean use_1_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_1_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "{");
     r = r && consumeToken(b, IDENTIFIER);
-    r = r && use_2_1_0_0_2(b, l + 1);
+    r = r && use_1_1_0_0_2(b, l + 1);
     r = r && consumeToken(b, "}");
     exit_section_(b, m, null, r);
     return r;
   }
 
   // (COMMA IDENTIFIER)*
-  private static boolean use_2_1_0_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_2_1_0_0_2")) return false;
+  private static boolean use_1_1_0_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_1_0_0_2")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!use_2_1_0_0_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "use_2_1_0_0_2", c)) break;
+      if (!use_1_1_0_0_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "use_1_1_0_0_2", c)) break;
     }
     return true;
   }
 
   // COMMA IDENTIFIER
-  private static boolean use_2_1_0_0_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_2_1_0_0_2_0")) return false;
+  private static boolean use_1_1_0_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_1_0_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, COMMA, IDENTIFIER);
@@ -1050,15 +1049,15 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // (KEYWORD_AS IDENTIFIER)?
-  private static boolean use_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_3")) return false;
-    use_3_0(b, l + 1);
+  private static boolean use_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_2")) return false;
+    use_2_0(b, l + 1);
     return true;
   }
 
   // KEYWORD_AS IDENTIFIER
-  private static boolean use_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_3_0")) return false;
+  private static boolean use_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, KEYWORD_AS, IDENTIFIER);
@@ -1140,25 +1139,32 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (argument_ (NEW_LINE argument_)*)?
+  // (argument_? (NEW_LINE argument_?)*)?
   static boolean xjlnFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile")) return false;
     xjlnFile_0(b, l + 1);
     return true;
   }
 
-  // argument_ (NEW_LINE argument_)*
+  // argument_? (NEW_LINE argument_?)*
   private static boolean xjlnFile_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = argument_(b, l + 1);
+    r = xjlnFile_0_0(b, l + 1);
     r = r && xjlnFile_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (NEW_LINE argument_)*
+  // argument_?
+  private static boolean xjlnFile_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_0_0")) return false;
+    argument_(b, l + 1);
+    return true;
+  }
+
+  // (NEW_LINE argument_?)*
   private static boolean xjlnFile_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile_0_1")) return false;
     while (true) {
@@ -1169,15 +1175,22 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // NEW_LINE argument_
+  // NEW_LINE argument_?
   private static boolean xjlnFile_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, NEW_LINE);
-    r = r && argument_(b, l + 1);
+    r = r && xjlnFile_0_1_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // argument_?
+  private static boolean xjlnFile_0_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_0_1_0_1")) return false;
+    argument_(b, l + 1);
+    return true;
   }
 
 }
