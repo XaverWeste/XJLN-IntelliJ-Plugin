@@ -4,8 +4,7 @@ package com.github.xjln.xjlnintellijplugin;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
 import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
-
+import static com.github.xjln.xjlnintellijplugin.XJLNParserUtil.*;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.TokenSet;
@@ -968,7 +967,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KEYWORD_USE ((PATH) | (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH) (KEYWORD_AS IDENTIFIER)?
+  // KEYWORD_USE ((PATH (KEYWORD_AS IDENTIFIER)?) | ('{' IDENTIFIER (COMMA IDENTIFIER)* '}' KEYWORD_FROM PATH) | ((IDENTIFIER) KEYWORD_FROM PATH (KEYWORD_AS IDENTIFIER)?))
   public static boolean use(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "use")) return false;
     if (!nextTokenIs(b, KEYWORD_USE)) return false;
@@ -976,71 +975,78 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, KEYWORD_USE);
     r = r && use_1(b, l + 1);
-    r = r && use_2(b, l + 1);
     exit_section_(b, m, USE, r);
     return r;
   }
 
-  // (PATH) | (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH
+  // (PATH (KEYWORD_AS IDENTIFIER)?) | ('{' IDENTIFIER (COMMA IDENTIFIER)* '}' KEYWORD_FROM PATH) | ((IDENTIFIER) KEYWORD_FROM PATH (KEYWORD_AS IDENTIFIER)?)
   private static boolean use_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "use_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, PATH);
+    r = use_1_0(b, l + 1);
     if (!r) r = use_1_1(b, l + 1);
+    if (!r) r = use_1_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)) KEYWORD_FROM PATH
+  // PATH (KEYWORD_AS IDENTIFIER)?
+  private static boolean use_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, PATH);
+    r = r && use_1_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (KEYWORD_AS IDENTIFIER)?
+  private static boolean use_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_0_1")) return false;
+    use_1_0_1_0(b, l + 1);
+    return true;
+  }
+
+  // KEYWORD_AS IDENTIFIER
+  private static boolean use_1_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, KEYWORD_AS, IDENTIFIER);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '{' IDENTIFIER (COMMA IDENTIFIER)* '}' KEYWORD_FROM PATH
   private static boolean use_1_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "use_1_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = use_1_1_0(b, l + 1);
+    r = consumeToken(b, "{");
+    r = r && consumeToken(b, IDENTIFIER);
+    r = r && use_1_1_2(b, l + 1);
+    r = r && consumeToken(b, "}");
     r = r && consumeTokens(b, 0, KEYWORD_FROM, PATH);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ('{' IDENTIFIER (COMMA IDENTIFIER)* '}') | (IDENTIFIER)
-  private static boolean use_1_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = use_1_1_0_0(b, l + 1);
-    if (!r) r = consumeToken(b, IDENTIFIER);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '{' IDENTIFIER (COMMA IDENTIFIER)* '}'
-  private static boolean use_1_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, "{");
-    r = r && consumeToken(b, IDENTIFIER);
-    r = r && use_1_1_0_0_2(b, l + 1);
-    r = r && consumeToken(b, "}");
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
   // (COMMA IDENTIFIER)*
-  private static boolean use_1_1_0_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_0_0_2")) return false;
+  private static boolean use_1_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_1_2")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!use_1_1_0_0_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "use_1_1_0_0_2", c)) break;
+      if (!use_1_1_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "use_1_1_2", c)) break;
     }
     return true;
   }
 
   // COMMA IDENTIFIER
-  private static boolean use_1_1_0_0_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_1_1_0_0_2_0")) return false;
+  private static boolean use_1_1_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_1_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, COMMA, IDENTIFIER);
@@ -1048,16 +1054,28 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
+  // (IDENTIFIER) KEYWORD_FROM PATH (KEYWORD_AS IDENTIFIER)?
+  private static boolean use_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENTIFIER);
+    r = r && consumeTokens(b, 0, KEYWORD_FROM, PATH);
+    r = r && use_1_2_3(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   // (KEYWORD_AS IDENTIFIER)?
-  private static boolean use_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_2")) return false;
-    use_2_0(b, l + 1);
+  private static boolean use_1_2_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_2_3")) return false;
+    use_1_2_3_0(b, l + 1);
     return true;
   }
 
   // KEYWORD_AS IDENTIFIER
-  private static boolean use_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "use_2_0")) return false;
+  private static boolean use_1_2_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "use_1_2_3_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, KEYWORD_AS, IDENTIFIER);
