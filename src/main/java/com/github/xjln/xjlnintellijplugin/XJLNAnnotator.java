@@ -2,7 +2,11 @@ package com.github.xjln.xjlnintellijplugin;
 
 import com.github.xjln.xjlnintellijplugin.psi.XJLNFile;
 import com.github.xjln.xjlnintellijplugin.psi.XJLNTypes;
+import com.github.xjln.xjlnintellijplugin.psi.XJLNVar;
+import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNEnumImpl;
+import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNFieldImpl;
 import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNUseImpl;
+import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNVarImpl;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -15,22 +19,38 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class XJLNAnnotator implements Annotator {
+
+    private HashMap<String, String> uses;
+    private Set<String> primitives = Set.of("int", "double", "short", "long", "float", "boolean", "char", "byte");
+
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
+        uses = new HashMap<>();
         if(element instanceof XJLNFile){
+            String path = element.getContainingFile().getVirtualFile().getPath();
+            path = path.split("src", 2)[1];
+            path = path.substring(1).substring(0, path.length() - 6);
             PsiElement[] arguments = element.getChildren();
-            Map<String, String> uses = new HashMap<>();
 
             for(PsiElement argument:arguments)
                 if (argument instanceof XJLNUseImpl)
-                    annotateUse(argument, holder, uses);
+                    annotateUse(argument, holder);
+
+            for(PsiElement argument:arguments){
+                if(argument instanceof XJLNEnumImpl)
+                    annotateEnum(argument, holder);
+            }
+
+            for(PsiElement argument:arguments)
+                if(argument instanceof XJLNFieldImpl)
+                    annotateField(argument, holder);
         }
     }
 
-    private void annotateUse(@NotNull PsiElement element, @NotNull AnnotationHolder holder, Map<String, String> uses){
+    private void annotateUse(@NotNull PsiElement element, @NotNull AnnotationHolder holder){
         ASTNode[] children = deleteWhitespace(element.getNode().getChildren(null));
 
         if(children[1].getElementType() == XJLNTypes.PATH) {
@@ -44,8 +64,8 @@ public class XJLNAnnotator implements Annotator {
             }
 
             if(uses.containsValue(path)){
-                holder.newAnnotation(HighlightSeverity.WARNING, "Class is already used").range(children[1])
-                        .highlightType(ProblemHighlightType.WARNING).create();
+                holder.newAnnotation(HighlightSeverity.INFORMATION, "Class is already used").range(children[1])
+                        .highlightType(ProblemHighlightType.INFORMATION).create();
             }
 
             if (children.length > 2) {
@@ -55,7 +75,7 @@ public class XJLNAnnotator implements Annotator {
                 else
                     uses.put(children[3].getText(), path);
             }else{
-                String as = path.substring(path.length() - path.split("/")[path.split("/").length - 1].length());
+                String as = path.substring(path.length() - path.split("\\.")[path.split("\\.").length - 1].length());
                 if(uses.containsKey(as))
                     holder.newAnnotation(HighlightSeverity.WARNING, "Alias is already used")
                             .range(new TextRange(children[1].getTextRange().getEndOffset() - as.length(), children[1].getTextRange().getEndOffset()))
@@ -83,8 +103,8 @@ public class XJLNAnnotator implements Annotator {
             if (children.length >= (i += 4)){
                 String as = children[i].getText();
                 if(uses.containsValue(from + "." +  children[1].getText()))
-                    holder.newAnnotation(HighlightSeverity.WARNING, "Class is already used")
-                            .range(children[i]).create();
+                    holder.newAnnotation(HighlightSeverity.INFORMATION, "Class is already used")
+                            .range(children[i]).highlightType(ProblemHighlightType.INFORMATION).create();
                 if(uses.containsKey(as))
                     holder.newAnnotation(HighlightSeverity.WARNING, "Alias is already used")
                             .range(children[i])
@@ -94,8 +114,8 @@ public class XJLNAnnotator implements Annotator {
             }else{
                 for(int useElement:useElements) {
                     if (uses.containsValue(from + "." + children[useElement].getText()))
-                        holder.newAnnotation(HighlightSeverity.WARNING, "Class is already used")
-                                .range(children[useElement]).create();
+                        holder.newAnnotation(HighlightSeverity.INFORMATION, "Class is already used")
+                                .range(children[useElement]).highlightType(ProblemHighlightType.INFORMATION).create();
                     if (uses.containsKey(children[useElement].getText()))
                         holder.newAnnotation(HighlightSeverity.WARNING, "Alias is already used")
                                 .range(children[useElement])
@@ -114,6 +134,27 @@ public class XJLNAnnotator implements Annotator {
                 }
             }
         }
+    }
+
+    private void annotateEnum(@NotNull PsiElement element, @NotNull AnnotationHolder holder){
+        ASTNode[] children = deleteWhitespace(element.getNode().getChildren(null));
+        List<String> values = new ArrayList<>();
+
+        for(int i = 3;i < children.length;i += 2)
+            if(values.contains(children[i].getText()))
+                holder.newAnnotation(HighlightSeverity.ERROR, "Value is already defined").range(children[i])
+                        .highlightType(ProblemHighlightType.ERROR).create();
+            else
+                values.add(children[i].getText());
+    }
+
+    private void annotateField(@NotNull PsiElement element, @NotNull AnnotationHolder holder){
+        ASTNode[] children = deleteWhitespace(element.getNode().findChildByType(XJLNTypes.VAR).getChildren(null));
+
+        int i = children[0].getText().equals("const") ? 1 : 0;
+
+        if(!children[i + 1].getText().equals("=") && !uses.containsKey(children[i].getText()) && !primitives.contains(children[i].getText()))
+            holder.newAnnotation(HighlightSeverity.ERROR, "Unresolved type").range(children[i]).highlightType(ProblemHighlightType.ERROR).create();
     }
 
     private ASTNode[] deleteWhitespace(ASTNode[] ast){
