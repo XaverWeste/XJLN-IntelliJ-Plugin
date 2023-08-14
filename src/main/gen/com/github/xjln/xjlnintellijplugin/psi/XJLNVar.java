@@ -10,10 +10,10 @@ public interface XJLNVar extends PsiElement {
   @NotNull
   XJLNCalc getCalc();
 
-  @NotNull
-  XJLNIdentifier getIdentifier();
-
   @Nullable
   XJLNType getType();
+
+  @NotNull
+  PsiElement getIdentifier();
 
 }

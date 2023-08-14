@@ -28,12 +28,6 @@ public class XJLNUseFromPathImpl extends ASTWrapperPsiElement implements XJLNUse
   }
 
   @Override
-  @Nullable
-  public XJLNIdentifier getIdentifier() {
-    return findChildByClass(XJLNIdentifier.class);
-  }
-
-  @Override
   @NotNull
   public XJLNPath getPath() {
     return findNotNullChildByClass(XJLNPath.class);

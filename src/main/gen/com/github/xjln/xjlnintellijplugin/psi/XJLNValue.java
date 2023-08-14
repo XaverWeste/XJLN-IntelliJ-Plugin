@@ -11,13 +11,13 @@ public interface XJLNValue extends PsiElement {
   XJLNCall getCall();
 
   @Nullable
-  XJLNInteger getInteger();
-
-  @Nullable
-  XJLNNumber getNumber();
-
-  @Nullable
   PsiElement getChar();
+
+  @Nullable
+  PsiElement getInteger();
+
+  @Nullable
+  PsiElement getNumber();
 
   @Nullable
   PsiElement getString();

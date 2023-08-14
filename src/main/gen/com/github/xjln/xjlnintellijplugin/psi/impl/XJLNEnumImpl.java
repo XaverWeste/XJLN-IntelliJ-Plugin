@@ -39,10 +39,4 @@ public class XJLNEnumImpl extends ASTWrapperPsiElement implements XJLNEnum {
     return findNotNullChildByClass(XJLNEnumValue.class);
   }
 
-  @Override
-  @NotNull
-  public List<XJLNIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNIdentifier.class);
-  }
-
 }

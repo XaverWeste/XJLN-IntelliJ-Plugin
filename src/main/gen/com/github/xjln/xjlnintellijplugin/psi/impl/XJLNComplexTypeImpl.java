@@ -29,8 +29,8 @@ public class XJLNComplexTypeImpl extends ASTWrapperPsiElement implements XJLNCom
 
   @Override
   @NotNull
-  public XJLNIdentifier getIdentifier() {
-    return findNotNullChildByClass(XJLNIdentifier.class);
+  public PsiElement getIdentifier() {
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

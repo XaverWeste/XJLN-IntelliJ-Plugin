@@ -27,10 +27,4 @@ public class XJLNPrimitiveTypeImpl extends ASTWrapperPsiElement implements XJLNP
     else super.accept(visitor);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getChar() {
-    return findChildByType(CHAR);
-  }
-
 }

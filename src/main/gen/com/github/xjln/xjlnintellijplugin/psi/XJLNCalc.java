@@ -10,7 +10,4 @@ public interface XJLNCalc extends PsiElement {
   @NotNull
   List<XJLNCalcArg> getCalcArgList();
 
-  @NotNull
-  List<XJLNOperators> getOperatorsList();
-
 }

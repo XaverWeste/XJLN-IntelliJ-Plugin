@@ -15,7 +15,7 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
  * <a href="http://www.jflex.de/">JFlex</a> 1.7.0
  * from the specification file <tt>_XJLNLexer.flex</tt>
  */
-public class __XJLNLexer implements FlexLexer {
+public class _XJLNLexer implements FlexLexer {
 
   /** This character denotes the end of file */
   public static final int YYEOF = -1;
@@ -55,10 +55,10 @@ public class __XJLNLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 320 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\3\1\2\3\1\22\0\1\3\1\6\1\11\1\10\1\0\2\6\1\7\2\0\2\6\1\36\1\6\1\0"+
-    "\1\6\12\5\2\0\3\6\2\0\32\4\3\0\1\6\2\0\1\21\1\23\1\25\1\22\1\14\1\15\1\34"+
-    "\1\33\1\26\2\4\1\31\1\20\1\27\1\17\2\4\1\16\1\13\1\24\1\12\1\30\1\32\1\4\1"+
-    "\35\1\4\1\0\1\6\10\0\1\1\242\0\2\1\26\0");
+    "\11\0\1\3\1\2\3\1\22\0\1\3\1\10\1\13\1\12\1\0\2\10\1\11\2\0\1\10\1\6\1\40"+
+    "\1\10\1\7\1\10\12\5\2\0\3\10\2\0\32\4\3\0\1\10\2\0\1\23\1\25\1\27\1\24\1\16"+
+    "\1\17\1\36\1\35\1\30\2\4\1\33\1\22\1\31\1\21\2\4\1\20\1\15\1\26\1\14\1\32"+
+    "\1\34\1\4\1\37\1\4\1\0\1\10\10\0\1\1\242\0\2\1\26\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -66,17 +66,17 @@ public class __XJLNLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\3\1\4\1\5\1\6\3\1"+
-    "\16\4\1\7\1\0\1\10\1\11\1\0\1\12\11\0"+
-    "\1\13\7\0\1\14\1\15\3\0\1\16\1\17\1\0"+
-    "\1\20\2\0\1\21\4\0\1\22\5\0\1\23\2\0"+
-    "\1\24\3\0\1\25\1\26\2\0\1\27\3\0\1\30"+
-    "\1\0\1\31\1\32\1\0\1\33\1\0\1\34\1\35"+
-    "\4\0\1\36\1\37\1\40\1\41\1\0\1\42\2\0"+
-    "\1\43\1\44";
+    "\1\0\1\1\1\2\1\3\1\4\1\5\2\6\3\1"+
+    "\16\4\1\7\1\5\2\0\1\10\1\11\1\0\1\12"+
+    "\11\4\1\13\7\4\1\14\1\15\3\4\1\16\1\17"+
+    "\1\20\1\4\1\21\2\4\1\22\4\4\1\23\5\4"+
+    "\1\24\2\4\1\25\3\4\1\26\1\27\2\4\1\30"+
+    "\3\4\1\31\1\4\1\32\1\33\1\4\1\34\1\4"+
+    "\1\35\1\36\4\4\1\37\1\40\1\41\1\42\1\4"+
+    "\1\43\2\4\1\44\1\45";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[107];
+    int [] result = new int[111];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -101,23 +101,23 @@ public class __XJLNLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\37\0\37\0\76\0\37\0\37\0\37\0\135"+
-    "\0\174\0\233\0\272\0\331\0\370\0\u0117\0\u0136\0\u0155"+
-    "\0\u0174\0\u0193\0\u01b2\0\u01d1\0\u01f0\0\u020f\0\u022e\0\u024d"+
-    "\0\37\0\u026c\0\u028b\0\u02aa\0\233\0\37\0\u02c9\0\u02e8"+
-    "\0\u0307\0\u0326\0\u0345\0\u0364\0\u0383\0\u03a2\0\u03c1\0\37"+
-    "\0\u03e0\0\u03ff\0\u041e\0\u043d\0\u045c\0\u047b\0\u049a\0\37"+
-    "\0\u04b9\0\u04d8\0\u04f7\0\u0516\0\37\0\37\0\u0535\0\37"+
-    "\0\u0554\0\u0573\0\37\0\u0592\0\u05b1\0\u05d0\0\u05ef\0\37"+
-    "\0\u060e\0\u062d\0\u064c\0\u066b\0\u068a\0\37\0\u06a9\0\u06c8"+
-    "\0\37\0\u06e7\0\u0706\0\u0725\0\37\0\37\0\u0744\0\u0763"+
-    "\0\37\0\u0782\0\u07a1\0\u07c0\0\37\0\u07df\0\37\0\37"+
-    "\0\u07fe\0\37\0\u081d\0\37\0\37\0\u083c\0\u085b\0\u087a"+
-    "\0\u0899\0\37\0\37\0\37\0\37\0\u08b8\0\37\0\u08d7"+
-    "\0\u08f6\0\37\0\37";
+    "\0\0\0\41\0\41\0\102\0\143\0\204\0\245\0\306"+
+    "\0\347\0\u0108\0\u0129\0\u014a\0\u016b\0\u018c\0\u01ad\0\u01ce"+
+    "\0\u01ef\0\u0210\0\u0231\0\u0252\0\u0273\0\u0294\0\u02b5\0\u02d6"+
+    "\0\u02f7\0\41\0\u0318\0\u0339\0\u035a\0\u037b\0\u039c\0\u0129"+
+    "\0\41\0\u03bd\0\u03de\0\u03ff\0\u0420\0\u0441\0\u0462\0\u0483"+
+    "\0\u04a4\0\u04c5\0\143\0\u04e6\0\u0507\0\u0528\0\u0549\0\u056a"+
+    "\0\u058b\0\u05ac\0\143\0\u05cd\0\u05ee\0\u060f\0\u0630\0\u0339"+
+    "\0\41\0\143\0\u0651\0\143\0\u0672\0\u0693\0\143\0\u06b4"+
+    "\0\u06d5\0\u06f6\0\u0717\0\143\0\u0738\0\u0759\0\u077a\0\u079b"+
+    "\0\u07bc\0\143\0\u07dd\0\u07fe\0\143\0\u081f\0\u0840\0\u0861"+
+    "\0\143\0\143\0\u0882\0\u08a3\0\143\0\u08c4\0\u08e5\0\u0906"+
+    "\0\143\0\u0927\0\143\0\143\0\u0948\0\143\0\u0969\0\143"+
+    "\0\143\0\u098a\0\u09ab\0\u09cc\0\u09ed\0\143\0\143\0\143"+
+    "\0\143\0\u0a0e\0\143\0\u0a2f\0\u0a50\0\143\0\143";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[107];
+    int [] result = new int[111];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -140,35 +140,70 @@ public class __XJLNLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\2\2\1\3\1\4\1\5\1\6\1\7\1\10\1\11"+
-    "\1\12\1\13\1\14\1\15\1\16\1\17\1\5\1\20"+
-    "\1\21\1\22\1\23\1\5\1\24\1\25\1\5\1\26"+
-    "\1\27\1\30\3\5\1\31\42\0\1\4\33\0\1\32"+
-    "\2\0\34\32\2\33\1\0\5\33\1\34\26\33\11\35"+
-    "\1\36\25\35\13\0\1\37\56\0\1\40\32\0\1\41"+
-    "\1\0\1\42\23\0\1\43\1\44\11\0\1\45\21\0"+
-    "\1\46\43\0\1\47\30\0\1\50\7\0\1\51\27\0"+
-    "\1\52\2\0\1\53\36\0\1\54\15\0\1\55\20\0"+
-    "\1\56\13\0\1\57\20\0\1\60\11\0\1\61\30\0"+
-    "\1\62\34\0\1\63\52\0\1\64\12\0\1\65\27\0"+
-    "\2\33\1\0\34\33\2\34\1\0\34\34\14\0\1\66"+
-    "\41\0\1\67\41\0\1\70\27\0\1\71\42\0\1\72"+
-    "\35\0\1\73\37\0\1\74\43\0\1\75\40\0\1\76"+
-    "\23\0\1\77\40\0\1\100\33\0\1\101\43\0\1\102"+
-    "\43\0\1\103\41\0\1\104\30\0\1\105\41\0\1\106"+
-    "\1\0\1\107\1\110\25\0\1\111\47\0\1\112\35\0"+
-    "\1\113\26\0\1\114\34\0\1\115\42\0\1\116\37\0"+
-    "\1\117\27\0\1\120\53\0\1\121\33\0\1\122\35\0"+
-    "\1\123\44\0\1\124\21\0\1\125\35\0\1\126\41\0"+
-    "\1\127\44\0\1\130\26\0\1\131\56\0\1\132\33\0"+
-    "\1\133\31\0\1\134\36\0\1\135\30\0\1\136\36\0"+
-    "\1\137\51\0\1\140\21\0\1\141\46\0\1\142\30\0"+
-    "\1\143\34\0\1\144\51\0\1\145\30\0\1\146\31\0"+
-    "\1\147\43\0\1\150\42\0\1\151\40\0\1\152\33\0"+
-    "\1\153\12\0";
+    "\2\2\1\3\1\4\1\5\1\6\1\7\1\2\1\10"+
+    "\1\11\1\12\1\13\1\14\1\15\1\16\1\17\1\20"+
+    "\1\5\1\21\1\22\1\23\1\24\1\5\1\25\1\26"+
+    "\1\5\1\27\1\30\1\31\3\5\1\32\44\0\1\4"+
+    "\41\0\2\5\6\0\24\5\6\0\1\33\1\0\1\34"+
+    "\37\0\1\10\1\34\1\10\36\0\1\10\1\0\1\10"+
+    "\30\0\1\35\2\0\36\35\2\36\1\0\7\36\1\37"+
+    "\26\36\13\40\1\41\25\40\4\0\2\5\6\0\1\5"+
+    "\1\42\22\5\5\0\2\5\6\0\21\5\1\43\2\5"+
+    "\5\0\2\5\6\0\15\5\1\44\1\5\1\45\4\5"+
+    "\5\0\2\5\6\0\4\5\1\46\1\47\11\5\1\50"+
+    "\4\5\5\0\2\5\6\0\2\5\1\51\21\5\5\0"+
+    "\2\5\6\0\7\5\1\52\14\5\5\0\2\5\6\0"+
+    "\1\5\1\53\7\5\1\54\12\5\5\0\2\5\6\0"+
+    "\2\5\1\55\2\5\1\56\16\5\5\0\2\5\6\0"+
+    "\5\5\1\57\15\5\1\60\5\0\2\5\6\0\5\5"+
+    "\1\61\13\5\1\62\2\5\5\0\2\5\6\0\3\5"+
+    "\1\63\11\5\1\64\6\5\5\0\2\5\6\0\7\5"+
+    "\1\65\14\5\5\0\2\5\6\0\5\5\1\66\16\5"+
+    "\5\0\2\5\6\0\21\5\1\67\2\5\6\0\1\33"+
+    "\40\0\1\70\44\0\1\71\27\0\2\36\1\0\36\36"+
+    "\2\37\1\0\36\37\4\0\2\5\6\0\2\5\1\72"+
+    "\21\5\5\0\2\5\6\0\5\5\1\73\16\5\5\0"+
+    "\2\5\6\0\10\5\1\74\13\5\5\0\2\5\6\0"+
+    "\1\5\1\75\22\5\5\0\2\5\6\0\5\5\1\76"+
+    "\16\5\5\0\2\5\6\0\4\5\1\77\17\5\5\0"+
+    "\2\5\6\0\5\5\1\100\16\5\5\0\2\5\6\0"+
+    "\12\5\1\101\11\5\5\0\2\5\6\0\14\5\1\102"+
+    "\7\5\5\0\2\5\6\0\1\5\1\103\22\5\5\0"+
+    "\2\5\6\0\3\5\1\104\20\5\5\0\2\5\6\0"+
+    "\1\105\23\5\5\0\2\5\6\0\5\5\1\106\16\5"+
+    "\5\0\2\5\6\0\12\5\1\107\11\5\5\0\2\5"+
+    "\6\0\15\5\1\110\6\5\5\0\2\5\6\0\7\5"+
+    "\1\111\14\5\5\0\2\5\6\0\12\5\1\112\1\5"+
+    "\1\113\1\114\6\5\5\0\2\5\6\0\4\5\1\115"+
+    "\17\5\5\0\2\5\6\0\15\5\1\116\6\5\5\0"+
+    "\2\5\6\0\14\5\1\117\7\5\5\0\2\5\6\0"+
+    "\4\5\1\120\17\5\5\0\2\5\6\0\2\5\1\121"+
+    "\21\5\5\0\2\5\6\0\6\5\1\122\15\5\5\0"+
+    "\2\5\6\0\7\5\1\123\14\5\5\0\2\5\6\0"+
+    "\1\124\23\5\5\0\2\5\6\0\15\5\1\125\6\5"+
+    "\5\0\2\5\6\0\12\5\1\126\11\5\5\0\2\5"+
+    "\6\0\11\5\1\127\12\5\5\0\2\5\6\0\17\5"+
+    "\1\130\4\5\5\0\2\5\6\0\2\5\1\131\21\5"+
+    "\5\0\2\5\6\0\1\5\1\132\22\5\5\0\2\5"+
+    "\6\0\4\5\1\133\17\5\5\0\2\5\6\0\12\5"+
+    "\1\134\11\5\5\0\2\5\6\0\2\5\1\135\21\5"+
+    "\5\0\2\5\6\0\22\5\1\136\1\5\5\0\2\5"+
+    "\6\0\17\5\1\137\4\5\5\0\2\5\6\0\12\5"+
+    "\1\140\11\5\5\0\2\5\6\0\12\5\1\141\11\5"+
+    "\5\0\2\5\6\0\4\5\1\142\17\5\5\0\2\5"+
+    "\6\0\4\5\1\143\17\5\5\0\2\5\6\0\17\5"+
+    "\1\144\4\5\5\0\2\5\6\0\2\5\1\145\21\5"+
+    "\5\0\2\5\6\0\12\5\1\146\11\5\5\0\2\5"+
+    "\6\0\4\5\1\147\17\5\5\0\2\5\6\0\2\5"+
+    "\1\150\21\5\5\0\2\5\6\0\15\5\1\151\6\5"+
+    "\5\0\2\5\6\0\7\5\1\152\14\5\5\0\2\5"+
+    "\6\0\2\5\1\153\21\5\5\0\2\5\6\0\7\5"+
+    "\1\154\14\5\5\0\2\5\6\0\13\5\1\155\10\5"+
+    "\5\0\2\5\6\0\15\5\1\156\6\5\5\0\2\5"+
+    "\6\0\12\5\1\157\11\5\1\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[2325];
+    int [] result = new int[2673];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -206,15 +241,11 @@ public class __XJLNLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\2\11\1\1\3\11\21\1\1\11\1\0\2\1"+
-    "\1\0\1\11\11\0\1\11\7\0\1\11\1\1\3\0"+
-    "\2\11\1\0\1\11\2\0\1\11\4\0\1\11\5\0"+
-    "\1\11\2\0\1\11\3\0\2\11\2\0\1\11\3\0"+
-    "\1\11\1\0\2\11\1\0\1\11\1\0\2\11\4\0"+
-    "\4\11\1\0\1\11\2\0\2\11";
+    "\1\0\2\11\26\1\1\11\1\1\2\0\2\1\1\0"+
+    "\1\11\27\1\1\11\66\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[107];
+    int [] result = new int[111];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -262,7 +293,7 @@ public class __XJLNLexer implements FlexLexer {
   private boolean zzAtEOF;
 
   /* user code: */
-  public __XJLNLexer() {
+  public _XJLNLexer() {
     this((java.io.Reader)null);
   }
 
@@ -272,7 +303,7 @@ public class __XJLNLexer implements FlexLexer {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  public __XJLNLexer(java.io.Reader in) {
+  public _XJLNLexer(java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -311,7 +342,6 @@ public class __XJLNLexer implements FlexLexer {
     zzBuffer = buffer;
     zzCurrentPos = zzMarkedPos = zzStartRead = start;
     zzAtEOF  = false;
-    //TODO zzAtBOL = true;
     zzEndRead = end;
     yybegin(initialState);
   }
@@ -515,182 +545,187 @@ public class __XJLNLexer implements FlexLexer {
             { return BAD_CHARACTER;
             } 
             // fall through
-          case 37: break;
+          case 38: break;
           case 2: 
             { return NEW_LINE;
             } 
             // fall through
-          case 38: break;
+          case 39: break;
           case 3: 
             { return WHITE_SPACE;
             } 
             // fall through
-          case 39: break;
-          case 4: 
-            { return LETTER;
-            } 
-            // fall through
           case 40: break;
-          case 5: 
-            { return DIGIT;
+          case 4: 
+            { return IDENTIFIER;
             } 
             // fall through
           case 41: break;
+          case 5: 
+            { return INTEGER;
+            } 
+            // fall through
+          case 42: break;
           case 6: 
             { return OPERATOR;
             } 
             // fall through
-          case 42: break;
+          case 43: break;
           case 7: 
             { return COMMA;
             } 
             // fall through
-          case 43: break;
+          case 44: break;
           case 8: 
             { return COMMENT;
             } 
             // fall through
-          case 44: break;
+          case 45: break;
           case 9: 
             { return DOC;
             } 
             // fall through
-          case 45: break;
+          case 46: break;
           case 10: 
             { return STRING;
             } 
             // fall through
-          case 46: break;
+          case 47: break;
           case 11: 
             { return KEYWORD_AS;
             } 
             // fall through
-          case 47: break;
+          case 48: break;
           case 12: 
             { return KEYWORD_IF;
             } 
             // fall through
-          case 48: break;
+          case 49: break;
           case 13: 
             { return KEYWORD_IN;
             } 
             // fall through
-          case 49: break;
-          case 14: 
-            { return CHAR;
-            } 
-            // fall through
           case 50: break;
-          case 15: 
-            { return KEYWORD_USE;
+          case 14: 
+            { return NUMBER;
             } 
             // fall through
           case 51: break;
-          case 16: 
-            { return KEYWORD_END;
+          case 15: 
+            { return CHAR;
             } 
             // fall through
           case 52: break;
-          case 17: 
-            { return KEYWORD_FOR;
+          case 16: 
+            { return KEYWORD_USE;
             } 
             // fall through
           case 53: break;
-          case 18: 
-            { return KEYWORD_DEF;
+          case 17: 
+            { return KEYWORD_END;
             } 
             // fall through
           case 54: break;
-          case 19: 
-            { return KEYWORD_INT;
+          case 18: 
+            { return KEYWORD_FOR;
             } 
             // fall through
           case 55: break;
-          case 20: 
-            { return KEYWORD_VAR;
+          case 19: 
+            { return KEYWORD_DEF;
             } 
             // fall through
           case 56: break;
-          case 21: 
-            { return KEYWORD_ELSE;
+          case 20: 
+            { return KEYWORD_INT;
             } 
             // fall through
           case 57: break;
-          case 22: 
-            { return KEYWORD_FROM;
+          case 21: 
+            { return KEYWORD_VAR;
             } 
             // fall through
           case 58: break;
-          case 23: 
-            { return KEYWORD_MAIN;
+          case 22: 
+            { return KEYWORD_ELSE;
             } 
             // fall through
           case 59: break;
-          case 24: 
-            { return KEYWORD_BYTE;
+          case 23: 
+            { return KEYWORD_FROM;
             } 
             // fall through
           case 60: break;
-          case 25: 
-            { return KEYWORD_CHAR;
+          case 24: 
+            { return KEYWORD_MAIN;
             } 
             // fall through
           case 61: break;
-          case 26: 
-            { return KEYWORD_INIT;
+          case 25: 
+            { return KEYWORD_BYTE;
             } 
             // fall through
           case 62: break;
-          case 27: 
-            { return KEYWORD_LONG;
+          case 26: 
+            { return KEYWORD_CHAR;
             } 
             // fall through
           case 63: break;
-          case 28: 
-            { return KEYWORD_SHORT;
+          case 27: 
+            { return KEYWORD_INIT;
             } 
             // fall through
           case 64: break;
-          case 29: 
-            { return KEYWORD_FLOAT;
+          case 28: 
+            { return KEYWORD_LONG;
             } 
             // fall through
           case 65: break;
-          case 30: 
-            { return KEYWORD_CONST;
+          case 29: 
+            { return KEYWORD_SHORT;
             } 
             // fall through
           case 66: break;
-          case 31: 
-            { return KEYWORD_INNER;
+          case 30: 
+            { return KEYWORD_FLOAT;
             } 
             // fall through
           case 67: break;
-          case 32: 
-            { return KEYWORD_WHILE;
+          case 31: 
+            { return KEYWORD_CONST;
             } 
             // fall through
           case 68: break;
-          case 33: 
-            { return KEYWORD_RETURN;
+          case 32: 
+            { return KEYWORD_INNER;
             } 
             // fall through
           case 69: break;
-          case 34: 
-            { return KEYWORD_DOUBLE;
+          case 33: 
+            { return KEYWORD_WHILE;
             } 
             // fall through
           case 70: break;
-          case 35: 
-            { return KEYWORD_BOOLEAN;
+          case 34: 
+            { return KEYWORD_RETURN;
             } 
             // fall through
           case 71: break;
-          case 36: 
-            { return KEYWORD_ABSTRACT;
+          case 35: 
+            { return KEYWORD_DOUBLE;
             } 
             // fall through
           case 72: break;
+          case 36: 
+            { return KEYWORD_BOOLEAN;
+            } 
+            // fall through
+          case 73: break;
+          case 37: 
+            { return KEYWORD_ABSTRACT;
+            } 
+            // fall through
+          case 74: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

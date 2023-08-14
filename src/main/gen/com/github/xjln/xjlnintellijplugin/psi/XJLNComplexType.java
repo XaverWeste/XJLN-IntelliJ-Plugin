@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface XJLNComplexType extends PsiElement {
 
   @NotNull
-  XJLNIdentifier getIdentifier();
+  PsiElement getIdentifier();
 
 }

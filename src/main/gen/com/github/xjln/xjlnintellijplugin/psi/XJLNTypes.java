@@ -26,10 +26,8 @@ public interface XJLNTypes {
   IElementType FIELD = new XJLNElementType("FIELD");
   IElementType FOR_STATEMENT = new XJLNElementType("FOR_STATEMENT");
   IElementType GENERICS = new XJLNElementType("GENERICS");
-  IElementType IDENTIFIER = new XJLNElementType("IDENTIFIER");
   IElementType IF_STATEMENT = new XJLNElementType("IF_STATEMENT");
   IElementType INIT = new XJLNElementType("INIT");
-  IElementType INTEGER = new XJLNElementType("INTEGER");
   IElementType MAIN = new XJLNElementType("MAIN");
   IElementType METHOD = new XJLNElementType("METHOD");
   IElementType METHOD_CALL = new XJLNElementType("METHOD_CALL");
@@ -39,9 +37,7 @@ public interface XJLNTypes {
   IElementType METHOD_SWITCH = new XJLNElementType("METHOD_SWITCH");
   IElementType METHOD_SWITCH_ARG = new XJLNElementType("METHOD_SWITCH_ARG");
   IElementType MULTI_USE = new XJLNElementType("MULTI_USE");
-  IElementType NUMBER = new XJLNElementType("NUMBER");
   IElementType OBJECT_CREATION = new XJLNElementType("OBJECT_CREATION");
-  IElementType OPERATORS = new XJLNElementType("OPERATORS");
   IElementType PARAMETER = new XJLNElementType("PARAMETER");
   IElementType PARAMETER_LIST = new XJLNElementType("PARAMETER_LIST");
   IElementType PATH = new XJLNElementType("PATH");
@@ -61,8 +57,9 @@ public interface XJLNTypes {
   IElementType CHAR = new XJLNTokenType("CHAR");
   IElementType COMMA = new XJLNTokenType(",");
   IElementType COMMENT = new XJLNTokenType("COMMENT");
-  IElementType DIGIT = new XJLNTokenType("DIGIT");
   IElementType DOC = new XJLNTokenType("DOC");
+  IElementType IDENTIFIER = new XJLNTokenType("identifier");
+  IElementType INTEGER = new XJLNTokenType("INTEGER");
   IElementType KEYWORD_ABSTRACT = new XJLNTokenType("abstract");
   IElementType KEYWORD_AS = new XJLNTokenType("as");
   IElementType KEYWORD_BOOLEAN = new XJLNTokenType("boolean");
@@ -88,8 +85,8 @@ public interface XJLNTypes {
   IElementType KEYWORD_USE = new XJLNTokenType("use");
   IElementType KEYWORD_VAR = new XJLNTokenType("var");
   IElementType KEYWORD_WHILE = new XJLNTokenType("while");
-  IElementType LETTER = new XJLNTokenType("LETTER");
   IElementType NEW_LINE = new XJLNTokenType("NEW_LINE");
+  IElementType NUMBER = new XJLNTokenType("NUMBER");
   IElementType OPERATOR = new XJLNTokenType("OPERATOR");
   IElementType STRING = new XJLNTokenType("STRING");
 
@@ -150,17 +147,11 @@ public interface XJLNTypes {
       else if (type == GENERICS) {
         return new XJLNGenericsImpl(node);
       }
-      else if (type == IDENTIFIER) {
-        return new XJLNIdentifierImpl(node);
-      }
       else if (type == IF_STATEMENT) {
         return new XJLNIfStatementImpl(node);
       }
       else if (type == INIT) {
         return new XJLNInitImpl(node);
-      }
-      else if (type == INTEGER) {
-        return new XJLNIntegerImpl(node);
       }
       else if (type == MAIN) {
         return new XJLNMainImpl(node);
@@ -189,14 +180,8 @@ public interface XJLNTypes {
       else if (type == MULTI_USE) {
         return new XJLNMultiUseImpl(node);
       }
-      else if (type == NUMBER) {
-        return new XJLNNumberImpl(node);
-      }
       else if (type == OBJECT_CREATION) {
         return new XJLNObjectCreationImpl(node);
-      }
-      else if (type == OPERATORS) {
-        return new XJLNOperatorsImpl(node);
       }
       else if (type == PARAMETER) {
         return new XJLNParameterImpl(node);

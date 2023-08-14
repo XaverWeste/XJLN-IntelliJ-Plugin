@@ -10,9 +10,6 @@ public interface XJLNForStatement extends PsiElement {
   @NotNull
   XJLNCalc getCalc();
 
-  @NotNull
-  XJLNIdentifier getIdentifier();
-
   @Nullable
   XJLNMethodCode getMethodCode();
 
@@ -21,5 +18,8 @@ public interface XJLNForStatement extends PsiElement {
 
   @Nullable
   XJLNType getType();
+
+  @NotNull
+  PsiElement getIdentifier();
 
 }

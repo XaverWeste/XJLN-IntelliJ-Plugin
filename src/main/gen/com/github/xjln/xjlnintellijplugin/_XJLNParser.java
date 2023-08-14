@@ -37,7 +37,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // docs? KEYWORD_ABSTRACT KEYWORD_INNER? (identifier | operators) generics? '(' parameterList ')' ('::' type)?
+  // docs? KEYWORD_ABSTRACT KEYWORD_INNER? (IDENTIFIER | OPERATOR) generics? '(' parameterList ')' ('::' type)?
   public static boolean abstractMethod(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "abstractMethod")) return false;
     if (!nextTokenIs(b, "<abstract method>", DOC, KEYWORD_ABSTRACT)) return false;
@@ -70,12 +70,12 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // identifier | operators
+  // IDENTIFIER | OPERATOR
   private static boolean abstractMethod_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "abstractMethod_3")) return false;
     boolean r;
-    r = identifier(b, l + 1);
-    if (!r) r = operators(b, l + 1);
+    r = consumeToken(b, IDENTIFIER);
+    if (!r) r = consumeToken(b, OPERATOR);
     return r;
   }
 
@@ -122,7 +122,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ('[' type (COMMA integer)+ ']') | ('{' (calc (COMMA calc)*)? '}')
+  // ('[' type (COMMA INTEGER)+ ']') | ('{' (calc (COMMA calc)*)? '}')
   public static boolean arrayCreation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayCreation")) return false;
     boolean r;
@@ -133,7 +133,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // '[' type (COMMA integer)+ ']'
+  // '[' type (COMMA INTEGER)+ ']'
   private static boolean arrayCreation_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayCreation_0")) return false;
     boolean r;
@@ -146,7 +146,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (COMMA integer)+
+  // (COMMA INTEGER)+
   private static boolean arrayCreation_0_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayCreation_0_2")) return false;
     boolean r;
@@ -161,13 +161,12 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // COMMA integer
+  // COMMA INTEGER
   private static boolean arrayCreation_0_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayCreation_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
-    r = r && integer(b, l + 1);
+    r = consumeTokens(b, 0, COMMA, INTEGER);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -238,7 +237,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // calcArg (operators calcArg)+
+  // calcArg (OPERATOR calcArg)*
   public static boolean calc(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calc")) return false;
     boolean r;
@@ -249,34 +248,30 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (operators calcArg)+
+  // (OPERATOR calcArg)*
   private static boolean calc_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calc_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = calc_1_0(b, l + 1);
-    while (r) {
+    while (true) {
       int c = current_position_(b);
       if (!calc_1_0(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "calc_1", c)) break;
     }
-    exit_section_(b, m, null, r);
-    return r;
+    return true;
   }
 
-  // operators calcArg
+  // OPERATOR calcArg
   private static boolean calc_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calc_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = operators(b, l + 1);
+    r = consumeToken(b, OPERATOR);
     r = r && calcArg(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // operators? (value | '(' calc ')')
+  // OPERATOR? (value | '(' calc ')')
   public static boolean calcArg(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calcArg")) return false;
     boolean r;
@@ -287,10 +282,10 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // operators?
+  // OPERATOR?
   private static boolean calcArg_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calcArg_0")) return false;
-    operators(b, l + 1);
+    consumeToken(b, OPERATOR);
     return true;
   }
 
@@ -318,7 +313,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (objectCreation | arrayCreation | methodCall | identifier) (':' (methodCall | identifier))*
+  // (objectCreation | arrayCreation | methodCall | IDENTIFIER) (':' (methodCall | IDENTIFIER))*
   public static boolean call(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "call")) return false;
     boolean r;
@@ -329,18 +324,18 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // objectCreation | arrayCreation | methodCall | identifier
+  // objectCreation | arrayCreation | methodCall | IDENTIFIER
   private static boolean call_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "call_0")) return false;
     boolean r;
     r = objectCreation(b, l + 1);
     if (!r) r = arrayCreation(b, l + 1);
     if (!r) r = methodCall(b, l + 1);
-    if (!r) r = identifier(b, l + 1);
+    if (!r) r = consumeToken(b, IDENTIFIER);
     return r;
   }
 
-  // (':' (methodCall | identifier))*
+  // (':' (methodCall | IDENTIFIER))*
   private static boolean call_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "call_1")) return false;
     while (true) {
@@ -351,7 +346,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ':' (methodCall | identifier)
+  // ':' (methodCall | IDENTIFIER)
   private static boolean call_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "call_1_0")) return false;
     boolean r;
@@ -362,12 +357,12 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // methodCall | identifier
+  // methodCall | IDENTIFIER
   private static boolean call_1_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "call_1_0_1")) return false;
     boolean r;
     r = methodCall(b, l + 1);
-    if (!r) r = identifier(b, l + 1);
+    if (!r) r = consumeToken(b, IDENTIFIER);
     return r;
   }
 
@@ -386,7 +381,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // docs? KEYWORD_DEF KEYWORD_INNER? (identifier | operators) generics? '(' parameterList ')' ('::' type)? (methodEqual | methodStatement | methodCode | methodSwitch)
+  // docs? KEYWORD_DEF KEYWORD_INNER? (IDENTIFIER | OPERATOR) generics? '(' parameterList ')' ('::' type)? (methodEqual | methodStatement | methodCode | methodSwitch)
   public static boolean classMethod(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classMethod")) return false;
     if (!nextTokenIs(b, "<class method>", DOC, KEYWORD_DEF)) return false;
@@ -420,12 +415,12 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // identifier | operators
+  // IDENTIFIER | OPERATOR
   private static boolean classMethod_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classMethod_3")) return false;
     boolean r;
-    r = identifier(b, l + 1);
-    if (!r) r = operators(b, l + 1);
+    r = consumeToken(b, IDENTIFIER);
+    if (!r) r = consumeToken(b, OPERATOR);
     return r;
   }
 
@@ -473,7 +468,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, CLAZZ, "<clazz>");
     r = clazz_0(b, l + 1);
     r = r && clazz_1(b, l + 1);
-    r = r && identifier(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
     r = r && clazz_3(b, l + 1);
     r = r && consumeToken(b, "[");
     r = r && parameterList(b, l + 1);
@@ -628,13 +623,13 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // identifier
+  // IDENTIFIER
   public static boolean complexType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "complexType")) return false;
-    if (!nextTokenIs(b, LETTER)) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = identifier(b, l + 1);
+    r = consumeToken(b, IDENTIFIER);
     exit_section_(b, m, COMPLEX_TYPE, r);
     return r;
   }
@@ -708,15 +703,14 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // docs? KEYWORD_DEF identifier '=' enumValue ('|' identifier)*
+  // docs? KEYWORD_DEF IDENTIFIER '=' enumValue ('|' IDENTIFIER)*
   public static boolean enum_$(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enum_$")) return false;
     if (!nextTokenIs(b, "<enum $>", DOC, KEYWORD_DEF)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ENUM, "<enum $>");
     r = enum_0(b, l + 1);
-    r = r && consumeToken(b, KEYWORD_DEF);
-    r = r && identifier(b, l + 1);
+    r = r && consumeTokens(b, 0, KEYWORD_DEF, IDENTIFIER);
     r = r && consumeToken(b, "=");
     r = r && enumValue(b, l + 1);
     r = r && enum_5(b, l + 1);
@@ -731,7 +725,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ('|' identifier)*
+  // ('|' IDENTIFIER)*
   private static boolean enum_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enum_5")) return false;
     while (true) {
@@ -742,25 +736,25 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // '|' identifier
+  // '|' IDENTIFIER
   private static boolean enum_5_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enum_5_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "|");
-    r = r && identifier(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // identifier
+  // IDENTIFIER
   public static boolean enumValue(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "enumValue")) return false;
-    if (!nextTokenIs(b, LETTER)) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = identifier(b, l + 1);
+    r = consumeToken(b, IDENTIFIER);
     exit_section_(b, m, ENUM_VALUE, r);
     return r;
   }
@@ -793,7 +787,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KEYWORD_FOR type? identifier KEYWORD_IN calc (methodCode | methodStatement)
+  // KEYWORD_FOR type? IDENTIFIER KEYWORD_IN calc (methodCode | methodStatement)
   public static boolean forStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "forStatement")) return false;
     if (!nextTokenIs(b, KEYWORD_FOR)) return false;
@@ -801,8 +795,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, KEYWORD_FOR);
     r = r && forStatement_1(b, l + 1);
-    r = r && identifier(b, l + 1);
-    r = r && consumeToken(b, KEYWORD_IN);
+    r = r && consumeTokens(b, 0, IDENTIFIER, KEYWORD_IN);
     r = r && calc(b, l + 1);
     r = r && forStatement_5(b, l + 1);
     exit_section_(b, m, FOR_STATEMENT, r);
@@ -858,39 +851,6 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, COMMA);
     r = r && type(b, l + 1);
     exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // LETTER (LETTER | DIGIT)*
-  public static boolean identifier(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "identifier")) return false;
-    if (!nextTokenIs(b, LETTER)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, LETTER);
-    r = r && identifier_1(b, l + 1);
-    exit_section_(b, m, IDENTIFIER, r);
-    return r;
-  }
-
-  // (LETTER | DIGIT)*
-  private static boolean identifier_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "identifier_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!identifier_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "identifier_1", c)) break;
-    }
-    return true;
-  }
-
-  // LETTER | DIGIT
-  private static boolean identifier_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "identifier_1_0")) return false;
-    boolean r;
-    r = consumeToken(b, LETTER);
-    if (!r) r = consumeToken(b, DIGIT);
     return r;
   }
 
@@ -951,23 +911,6 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DIGIT+
-  public static boolean integer(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "integer")) return false;
-    if (!nextTokenIs(b, DIGIT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, DIGIT);
-    while (r) {
-      int c = current_position_(b);
-      if (!consumeToken(b, DIGIT)) break;
-      if (!empty_element_parsed_guard_(b, "integer", c)) break;
-    }
-    exit_section_(b, m, INTEGER, r);
-    return r;
-  }
-
-  /* ********************************************************** */
   // KEYWORD_MAIN (methodCode | methodStatement)
   public static boolean main(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "main")) return false;
@@ -990,15 +933,14 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // docs? KEYWORD_DEF identifier generics? '(' parameterList ')' ('::' type)? (methodEqual | methodStatement | methodCode | methodSwitch)
+  // docs? KEYWORD_DEF IDENTIFIER generics? '(' parameterList ')' ('::' type)? (methodEqual | methodStatement | methodCode | methodSwitch)
   public static boolean method(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "method")) return false;
     if (!nextTokenIs(b, "<method>", DOC, KEYWORD_DEF)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, METHOD, "<method>");
     r = method_0(b, l + 1);
-    r = r && consumeToken(b, KEYWORD_DEF);
-    r = r && identifier(b, l + 1);
+    r = r && consumeTokens(b, 0, KEYWORD_DEF, IDENTIFIER);
     r = r && method_3(b, l + 1);
     r = r && consumeToken(b, "(");
     r = r && parameterList(b, l + 1);
@@ -1053,13 +995,13 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // identifier generics? '(' (calc (COMMA calc)*)? ')'
+  // IDENTIFIER generics? '(' (calc (COMMA calc)*)? ')'
   public static boolean methodCall(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "methodCall")) return false;
-    if (!nextTokenIs(b, LETTER)) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = identifier(b, l + 1);
+    r = consumeToken(b, IDENTIFIER);
     r = r && methodCall_1(b, l + 1);
     r = r && consumeToken(b, "(");
     r = r && methodCall_3(b, l + 1);
@@ -1277,85 +1219,50 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // identifier (COMMA identifier)+ KEYWORD_FROM path
+  // '{' IDENTIFIER (COMMA IDENTIFIER)* '}' KEYWORD_FROM path
   public static boolean multiUse(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiUse")) return false;
-    if (!nextTokenIs(b, LETTER)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = identifier(b, l + 1);
-    r = r && multiUse_1(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, MULTI_USE, "<multi use>");
+    r = consumeToken(b, "{");
+    r = r && consumeToken(b, IDENTIFIER);
+    r = r && multiUse_2(b, l + 1);
+    r = r && consumeToken(b, "}");
     r = r && consumeToken(b, KEYWORD_FROM);
     r = r && path(b, l + 1);
-    exit_section_(b, m, MULTI_USE, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // (COMMA identifier)+
-  private static boolean multiUse_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiUse_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = multiUse_1_0(b, l + 1);
-    while (r) {
+  // (COMMA IDENTIFIER)*
+  private static boolean multiUse_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "multiUse_2")) return false;
+    while (true) {
       int c = current_position_(b);
-      if (!multiUse_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "multiUse_1", c)) break;
+      if (!multiUse_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "multiUse_2", c)) break;
     }
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // COMMA identifier
-  private static boolean multiUse_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiUse_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
-    r = r && identifier(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // integer ('.' integer)?
-  public static boolean number(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "number")) return false;
-    if (!nextTokenIs(b, DIGIT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = integer(b, l + 1);
-    r = r && number_1(b, l + 1);
-    exit_section_(b, m, NUMBER, r);
-    return r;
-  }
-
-  // ('.' integer)?
-  private static boolean number_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "number_1")) return false;
-    number_1_0(b, l + 1);
     return true;
   }
 
-  // '.' integer
-  private static boolean number_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "number_1_0")) return false;
+  // COMMA IDENTIFIER
+  private static boolean multiUse_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "multiUse_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, ".");
-    r = r && integer(b, l + 1);
+    r = consumeTokens(b, 0, COMMA, IDENTIFIER);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // identifier generics? '[' (calc (COMMA calc)*)? ']'
+  // IDENTIFIER generics? '[' (calc (COMMA calc)*)? ']'
   public static boolean objectCreation(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "objectCreation")) return false;
-    if (!nextTokenIs(b, LETTER)) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = identifier(b, l + 1);
+    r = consumeToken(b, IDENTIFIER);
     r = r && objectCreation_1(b, l + 1);
     r = r && consumeToken(b, "[");
     r = r && objectCreation_3(b, l + 1);
@@ -1408,23 +1315,6 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, COMMA);
     r = r && calc(b, l + 1);
     exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // OPERATOR+
-  public static boolean operators(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "operators")) return false;
-    if (!nextTokenIs(b, OPERATOR)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OPERATOR);
-    while (r) {
-      int c = current_position_(b);
-      if (!consumeToken(b, OPERATOR)) break;
-      if (!empty_element_parsed_guard_(b, "operators", c)) break;
-    }
-    exit_section_(b, m, OPERATORS, r);
     return r;
   }
 
@@ -1484,19 +1374,19 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // identifier ('/' identifier)+
+  // IDENTIFIER ('/' IDENTIFIER)+
   public static boolean path(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "path")) return false;
-    if (!nextTokenIs(b, LETTER)) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = identifier(b, l + 1);
+    r = consumeToken(b, IDENTIFIER);
     r = r && path_1(b, l + 1);
     exit_section_(b, m, PATH, r);
     return r;
   }
 
-  // ('/' identifier)+
+  // ('/' IDENTIFIER)+
   private static boolean path_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "path_1")) return false;
     boolean r;
@@ -1511,19 +1401,19 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // '/' identifier
+  // '/' IDENTIFIER
   private static boolean path_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "path_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "/");
-    r = r && identifier(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // KEYWORD_INT | KEYWORD_DOUBLE | KEYWORD_FLOAT | KEYWORD_LONG | KEYWORD_SHORT | KEYWORD_BOOLEAN | CHAR | KEYWORD_BYTE
+  // KEYWORD_INT | KEYWORD_DOUBLE | KEYWORD_FLOAT | KEYWORD_LONG | KEYWORD_SHORT | KEYWORD_BOOLEAN | KEYWORD_CHAR | KEYWORD_BYTE
   public static boolean primitiveType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primitiveType")) return false;
     boolean r;
@@ -1534,7 +1424,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, KEYWORD_LONG);
     if (!r) r = consumeToken(b, KEYWORD_SHORT);
     if (!r) r = consumeToken(b, KEYWORD_BOOLEAN);
-    if (!r) r = consumeToken(b, CHAR);
+    if (!r) r = consumeToken(b, KEYWORD_CHAR);
     if (!r) r = consumeToken(b, KEYWORD_BYTE);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -1548,8 +1438,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, RECORD, "<record>");
     r = record_0(b, l + 1);
-    r = r && consumeToken(b, KEYWORD_DEF);
-    r = r && identifier(b, l + 1);
+    r = r && consumeTokens(b, 0, KEYWORD_DEF, IDENTIFIER);
     r = r && record_3(b, l + 1);
     r = r && consumeToken(b, "=");
     r = r && consumeToken(b, "[");
@@ -1587,14 +1476,13 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // identifier KEYWORD_FROM path (KEYWORD_AS identifier)?
+  // IDENTIFIER KEYWORD_FROM path (KEYWORD_AS identifier)?
   public static boolean singleUse(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "singleUse")) return false;
-    if (!nextTokenIs(b, LETTER)) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = identifier(b, l + 1);
-    r = r && consumeToken(b, KEYWORD_FROM);
+    r = consumeTokens(b, 0, IDENTIFIER, KEYWORD_FROM);
     r = r && path(b, l + 1);
     r = r && singleUse_3(b, l + 1);
     exit_section_(b, m, SINGLE_USE, r);
@@ -1613,8 +1501,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "singleUse_3_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, KEYWORD_AS);
-    r = r && identifier(b, l + 1);
+    r = consumeTokens(b, 0, KEYWORD_AS, IDENTIFIER);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1676,7 +1563,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   // path (KEYWORD_AS identifier)?
   public static boolean useFromPath(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "useFromPath")) return false;
-    if (!nextTokenIs(b, LETTER)) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = path(b, l + 1);
@@ -1697,20 +1584,19 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "useFromPath_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, KEYWORD_AS);
-    r = r && identifier(b, l + 1);
+    r = consumeTokens(b, 0, KEYWORD_AS, IDENTIFIER);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // number | integer | STRING | CHAR | call
+  // NUMBER | INTEGER | STRING | CHAR | call
   public static boolean value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "value")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VALUE, "<value>");
-    r = number(b, l + 1);
-    if (!r) r = integer(b, l + 1);
+    r = consumeToken(b, NUMBER);
+    if (!r) r = consumeToken(b, INTEGER);
     if (!r) r = consumeToken(b, STRING);
     if (!r) r = consumeToken(b, CHAR);
     if (!r) r = call(b, l + 1);
@@ -1719,14 +1605,14 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KEYWORD_CONST? type? identifier '=' calc
+  // KEYWORD_CONST? type? IDENTIFIER '=' calc
   public static boolean var(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "var")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VAR, "<var>");
     r = var_0(b, l + 1);
     r = r && var_1(b, l + 1);
-    r = r && identifier(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
     r = r && consumeToken(b, "=");
     r = r && calc(b, l + 1);
     exit_section_(b, l, m, r, false, null);
@@ -1748,14 +1634,14 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KEYWORD_CONST? type identifier
+  // KEYWORD_CONST? type IDENTIFIER
   public static boolean varWithoutValue(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "varWithoutValue")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VAR_WITHOUT_VALUE, "<var without value>");
     r = varWithoutValue_0(b, l + 1);
     r = r && type(b, l + 1);
-    r = r && identifier(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

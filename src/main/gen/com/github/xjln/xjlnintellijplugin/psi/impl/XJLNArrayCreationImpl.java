@@ -34,12 +34,6 @@ public class XJLNArrayCreationImpl extends ASTWrapperPsiElement implements XJLNA
   }
 
   @Override
-  @NotNull
-  public List<XJLNInteger> getIntegerList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNInteger.class);
-  }
-
-  @Override
   @Nullable
   public XJLNType getType() {
     return findChildByClass(XJLNType.class);

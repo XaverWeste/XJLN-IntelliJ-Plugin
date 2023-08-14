@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface XJLNSingleUse extends PsiElement {
 
   @NotNull
-  List<XJLNIdentifier> getIdentifierList();
+  XJLNPath getPath();
 
   @NotNull
-  XJLNPath getPath();
+  PsiElement getIdentifier();
 
 }

@@ -35,20 +35,20 @@ public class XJLNValueImpl extends ASTWrapperPsiElement implements XJLNValue {
 
   @Override
   @Nullable
-  public XJLNInteger getInteger() {
-    return findChildByClass(XJLNInteger.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNNumber getNumber() {
-    return findChildByClass(XJLNNumber.class);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getChar() {
     return findChildByType(CHAR);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getInteger() {
+    return findChildByType(INTEGER);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getNumber() {
+    return findChildByType(NUMBER);
   }
 
   @Override

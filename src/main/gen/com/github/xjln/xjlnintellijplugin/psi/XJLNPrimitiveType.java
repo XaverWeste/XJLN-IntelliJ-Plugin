@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface XJLNPrimitiveType extends PsiElement {
 
-  @Nullable
-  PsiElement getChar();
-
 }

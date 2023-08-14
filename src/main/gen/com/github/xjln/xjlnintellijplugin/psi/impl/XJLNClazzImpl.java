@@ -46,12 +46,6 @@ public class XJLNClazzImpl extends ASTWrapperPsiElement implements XJLNClazz {
   }
 
   @Override
-  @NotNull
-  public XJLNIdentifier getIdentifier() {
-    return findNotNullChildByClass(XJLNIdentifier.class);
-  }
-
-  @Override
   @Nullable
   public XJLNInit getInit() {
     return findChildByClass(XJLNInit.class);

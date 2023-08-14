@@ -35,14 +35,14 @@ public class XJLNCalcArgImpl extends ASTWrapperPsiElement implements XJLNCalcArg
 
   @Override
   @Nullable
-  public XJLNOperators getOperators() {
-    return findChildByClass(XJLNOperators.class);
+  public XJLNValue getValue() {
+    return findChildByClass(XJLNValue.class);
   }
 
   @Override
   @Nullable
-  public XJLNValue getValue() {
-    return findChildByClass(XJLNValue.class);
+  public PsiElement getOperator() {
+    return findChildByType(OPERATOR);
   }
 
 }

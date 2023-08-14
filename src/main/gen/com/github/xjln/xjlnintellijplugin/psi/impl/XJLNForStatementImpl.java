@@ -34,12 +34,6 @@ public class XJLNForStatementImpl extends ASTWrapperPsiElement implements XJLNFo
   }
 
   @Override
-  @NotNull
-  public XJLNIdentifier getIdentifier() {
-    return findNotNullChildByClass(XJLNIdentifier.class);
-  }
-
-  @Override
   @Nullable
   public XJLNMethodCode getMethodCode() {
     return findChildByClass(XJLNMethodCode.class);
@@ -55,6 +49,12 @@ public class XJLNForStatementImpl extends ASTWrapperPsiElement implements XJLNFo
   @Nullable
   public XJLNType getType() {
     return findChildByClass(XJLNType.class);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getIdentifier() {
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

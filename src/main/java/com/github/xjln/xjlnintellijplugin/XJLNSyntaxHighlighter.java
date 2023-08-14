@@ -1,13 +1,13 @@
 package com.github.xjln.xjlnintellijplugin;
 
-import com.github.xjln.xjlnintellijplugin.psi.XJLNType;
 import com.github.xjln.xjlnintellijplugin.psi.XJLNTypes;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
-import org.jetbrains.annotations.NotNull;;import java.util.Set;
+import org.jetbrains.annotations.NotNull;
+import java.util.Set;
 
 public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
 
@@ -28,6 +28,11 @@ public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] COMMAS = new TextAttributesKey[]{COMMA};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
+    private final Set<IElementType> keywords = Set.of(XJLNTypes.KEYWORD_USE, XJLNTypes.KEYWORD_FROM, XJLNTypes.KEYWORD_AS, XJLNTypes.KEYWORD_DEF
+            , XJLNTypes.KEYWORD_ABSTRACT, XJLNTypes.KEYWORD_INNER, XJLNTypes.KEYWORD_CONST, XJLNTypes.KEYWORD_VAR, XJLNTypes.KEYWORD_RETURN, XJLNTypes.KEYWORD_END
+            , XJLNTypes.KEYWORD_IF, XJLNTypes.KEYWORD_ELSE, XJLNTypes.KEYWORD_WHILE, XJLNTypes.KEYWORD_FOR, XJLNTypes.KEYWORD_IN, XJLNTypes.KEYWORD_INT, XJLNTypes.KEYWORD_DOUBLE
+            , XJLNTypes.KEYWORD_FLOAT, XJLNTypes.KEYWORD_LONG, XJLNTypes.KEYWORD_SHORT, XJLNTypes.KEYWORD_BOOLEAN, XJLNTypes.KEYWORD_CHAR, XJLNTypes.KEYWORD_BYTE);
+
     @Override
     public @NotNull Lexer getHighlightingLexer() {
         return new XJLNLexerAdapter();
@@ -35,11 +40,8 @@ public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
-        System.out.println(tokenType.toString());
         if(tokenType == XJLNTypes.KEYWORD_MAIN || tokenType == XJLNTypes.KEYWORD_INIT)
             return new TextAttributesKey[]{TextAttributesKey.createTextAttributesKey("XJLN_MAIN", DefaultLanguageHighlighterColors.CONSTANT)};
-        if(tokenType.toString().startsWith("KEYWORD_"))
-            return KEYWORDS;
         if(tokenType == XJLNTypes.COMMA)
             return COMMAS;
         if(tokenType == XJLNTypes.COMMENT)
@@ -52,6 +54,8 @@ public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
             return IDENTIFIERS;
         if(tokenType == XJLNTypes.INTEGER || tokenType == XJLNTypes.NUMBER)
             return NUMBERS;
+        if(keywords.contains(tokenType))
+            return KEYWORDS;
         return EMPTY_KEYS;
     }
 }

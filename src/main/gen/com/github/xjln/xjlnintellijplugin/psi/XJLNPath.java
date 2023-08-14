@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface XJLNPath extends PsiElement {
 
-  @NotNull
-  List<XJLNIdentifier> getIdentifierList();
-
 }

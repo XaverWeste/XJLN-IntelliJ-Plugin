@@ -14,6 +14,6 @@ public interface XJLNMethodCall extends PsiElement {
   XJLNGenerics getGenerics();
 
   @NotNull
-  XJLNIdentifier getIdentifier();
+  PsiElement getIdentifier();
 
 }

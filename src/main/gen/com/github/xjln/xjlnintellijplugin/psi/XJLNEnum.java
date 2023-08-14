@@ -13,7 +13,4 @@ public interface XJLNEnum extends PsiElement {
   @NotNull
   XJLNEnumValue getEnumValue();
 
-  @NotNull
-  List<XJLNIdentifier> getIdentifierList();
-
 }

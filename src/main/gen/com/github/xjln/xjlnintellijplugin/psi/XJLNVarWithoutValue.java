@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface XJLNVarWithoutValue extends PsiElement {
 
   @NotNull
-  XJLNIdentifier getIdentifier();
+  XJLNType getType();
 
   @NotNull
-  XJLNType getType();
+  PsiElement getIdentifier();
 
 }

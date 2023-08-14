@@ -14,9 +14,6 @@ public interface XJLNRecord extends PsiElement {
   XJLNGenerics getGenerics();
 
   @NotNull
-  XJLNIdentifier getIdentifier();
-
-  @NotNull
   XJLNParameterList getParameterList();
 
 }

@@ -7,9 +7,6 @@ import com.intellij.psi.PsiElement;
 
 public interface XJLNUseFromPath extends PsiElement {
 
-  @Nullable
-  XJLNIdentifier getIdentifier();
-
   @NotNull
   XJLNPath getPath();
 

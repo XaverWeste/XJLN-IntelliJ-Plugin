@@ -35,12 +35,6 @@ public class XJLNCallImpl extends ASTWrapperPsiElement implements XJLNCall {
 
   @Override
   @NotNull
-  public List<XJLNIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNIdentifier.class);
-  }
-
-  @Override
-  @NotNull
   public List<XJLNMethodCall> getMethodCallList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNMethodCall.class);
   }

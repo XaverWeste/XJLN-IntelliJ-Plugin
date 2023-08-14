@@ -41,8 +41,8 @@ public class XJLNObjectCreationImpl extends ASTWrapperPsiElement implements XJLN
 
   @Override
   @NotNull
-  public XJLNIdentifier getIdentifier() {
-    return findNotNullChildByClass(XJLNIdentifier.class);
+  public PsiElement getIdentifier() {
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

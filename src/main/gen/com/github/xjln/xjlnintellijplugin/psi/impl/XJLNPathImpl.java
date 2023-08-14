@@ -27,10 +27,4 @@ public class XJLNPathImpl extends ASTWrapperPsiElement implements XJLNPath {
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public List<XJLNIdentifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNIdentifier.class);
-  }
-
 }

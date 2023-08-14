@@ -16,9 +16,6 @@ public interface XJLNClazz extends PsiElement {
   @Nullable
   XJLNGenerics getGenerics();
 
-  @NotNull
-  XJLNIdentifier getIdentifier();
-
   @Nullable
   XJLNInit getInit();
 

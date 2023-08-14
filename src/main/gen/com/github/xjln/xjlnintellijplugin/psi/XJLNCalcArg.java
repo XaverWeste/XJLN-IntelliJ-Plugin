@@ -11,9 +11,9 @@ public interface XJLNCalcArg extends PsiElement {
   XJLNCalc getCalc();
 
   @Nullable
-  XJLNOperators getOperators();
+  XJLNValue getValue();
 
   @Nullable
-  XJLNValue getValue();
+  PsiElement getOperator();
 
 }

@@ -13,9 +13,6 @@ public interface XJLNMethod extends PsiElement {
   @Nullable
   XJLNGenerics getGenerics();
 
-  @NotNull
-  XJLNIdentifier getIdentifier();
-
   @Nullable
   XJLNMethodCode getMethodCode();
 
@@ -33,5 +30,8 @@ public interface XJLNMethod extends PsiElement {
 
   @Nullable
   XJLNType getType();
+
+  @NotNull
+  PsiElement getIdentifier();
 
 }

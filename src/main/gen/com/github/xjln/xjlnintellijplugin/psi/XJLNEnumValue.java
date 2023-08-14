@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface XJLNEnumValue extends PsiElement {
 
   @NotNull
-  XJLNIdentifier getIdentifier();
+  PsiElement getIdentifier();
 
 }

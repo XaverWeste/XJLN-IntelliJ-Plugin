@@ -11,9 +11,6 @@ public interface XJLNCall extends PsiElement {
   XJLNArrayCreation getArrayCreation();
 
   @NotNull
-  List<XJLNIdentifier> getIdentifierList();
-
-  @NotNull
   List<XJLNMethodCall> getMethodCallList();
 
   @Nullable

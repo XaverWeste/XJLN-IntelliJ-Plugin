@@ -14,9 +14,6 @@ public interface XJLNClassMethod extends PsiElement {
   XJLNGenerics getGenerics();
 
   @Nullable
-  XJLNIdentifier getIdentifier();
-
-  @Nullable
   XJLNMethodCode getMethodCode();
 
   @Nullable
@@ -28,13 +25,16 @@ public interface XJLNClassMethod extends PsiElement {
   @Nullable
   XJLNMethodSwitch getMethodSwitch();
 
-  @Nullable
-  XJLNOperators getOperators();
-
   @NotNull
   XJLNParameterList getParameterList();
 
   @Nullable
   XJLNType getType();
+
+  @Nullable
+  PsiElement getIdentifier();
+
+  @Nullable
+  PsiElement getOperator();
 
 }

@@ -41,12 +41,6 @@ public class XJLNRecordImpl extends ASTWrapperPsiElement implements XJLNRecord {
 
   @Override
   @NotNull
-  public XJLNIdentifier getIdentifier() {
-    return findNotNullChildByClass(XJLNIdentifier.class);
-  }
-
-  @Override
-  @NotNull
   public XJLNParameterList getParameterList() {
     return findNotNullChildByClass(XJLNParameterList.class);
   }

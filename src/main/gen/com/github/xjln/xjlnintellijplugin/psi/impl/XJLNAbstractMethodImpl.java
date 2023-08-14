@@ -40,18 +40,6 @@ public class XJLNAbstractMethodImpl extends ASTWrapperPsiElement implements XJLN
   }
 
   @Override
-  @Nullable
-  public XJLNIdentifier getIdentifier() {
-    return findChildByClass(XJLNIdentifier.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNOperators getOperators() {
-    return findChildByClass(XJLNOperators.class);
-  }
-
-  @Override
   @NotNull
   public XJLNParameterList getParameterList() {
     return findNotNullChildByClass(XJLNParameterList.class);
@@ -61,6 +49,18 @@ public class XJLNAbstractMethodImpl extends ASTWrapperPsiElement implements XJLN
   @Nullable
   public XJLNType getType() {
     return findChildByClass(XJLNType.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getIdentifier() {
+    return findChildByType(IDENTIFIER);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOperator() {
+    return findChildByType(OPERATOR);
   }
 
 }

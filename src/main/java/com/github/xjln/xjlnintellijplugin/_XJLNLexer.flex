@@ -10,13 +10,13 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
 %%
 
 %{
-  public __XJLNLexer() {
+  public _XJLNLexer() {
     this((java.io.Reader)null);
   }
 %}
 
 %public
-%class __XJLNLexer
+%class _XJLNLexer
 %implements FlexLexer
 %function advance
 %type IElementType
@@ -26,9 +26,10 @@ EOL=\R
 WHITE_SPACE=[\t\ ]+
 
 NEW_LINE=\n
-LETTER=[a-zA-Z]
-DIGIT=[0-9]
-OPERATOR=[-+*/%&|<>=!\^]
+IDENTIFIER=[a-zA-Z][a-zA-Z0-9]*
+INTEGER=[0-9]+
+NUMBER=[0-9+]\.[0-9]+
+OPERATOR=[-+*/%&|<>=!\^]+
 CHAR='.'
 DOC=##[^\n]*
 COMMENT=#[^[#\n]][^\n]*
@@ -66,8 +67,9 @@ STRING=\"[^\"]*\"
   ","                { return COMMA; }
 
   {NEW_LINE}         { return NEW_LINE; }
-  {LETTER}           { return LETTER; }
-  {DIGIT}            { return DIGIT; }
+  {IDENTIFIER}       { return IDENTIFIER; }
+  {INTEGER}          { return INTEGER; }
+  {NUMBER}           { return NUMBER; }
   {OPERATOR}         { return OPERATOR; }
   {CHAR}             { return CHAR; }
   {DOC}              { return DOC; }

@@ -79,19 +79,11 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitIdentifier(@NotNull XJLNIdentifier o) {
-    visitPsiElement(o);
-  }
-
   public void visitIfStatement(@NotNull XJLNIfStatement o) {
     visitPsiElement(o);
   }
 
   public void visitInit(@NotNull XJLNInit o) {
-    visitPsiElement(o);
-  }
-
-  public void visitInteger(@NotNull XJLNInteger o) {
     visitPsiElement(o);
   }
 
@@ -131,15 +123,7 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitNumber(@NotNull XJLNNumber o) {
-    visitPsiElement(o);
-  }
-
   public void visitObjectCreation(@NotNull XJLNObjectCreation o) {
-    visitPsiElement(o);
-  }
-
-  public void visitOperators(@NotNull XJLNOperators o) {
     visitPsiElement(o);
   }
 

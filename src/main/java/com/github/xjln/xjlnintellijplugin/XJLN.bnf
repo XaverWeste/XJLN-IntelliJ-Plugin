@@ -44,9 +44,10 @@
     COMMA = ","
 
     NEW_LINE = "regexp:\n"
-    LETTER = "regexp:[a-zA-Z]"
-    DIGIT = "regexp:[0-9]"
-    OPERATOR = "regexp:[-+*/%&|<>=!^]"
+    IDENTIFIER = "regexp:[a-zA-Z][a-zA-Z0-9]*"
+    INTEGER = "regexp:[0-9]+"
+    NUMBER = "regexp:[0-9+]\.[0-9]+"
+    OPERATOR = "regexp:[-+*/%&|<>=!^]+"
     CHAR = "regexp:'.'"
     DOC = "regexp:##[^\n]*"
     COMMENT = "regexp:#[^[#\n]][^\n]*"
@@ -55,24 +56,20 @@
 }
 
 xjlnFile ::= argument? (NEW_LINE argument?)* (main (NEW_LINE argument?)*)?
-argument ::= (COMMENT | record | enum | class | method | field | use)
+argument ::= (COMMENT | record | enum | clazz | method | field | use)
 docs ::= DOC (NEW_LINE DOC)* NEW_LINE
-identifier ::= LETTER (LETTER | DIGIT)*
-operators ::= OPERATOR+
-integer ::= DIGIT+
-number ::= integer ('.' integer)?
-enum ::= docs? KEYWORD_DEF identifier '=' enumValue ('|' identifier)*
-enumValue ::= identifier
+enum ::= docs? KEYWORD_DEF IDENTIFIER '=' enumValue ('|' IDENTIFIER)*
+enumValue ::= IDENTIFIER
 record ::= docs? KEYWORD_DEF identifier generics? '=' '[' parameterList ']'
-class ::= docs? (KEYWORD_DEF | KEYWORD_ABSTRACT) identifier generics? '[' parameterList ']' ('=>' objectCreation (COMMA objectCreation)*)? NEW_LINE (classArgument? NEW_LINE)* (init (classArgument? NEW_LINE)*)? KEYWORD_END
+clazz ::= docs? (KEYWORD_DEF | KEYWORD_ABSTRACT) identifier generics? '[' parameterList ']' ('=>' objectCreation (COMMA objectCreation)*)? NEW_LINE (classArgument? NEW_LINE)* (init (classArgument? NEW_LINE)*)? KEYWORD_END
 classArgument ::= (COMMENT | classMethod | abstractMethod | field)
 parameterList ::= (parameter (COMMA parameter)*)?
 parameter ::= (varWithoutValue | var)
-varWithoutValue ::= KEYWORD_CONST? type identifier
-var ::= KEYWORD_CONST? type? identifier '=' calc
+varWithoutValue ::= KEYWORD_CONST? type IDENTIFIER
+var ::= KEYWORD_CONST? type? IDENTIFIER '=' calc
 type ::= (KEYWORD_VAR | primitiveType | complexType | arrayType)
-primitiveType ::= (KEYWORD_INT | KEYWORD_DOUBLE | KEYWORD_FLOAT | KEYWORD_LONG | KEYWORD_SHORT | KEYWORD_BOOLEAN | CHAR | KEYWORD_BYTE)
-complexType ::= identifier
+primitiveType ::= (KEYWORD_INT | KEYWORD_DOUBLE | KEYWORD_FLOAT | KEYWORD_LONG | KEYWORD_SHORT | KEYWORD_BOOLEAN | KEYWORD_CHAR | KEYWORD_BYTE)
+complexType ::= IDENTIFIER
 arrayType ::= '[' type ']'
 main ::= KEYWORD_MAIN (methodCode | methodStatement)
 init ::= KEYWORD_INIT (methodCode | methodStatement)
@@ -83,24 +80,24 @@ methodSwitch ::= '{' (NEW_LINE methodSwitchArg?)+ NEW_LINE '}'
 methodSwitchArg ::= '(' calc (COMMA calc)* ')' (methodEqual | methodStatement | methodCode)
 statement ::= (COMMENT | ifStatement | whileStatement | forStatement | var | returnStatement)
 whileStatement ::= KEYWORD_WHILE calc (methodCode | methodStatement)
-forStatement ::= KEYWORD_FOR type? identifier KEYWORD_IN calc (methodCode | methodStatement)
+forStatement ::= KEYWORD_FOR type? IDENTIFIER KEYWORD_IN calc (methodCode | methodStatement)
 ifStatement ::= KEYWORD_IF (methodCode | methodStatement) elseStatement*
 elseStatement ::= KEYWORD_ELSE (ifStatement | (methodCode | methodStatement))
 returnStatement ::= KEYWORD_RETURN calc
-objectCreation ::= identifier generics? '[' (calc (COMMA calc)*)? ']'
-arrayCreation ::= (('[' type (COMMA integer)+ ']') | ('{' (calc (COMMA calc)*)? '}'))
-method ::= docs? KEYWORD_DEF identifier generics? '(' parameterList ')' ('::' type)? (methodEqual | methodStatement | methodCode | methodSwitch)
-abstractMethod ::= docs? KEYWORD_ABSTRACT KEYWORD_INNER? (identifier | operators) generics? '(' parameterList ')' ('::' type)?
-classMethod ::= docs? KEYWORD_DEF KEYWORD_INNER? (identifier | operators) generics? '(' parameterList ')' ('::' type)? (methodEqual | methodStatement | methodCode | methodSwitch)
+objectCreation ::= IDENTIFIER generics? '[' (calc (COMMA calc)*)? ']'
+arrayCreation ::= (('[' type (COMMA INTEGER)+ ']') | ('{' (calc (COMMA calc)*)? '}'))
+method ::= docs? KEYWORD_DEF IDENTIFIER generics? '(' parameterList ')' ('::' type)? (methodEqual | methodStatement | methodCode | methodSwitch)
+abstractMethod ::= docs? KEYWORD_ABSTRACT KEYWORD_INNER? (IDENTIFIER | OPERATOR) generics? '(' parameterList ')' ('::' type)?
+classMethod ::= docs? KEYWORD_DEF KEYWORD_INNER? (IDENTIFIER | OPERATOR) generics? '(' parameterList ')' ('::' type)? (methodEqual | methodStatement | methodCode | methodSwitch)
 field ::= docs? KEYWORD_INNER? var
 use ::= KEYWORD_USE (useFromPath | singleUse | multiUse)
 useFromPath ::= path (KEYWORD_AS identifier)?
-singleUse ::= identifier KEYWORD_FROM path (KEYWORD_AS identifier)?
-multiUse ::= identifier (COMMA identifier)+ KEYWORD_FROM path
-path ::= identifier ('/' identifier)+
-calc ::= calcArg (operators calcArg)+
-calcArg ::= operators? (value | '(' calc ')')
-call ::= (objectCreation | arrayCreation | methodCall | identifier) (':' (methodCall | identifier))*
-methodCall ::= identifier generics? '(' (calc (COMMA calc)*)? ')'
-value ::= (number | integer | STRING | CHAR | call)
+singleUse ::= IDENTIFIER KEYWORD_FROM path (KEYWORD_AS identifier)?
+multiUse ::= '{' IDENTIFIER (COMMA IDENTIFIER)* '}' KEYWORD_FROM path
+path ::= IDENTIFIER ('/' IDENTIFIER)+
+calc ::= calcArg (OPERATOR calcArg)*
+calcArg ::= OPERATOR? (value | '(' calc ')')
+call ::= (objectCreation | arrayCreation | methodCall | IDENTIFIER) (':' (methodCall | IDENTIFIER))*
+methodCall ::= IDENTIFIER generics? '(' (calc (COMMA calc)*)? ')'
+value ::= (NUMBER | INTEGER | STRING | CHAR | call)
 generics ::= '<' type (COMMA type)* '>'

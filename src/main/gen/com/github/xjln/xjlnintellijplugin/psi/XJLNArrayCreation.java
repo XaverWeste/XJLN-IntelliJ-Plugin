@@ -10,9 +10,6 @@ public interface XJLNArrayCreation extends PsiElement {
   @NotNull
   List<XJLNCalc> getCalcList();
 
-  @NotNull
-  List<XJLNInteger> getIntegerList();
-
   @Nullable
   XJLNType getType();
 

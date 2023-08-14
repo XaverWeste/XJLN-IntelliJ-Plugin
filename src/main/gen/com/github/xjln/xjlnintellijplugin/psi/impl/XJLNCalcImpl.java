@@ -33,10 +33,4 @@ public class XJLNCalcImpl extends ASTWrapperPsiElement implements XJLNCalc {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNCalcArg.class);
   }
 
-  @Override
-  @NotNull
-  public List<XJLNOperators> getOperatorsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNOperators.class);
-  }
-
 }
