@@ -27,16 +27,26 @@
     KEYWORD_INIT = "init"
     KEYWORD_RETURN = "return"
     KEYWORD_END = "end"
-    PRIMITIVETYPE = "regexp:(int) | (double) | (float) | (long) | (short) | (boolean) | (char) | (byte)"
+    KEYWORD_IF = "if"
+    KEYWORD_ELSE = "else"
+    KEYWORD_WHILE = "while"
+    KEYWORD_FOR = "for"
+    KEYWORD_IN = "in"
+    KEYWORD_INT = "int"
+    KEYWORD_DOUBLE = "double"
+    KEYWORD_FLOAT = "float"
+    KEYWORD_LONG = "long"
+    KEYWORD_SHORT = "short"
+    KEYWORD_BOOLEAN = "boolean"
+    KEYWORD_CHAR = "char"
+    KEYWORD_BYTE = "byte"
 
     COMMA = ","
 
     NEW_LINE = "regexp:\n"
-    PATH = "regexp:[a-zA-Z]+(/[a-zA-Z]+)+"
-    IDENTIFIER = "regexp:[a-zA-Z][a-zA-Z0-9]*"
-    OPPERATOR = "regexp:[-+*/%&|<>=!^]+"
-    DIGITS_FLOATING_POINT = "regexp:[0-9]+\.[0-9]+"
-    DIGITS = "regexp:[0-9]+"
+    LETTER = "regexp:[a-zA-Z]"
+    DIGIT = "regexp:[0-9]"
+    OPERATOR = "regexp:[-+*/%&|<>=!^]"
     CHAR = "regexp:'.'"
     DOC = "regexp:##[^\n]*"
     COMMENT = "regexp:#[^[#\n]][^\n]*"
@@ -44,43 +54,50 @@
   ]
 }
 
-xjlnFile ::= (argument_? (NEW_LINE argument_?)*)?
-private argument_ ::= (COMMENT | use | enum | record | clazz | field | main | methodDefMain)
-private docs ::= (DOC NEW_LINE)*
-
-use ::= KEYWORD_USE ((PATH (KEYWORD_AS IDENTIFIER)?) | ('{' IDENTIFIER (COMMA IDENTIFIER)* '}' KEYWORD_FROM PATH) | ((IDENTIFIER) KEYWORD_FROM PATH (KEYWORD_AS IDENTIFIER)?))
-enum ::= docs KEYWORD_DEF IDENTIFIER '=' IDENTIFIER ('|' IDENTIFIER)*
-record ::= docs KEYWORD_DEF IDENTIFIER '=' '[' parameterList ']'
-clazz ::= docs (KEYWORD_DEF | KEYWORD_ABSTRACT) IDENTIFIER '[' parameterList ']' ('=>' )? NEW_LINE (methodDef | abstractMethod | init | (field NEW_LINE) | NEW_LINE)* KEYWORD_END
-
-main ::= KEYWORD_MAIN (methodShort | methodCode)
-methodDefMain ::= KEYWORD_DEF IDENTIFIER '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (((methodShort | methodEquals) NEW_LINE) | methodCode | methodDefMulti)
-
-parameterList ::= (var (COMMA var)*)?
-var ::= KEYWORD_CONST? ((type IDENTIFIER) | (type? IDENTIFIER '=' calc))
+xjlnFile ::= argument? (NEW_LINE argument?)* (main (NEW_LINE argument?)*)?
+argument ::= (COMMENT | record | enum | class | method | field | use)
+docs ::= DOC (NEW_LINE DOC)* NEW_LINE
+identifier ::= LETTER (LETTER | DIGIT)*
+operator ::= OPERATOR+
+integer ::= DIGIT+
+number ::= integer ('.' integer)?
+enum ::= docs? KEYWORD_DEF identifier '=' enumValue ('|' identifier)*
+enumValue ::= identifier
+record ::= docs? KEYWORD_DEF identifier '=' '[' parameterList ']'
+class ::= docs? (KEYWORD_DEF | KEYWORD_ABSTRACT) identifier '[' parameterList ']' ('=>' objectCreation (COMMA objectCreation)*)? NEW_LINE (classArgument? NEW_LINE)* (init (classArgument? NEW_LINE)*)? KEYWORD_END
+classArgument ::= (COMMENT | classMethod | abstractMethod | field)
+parameterList ::= (parameter (COMMA parameter)*)?
+parameter ::= (varWithoutValue | var)
+varWithoutValue ::= KEYWORD_CONST? type identifier
+var ::= KEYWORD_CONST? type? identifier '=' calc
+type ::= (KEYWORD_VAR | primitiveType | complexType | arrayType)
+primitiveType ::= (KEYWORD_INT | KEYWORD_DOUBLE | KEYWORD_FLOAT | KEYWORD_LONG | KEYWORD_SHORT | KEYWORD_BOOLEAN | CHAR | KEYWORD_BYTE)
+complexType ::= identifier
+arrayType ::= '[' type ']'
+main ::= KEYWORD_MAIN (methodCode | methodStatement)
+init ::= KEYWORD_INIT (methodCode | methodStatement)
+methodEqual ::= '=' calc
+methodStatement ::= '->' statement
+methodCode ::= NEW_LINE (statement? NEW_LINE)* KEYWORD_END
+statement ::= (COMMENT | ifStatement | whileStatement | forStatement | var | returnStatement)
+whileStatement ::= KEYWORD_WHILE calc (methodCode | methodStatement)
+forStatement ::= KEYWORD_FOR type? identifier KEYWORD_IN calc (methodCode | methodStatement)
+ifStatement ::= KEYWORD_IF (methodCode | methodStatement) elseStatement*
+elseStatement ::= KEYWORD_ELSE (ifStatement | (methodCode | methodStatement))
+returnStatement ::= KEYWORD_RETURN calc
+objectCreation ::= identifier '[' (calc (COMMA calc)*)? ']'
+arrayCreation ::= (('[' type (COMMA integer)+ ']') | ('{' (calc (COMMA calc)*)? '}'))
+method ::= KEYWORD_DEF identifier '(' parameterList ')' ('::' type)? (methodEqual | methodStatement | methodCode)
+abstractMethod ::= KEYWORD_ABSTRACT KEYWORD_INNER? identifier '(' parameterList ')' ('::' type)?
+classMethod ::= KEYWORD_DEF KEYWORD_INNER? (identifier | operator) '(' parameterList ')' ('::' type)? (methodEqual | methodStatement | methodCode)
 field ::= KEYWORD_INNER? var
-type ::= (PRIMITIVETYPE | IDENTIFIER | '[' IDENTIFIER ']')
-
-methodDef ::= KEYWORD_DEF (IDENTIFIER | OPPERATOR) '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? (((methodShort | methodEquals) NEW_LINE)  | methodCode | methodDefMulti)
-abstractMethod ::= KEYWORD_ABSTRACT (IDENTIFIER | OPPERATOR) '(' parameterList ')' ('::' (IDENTIFIER | PRIMITIVETYPE))? NEW_LINE
-init ::= KEYWORD_INIT (methodShort | methodCode) NEW_LINE
-
-varCall ::= IDENTIFIER
-methodCall ::= IDENTIFIER '(' parameterListArguments ')'
-parameterListArguments ::= (calc (COMMA calc)*)?
-
-objCreation ::= IDENTIFIER '[' parameterListArguments ']'
-arrCreation ::= '[' IDENTIFIER (COMMA DIGITS)+']'
-
-call ::= (methodCall | varCall | objCreation | arrCreation) (':' (methodCall | varCall))*
-
-calc ::= OPPERATOR? calcArg (OPPERATOR OPPERATOR? calcArg)*
-calcArg ::= (call | ('(' calc ')') | STRING | CHAR | DIGITS | DIGITS_FLOATING_POINT)
-
-methodDefMulti ::= '{' ('(' calc ')' ((methodShort | methodEquals) NEW_LINE) | methodCode)* NEW_LINE '}' NEW_LINE
-
-methodShort ::= '->' statement
-methodEquals ::= '=' calc
-methodCode ::= NEW_LINE (statement NEW_LINE)* KEYWORD_END NEW_LINE
-
-statement ::= ((KEYWORD_RETURN (call | calc)) | var | calc | call)
+use ::= KEYWORD_USE (useFromPath | singleUse | multiUse)
+useFromPath ::= path (KEYWORD_AS identifier)?
+singleUse ::= identifier KEYWORD_FROM path (KEYWORD_AS identifier)?
+multiUse ::= identifier (COMMA identifier)+ KEYWORD_FROM path
+path ::= identifier ('/' identifier)+
+calc ::= calcArg (operator calcArg)+
+calcArg ::= operator? (value | '(' calc ')')
+call ::= (objectCreation | arrayCreation | methodCall | identifier) (':' (methodCall | identifier))*
+methodCall ::= identifier '(' (calc (COMMA calc)*)? ')'
+value ::= (number | integer | STRING | CHAR | call)

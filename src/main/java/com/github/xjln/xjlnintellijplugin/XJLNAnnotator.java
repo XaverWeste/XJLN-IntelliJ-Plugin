@@ -2,11 +2,10 @@ package com.github.xjln.xjlnintellijplugin;
 
 import com.github.xjln.xjlnintellijplugin.psi.XJLNFile;
 import com.github.xjln.xjlnintellijplugin.psi.XJLNTypes;
-import com.github.xjln.xjlnintellijplugin.psi.XJLNVar;
 import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNEnumImpl;
 import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNFieldImpl;
+import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNParameterListImpl;
 import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNUseImpl;
-import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNVarImpl;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;
