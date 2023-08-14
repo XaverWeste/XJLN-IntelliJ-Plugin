@@ -29,38 +29,44 @@ public class XJLNClazzImpl extends ASTWrapperPsiElement implements XJLNClazz {
 
   @Override
   @NotNull
-  public List<XJLNAbstractMethod> getAbstractMethodList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNAbstractMethod.class);
+  public List<XJLNClassArgument> getClassArgumentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNClassArgument.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNDocs getDocs() {
+    return findChildByClass(XJLNDocs.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNGenerics getGenerics() {
+    return findChildByClass(XJLNGenerics.class);
   }
 
   @Override
   @NotNull
-  public List<XJLNField> getFieldList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNField.class);
+  public XJLNIdentifier getIdentifier() {
+    return findNotNullChildByClass(XJLNIdentifier.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNInit getInit() {
+    return findChildByClass(XJLNInit.class);
   }
 
   @Override
   @NotNull
-  public List<XJLNInit> getInitList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNInit.class);
-  }
-
-  @Override
-  @NotNull
-  public List<XJLNMethodDef> getMethodDefList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNMethodDef.class);
+  public List<XJLNObjectCreation> getObjectCreationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNObjectCreation.class);
   }
 
   @Override
   @NotNull
   public XJLNParameterList getParameterList() {
     return findNotNullChildByClass(XJLNParameterList.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

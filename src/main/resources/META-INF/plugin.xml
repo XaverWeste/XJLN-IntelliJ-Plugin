@@ -39,10 +39,5 @@
         <lang.commenter
                 language="XJLN"
                 implementationClass="com.github.xjln.xjlnintellijplugin.XJLNCommenter"/>
-        <annotator
-                language="XJLN"
-                implementationClass="com.github.xjln.xjlnintellijplugin.XJLNAnnotator"/>
-        <psi.referenceContributor language="XJLN"
-                                  implementation="com.github.xjln.xjlnintellijplugin.XJLNReferenceContributor"/>
     </extensions>
 </idea-plugin>

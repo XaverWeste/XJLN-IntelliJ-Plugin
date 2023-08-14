@@ -28,21 +28,21 @@ public class XJLNVarImpl extends ASTWrapperPsiElement implements XJLNVar {
   }
 
   @Override
-  @Nullable
+  @NotNull
   public XJLNCalc getCalc() {
-    return findChildByClass(XJLNCalc.class);
+    return findNotNullChildByClass(XJLNCalc.class);
+  }
+
+  @Override
+  @NotNull
+  public XJLNIdentifier getIdentifier() {
+    return findNotNullChildByClass(XJLNIdentifier.class);
   }
 
   @Override
   @Nullable
   public XJLNType getType() {
     return findChildByClass(XJLNType.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

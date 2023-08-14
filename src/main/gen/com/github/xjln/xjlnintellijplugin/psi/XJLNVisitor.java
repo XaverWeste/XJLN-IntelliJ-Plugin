@@ -11,7 +11,15 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitArrCreation(@NotNull XJLNArrCreation o) {
+  public void visitArgument(@NotNull XJLNArgument o) {
+    visitPsiElement(o);
+  }
+
+  public void visitArrayCreation(@NotNull XJLNArrayCreation o) {
+    visitPsiElement(o);
+  }
+
+  public void visitArrayType(@NotNull XJLNArrayType o) {
     visitPsiElement(o);
   }
 
@@ -27,7 +35,27 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitClassArgument(@NotNull XJLNClassArgument o) {
+    visitPsiElement(o);
+  }
+
+  public void visitClassMethod(@NotNull XJLNClassMethod o) {
+    visitPsiElement(o);
+  }
+
   public void visitClazz(@NotNull XJLNClazz o) {
+    visitPsiElement(o);
+  }
+
+  public void visitComplexType(@NotNull XJLNComplexType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitDocs(@NotNull XJLNDocs o) {
+    visitPsiElement(o);
+  }
+
+  public void visitElseStatement(@NotNull XJLNElseStatement o) {
     visitPsiElement(o);
   }
 
@@ -35,7 +63,27 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitEnumValue(@NotNull XJLNEnumValue o) {
+    visitPsiElement(o);
+  }
+
   public void visitField(@NotNull XJLNField o) {
+    visitPsiElement(o);
+  }
+
+  public void visitForStatement(@NotNull XJLNForStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitGenerics(@NotNull XJLNGenerics o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIdentifier(@NotNull XJLNIdentifier o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIfStatement(@NotNull XJLNIfStatement o) {
     visitPsiElement(o);
   }
 
@@ -43,7 +91,15 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitInteger(@NotNull XJLNInteger o) {
+    visitPsiElement(o);
+  }
+
   public void visitMain(@NotNull XJLNMain o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMethod(@NotNull XJLNMethod o) {
     visitPsiElement(o);
   }
 
@@ -55,27 +111,39 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitMethodDef(@NotNull XJLNMethodDef o) {
+  public void visitMethodEqual(@NotNull XJLNMethodEqual o) {
     visitPsiElement(o);
   }
 
-  public void visitMethodDefMain(@NotNull XJLNMethodDefMain o) {
+  public void visitMethodStatement(@NotNull XJLNMethodStatement o) {
     visitPsiElement(o);
   }
 
-  public void visitMethodDefMulti(@NotNull XJLNMethodDefMulti o) {
+  public void visitMethodSwitch(@NotNull XJLNMethodSwitch o) {
     visitPsiElement(o);
   }
 
-  public void visitMethodEquals(@NotNull XJLNMethodEquals o) {
+  public void visitMethodSwitchArg(@NotNull XJLNMethodSwitchArg o) {
     visitPsiElement(o);
   }
 
-  public void visitMethodShort(@NotNull XJLNMethodShort o) {
+  public void visitMultiUse(@NotNull XJLNMultiUse o) {
     visitPsiElement(o);
   }
 
-  public void visitObjCreation(@NotNull XJLNObjCreation o) {
+  public void visitNumber(@NotNull XJLNNumber o) {
+    visitPsiElement(o);
+  }
+
+  public void visitObjectCreation(@NotNull XJLNObjectCreation o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOperators(@NotNull XJLNOperators o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParameter(@NotNull XJLNParameter o) {
     visitPsiElement(o);
   }
 
@@ -83,11 +151,23 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitParameterListArguments(@NotNull XJLNParameterListArguments o) {
+  public void visitPath(@NotNull XJLNPath o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPrimitiveType(@NotNull XJLNPrimitiveType o) {
     visitPsiElement(o);
   }
 
   public void visitRecord(@NotNull XJLNRecord o) {
+    visitPsiElement(o);
+  }
+
+  public void visitReturnStatement(@NotNull XJLNReturnStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSingleUse(@NotNull XJLNSingleUse o) {
     visitPsiElement(o);
   }
 
@@ -103,11 +183,23 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitUseFromPath(@NotNull XJLNUseFromPath o) {
+    visitPsiElement(o);
+  }
+
+  public void visitValue(@NotNull XJLNValue o) {
+    visitPsiElement(o);
+  }
+
   public void visitVar(@NotNull XJLNVar o) {
     visitPsiElement(o);
   }
 
-  public void visitVarCall(@NotNull XJLNVarCall o) {
+  public void visitVarWithoutValue(@NotNull XJLNVarWithoutValue o) {
+    visitPsiElement(o);
+  }
+
+  public void visitWhileStatement(@NotNull XJLNWhileStatement o) {
     visitPsiElement(o);
   }
 

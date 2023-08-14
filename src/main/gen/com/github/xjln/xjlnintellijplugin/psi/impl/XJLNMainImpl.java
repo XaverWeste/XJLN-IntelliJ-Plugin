@@ -35,8 +35,8 @@ public class XJLNMainImpl extends ASTWrapperPsiElement implements XJLNMain {
 
   @Override
   @Nullable
-  public XJLNMethodShort getMethodShort() {
-    return findChildByClass(XJLNMethodShort.class);
+  public XJLNMethodStatement getMethodStatement() {
+    return findChildByClass(XJLNMethodStatement.class);
   }
 
 }

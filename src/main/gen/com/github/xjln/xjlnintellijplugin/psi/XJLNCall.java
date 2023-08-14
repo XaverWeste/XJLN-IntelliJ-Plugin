@@ -8,15 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface XJLNCall extends PsiElement {
 
   @Nullable
-  XJLNArrCreation getArrCreation();
+  XJLNArrayCreation getArrayCreation();
+
+  @NotNull
+  List<XJLNIdentifier> getIdentifierList();
 
   @NotNull
   List<XJLNMethodCall> getMethodCallList();
 
   @Nullable
-  XJLNObjCreation getObjCreation();
-
-  @NotNull
-  List<XJLNVarCall> getVarCallList();
+  XJLNObjectCreation getObjectCreation();
 
 }

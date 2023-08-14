@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface XJLNParameterList extends PsiElement {
 
   @NotNull
-  List<XJLNVar> getVarList();
+  List<XJLNParameter> getParameterList();
 
 }

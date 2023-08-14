@@ -7,10 +7,16 @@ import com.intellij.psi.PsiElement;
 
 public interface XJLNRecord extends PsiElement {
 
-  @NotNull
-  XJLNParameterList getParameterList();
+  @Nullable
+  XJLNDocs getDocs();
+
+  @Nullable
+  XJLNGenerics getGenerics();
 
   @NotNull
-  PsiElement getIdentifier();
+  XJLNIdentifier getIdentifier();
+
+  @NotNull
+  XJLNParameterList getParameterList();
 
 }

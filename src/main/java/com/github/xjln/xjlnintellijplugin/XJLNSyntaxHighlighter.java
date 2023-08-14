@@ -17,6 +17,7 @@ public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey COMMENT = TextAttributesKey.createTextAttributesKey("XJLN_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey IDENTIFIER = TextAttributesKey.createTextAttributesKey("XJLN_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER);
     public static final TextAttributesKey DOCUMENT = TextAttributesKey.createTextAttributesKey("XJLN_DOC", DefaultLanguageHighlighterColors.DOC_COMMENT);
+    public static final TextAttributesKey COMMA = TextAttributesKey.createTextAttributesKey("XJLN_COMMA", DefaultLanguageHighlighterColors.COMMA);
 
     private static final TextAttributesKey[] KEYWORDS = new TextAttributesKey[]{KEYWORD};
     private static final TextAttributesKey[] STRINGS = new TextAttributesKey[]{STRING};
@@ -24,9 +25,8 @@ public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] COMMENTS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] IDENTIFIERS = new TextAttributesKey[]{IDENTIFIER};
     private static final TextAttributesKey[] DOCUMENTS = new TextAttributesKey[]{DOCUMENT};
+    private static final TextAttributesKey[] COMMAS = new TextAttributesKey[]{COMMA};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
-
-    private final Set<IElementType> keywordTypes = Set.of(XJLNTypes.PRIMITIVETYPE, XJLNTypes.KEYWORD_AS, XJLNTypes.KEYWORD_USE, XJLNTypes.KEYWORD_ABSTRACT, XJLNTypes.KEYWORD_RETURN, XJLNTypes.KEYWORD_END, XJLNTypes.KEYWORD_CONST, XJLNTypes.KEYWORD_FROM, XJLNTypes.KEYWORD_INNER, XJLNTypes.KEYWORD_VAR, XJLNTypes.KEYWORD_DEF, XJLNTypes.COMMA);
 
     @Override
     public @NotNull Lexer getHighlightingLexer() {
@@ -35,20 +35,23 @@ public class XJLNSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
-        if(tokenType.equals(XJLNTypes.KEYWORD_MAIN) || tokenType.equals(XJLNTypes.KEYWORD_INIT))
+        System.out.println(tokenType.toString());
+        if(tokenType == XJLNTypes.KEYWORD_MAIN || tokenType == XJLNTypes.KEYWORD_INIT)
             return new TextAttributesKey[]{TextAttributesKey.createTextAttributesKey("XJLN_MAIN", DefaultLanguageHighlighterColors.CONSTANT)};
-        if(keywordTypes.contains(tokenType))
+        if(tokenType.toString().startsWith("KEYWORD_"))
             return KEYWORDS;
-        if(tokenType.equals(XJLNTypes.STRING) || tokenType.equals(XJLNTypes.CHAR))
-            return STRINGS;
-        if(tokenType.equals(XJLNTypes.DIGITS) || tokenType.equals(XJLNTypes.DIGITS_FLOATING_POINT))
-            return NUMBERS;
-        if(tokenType.equals(XJLNTypes.COMMENT))
+        if(tokenType == XJLNTypes.COMMA)
+            return COMMAS;
+        if(tokenType == XJLNTypes.COMMENT)
             return COMMENTS;
-        if(tokenType.equals(XJLNTypes.DOC))
+        if(tokenType == XJLNTypes.DOCS)
             return DOCUMENTS;
-        if(tokenType.equals(XJLNTypes.IDENTIFIER))
+        if(tokenType == XJLNTypes.STRING || tokenType == XJLNTypes.CHAR)
+            return STRINGS;
+        if(tokenType == XJLNTypes.IDENTIFIER )
             return IDENTIFIERS;
+        if(tokenType == XJLNTypes.INTEGER || tokenType == XJLNTypes.NUMBER)
+            return NUMBERS;
         return EMPTY_KEYS;
     }
 }

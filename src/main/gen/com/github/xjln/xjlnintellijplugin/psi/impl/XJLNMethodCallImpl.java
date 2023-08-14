@@ -29,14 +29,20 @@ public class XJLNMethodCallImpl extends ASTWrapperPsiElement implements XJLNMeth
 
   @Override
   @NotNull
-  public XJLNParameterListArguments getParameterListArguments() {
-    return findNotNullChildByClass(XJLNParameterListArguments.class);
+  public List<XJLNCalc> getCalcList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNCalc.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNGenerics getGenerics() {
+    return findChildByClass(XJLNGenerics.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  public XJLNIdentifier getIdentifier() {
+    return findNotNullChildByClass(XJLNIdentifier.class);
   }
 
 }

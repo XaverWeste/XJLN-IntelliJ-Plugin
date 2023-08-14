@@ -11,9 +11,6 @@ public interface XJLNInit extends PsiElement {
   XJLNMethodCode getMethodCode();
 
   @Nullable
-  XJLNMethodShort getMethodShort();
-
-  @NotNull
-  PsiElement getNewLine();
+  XJLNMethodStatement getMethodStatement();
 
 }

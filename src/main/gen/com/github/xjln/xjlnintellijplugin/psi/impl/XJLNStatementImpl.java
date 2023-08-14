@@ -29,20 +29,38 @@ public class XJLNStatementImpl extends ASTWrapperPsiElement implements XJLNState
 
   @Override
   @Nullable
-  public XJLNCalc getCalc() {
-    return findChildByClass(XJLNCalc.class);
+  public XJLNForStatement getForStatement() {
+    return findChildByClass(XJLNForStatement.class);
   }
 
   @Override
   @Nullable
-  public XJLNCall getCall() {
-    return findChildByClass(XJLNCall.class);
+  public XJLNIfStatement getIfStatement() {
+    return findChildByClass(XJLNIfStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNReturnStatement getReturnStatement() {
+    return findChildByClass(XJLNReturnStatement.class);
   }
 
   @Override
   @Nullable
   public XJLNVar getVar() {
     return findChildByClass(XJLNVar.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNWhileStatement getWhileStatement() {
+    return findChildByClass(XJLNWhileStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getComment() {
+    return findChildByType(COMMENT);
   }
 
 }

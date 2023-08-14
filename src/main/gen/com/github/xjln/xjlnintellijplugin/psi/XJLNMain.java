@@ -11,6 +11,6 @@ public interface XJLNMain extends PsiElement {
   XJLNMethodCode getMethodCode();
 
   @Nullable
-  XJLNMethodShort getMethodShort();
+  XJLNMethodStatement getMethodStatement();
 
 }

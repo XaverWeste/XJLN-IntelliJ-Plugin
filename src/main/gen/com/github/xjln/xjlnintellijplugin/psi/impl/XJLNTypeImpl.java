@@ -29,14 +29,20 @@ public class XJLNTypeImpl extends ASTWrapperPsiElement implements XJLNType {
 
   @Override
   @Nullable
-  public PsiElement getIdentifier() {
-    return findChildByType(IDENTIFIER);
+  public XJLNArrayType getArrayType() {
+    return findChildByClass(XJLNArrayType.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getPrimitivetype() {
-    return findChildByType(PRIMITIVETYPE);
+  public XJLNComplexType getComplexType() {
+    return findChildByClass(XJLNComplexType.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNPrimitiveType getPrimitiveType() {
+    return findChildByClass(XJLNPrimitiveType.class);
   }
 
 }

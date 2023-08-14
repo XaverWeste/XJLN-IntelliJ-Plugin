@@ -27,4 +27,22 @@ public class XJLNEnumImpl extends ASTWrapperPsiElement implements XJLNEnum {
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public XJLNDocs getDocs() {
+    return findChildByClass(XJLNDocs.class);
+  }
+
+  @Override
+  @NotNull
+  public XJLNEnumValue getEnumValue() {
+    return findNotNullChildByClass(XJLNEnumValue.class);
+  }
+
+  @Override
+  @NotNull
+  public List<XJLNIdentifier> getIdentifierList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNIdentifier.class);
+  }
+
 }

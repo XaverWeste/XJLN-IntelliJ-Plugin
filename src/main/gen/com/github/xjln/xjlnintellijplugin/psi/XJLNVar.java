@@ -7,13 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface XJLNVar extends PsiElement {
 
-  @Nullable
+  @NotNull
   XJLNCalc getCalc();
+
+  @NotNull
+  XJLNIdentifier getIdentifier();
 
   @Nullable
   XJLNType getType();
-
-  @NotNull
-  PsiElement getIdentifier();
 
 }

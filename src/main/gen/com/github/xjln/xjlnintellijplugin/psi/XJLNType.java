@@ -8,9 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface XJLNType extends PsiElement {
 
   @Nullable
-  PsiElement getIdentifier();
+  XJLNArrayType getArrayType();
 
   @Nullable
-  PsiElement getPrimitivetype();
+  XJLNComplexType getComplexType();
+
+  @Nullable
+  XJLNPrimitiveType getPrimitiveType();
 
 }

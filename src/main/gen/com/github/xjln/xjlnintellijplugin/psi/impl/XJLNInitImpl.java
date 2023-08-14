@@ -35,14 +35,8 @@ public class XJLNInitImpl extends ASTWrapperPsiElement implements XJLNInit {
 
   @Override
   @Nullable
-  public XJLNMethodShort getMethodShort() {
-    return findChildByClass(XJLNMethodShort.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getNewLine() {
-    return findNotNullChildByType(NEW_LINE);
+  public XJLNMethodStatement getMethodStatement() {
+    return findChildByClass(XJLNMethodStatement.class);
   }
 
 }

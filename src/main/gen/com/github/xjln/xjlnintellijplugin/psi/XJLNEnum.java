@@ -7,4 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface XJLNEnum extends PsiElement {
 
+  @Nullable
+  XJLNDocs getDocs();
+
+  @NotNull
+  XJLNEnumValue getEnumValue();
+
+  @NotNull
+  List<XJLNIdentifier> getIdentifierList();
+
 }

@@ -7,7 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface XJLNUse extends PsiElement {
 
-  @NotNull
-  PsiElement getPath();
+  @Nullable
+  XJLNMultiUse getMultiUse();
+
+  @Nullable
+  XJLNSingleUse getSingleUse();
+
+  @Nullable
+  XJLNUseFromPath getUseFromPath();
 
 }

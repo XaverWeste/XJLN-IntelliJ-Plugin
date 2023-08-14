@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface XJLNField extends PsiElement {
 
+  @Nullable
+  XJLNDocs getDocs();
+
   @NotNull
   XJLNVar getVar();
 

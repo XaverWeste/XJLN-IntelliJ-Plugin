@@ -8,9 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface XJLNMethodCall extends PsiElement {
 
   @NotNull
-  XJLNParameterListArguments getParameterListArguments();
+  List<XJLNCalc> getCalcList();
+
+  @Nullable
+  XJLNGenerics getGenerics();
 
   @NotNull
-  PsiElement getIdentifier();
+  XJLNIdentifier getIdentifier();
 
 }

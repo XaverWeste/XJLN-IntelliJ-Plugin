@@ -28,9 +28,21 @@ public class XJLNUseImpl extends ASTWrapperPsiElement implements XJLNUse {
   }
 
   @Override
-  @NotNull
-  public PsiElement getPath() {
-    return findNotNullChildByType(PATH);
+  @Nullable
+  public XJLNMultiUse getMultiUse() {
+    return findChildByClass(XJLNMultiUse.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNSingleUse getSingleUse() {
+    return findChildByClass(XJLNSingleUse.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNUseFromPath getUseFromPath() {
+    return findChildByClass(XJLNUseFromPath.class);
   }
 
 }
