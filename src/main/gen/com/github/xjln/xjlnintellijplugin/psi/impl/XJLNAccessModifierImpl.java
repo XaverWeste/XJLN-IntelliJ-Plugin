@@ -11,26 +11,20 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.xjln.xjlnintellijplugin.psi.*;
 
-public class XJLNParameterListImpl extends ASTWrapperPsiElement implements XJLNParameterList {
+public class XJLNAccessModifierImpl extends ASTWrapperPsiElement implements XJLNAccessModifier {
 
-  public XJLNParameterListImpl(@NotNull ASTNode node) {
+  public XJLNAccessModifierImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull XJLNVisitor visitor) {
-    visitor.visitParameterList(this);
+    visitor.visitAccessModifier(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof XJLNVisitor) accept((XJLNVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<XJLNParameter> getParameterList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNParameter.class);
   }
 
 }

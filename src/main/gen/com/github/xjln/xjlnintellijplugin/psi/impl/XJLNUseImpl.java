@@ -39,10 +39,4 @@ public class XJLNUseImpl extends ASTWrapperPsiElement implements XJLNUse {
     return findChildByClass(XJLNSingleUse.class);
   }
 
-  @Override
-  @Nullable
-  public XJLNUseFromPath getUseFromPath() {
-    return findChildByClass(XJLNUseFromPath.class);
-  }
-
 }

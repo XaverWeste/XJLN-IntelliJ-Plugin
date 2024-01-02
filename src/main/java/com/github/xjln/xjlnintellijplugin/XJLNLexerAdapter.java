@@ -5,6 +5,6 @@ import com.intellij.lexer.FlexAdapter;
 public class XJLNLexerAdapter extends FlexAdapter {
 
     public XJLNLexerAdapter(){
-        super(new _XJLNLexer(null));
+        super(new __XJLNLexer(null));
     }
 }

@@ -29,38 +29,32 @@ public class XJLNClazzImpl extends ASTWrapperPsiElement implements XJLNClazz {
 
   @Override
   @NotNull
-  public List<XJLNClassArgument> getClassArgumentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNClassArgument.class);
+  public List<XJLNAbstractMethod> getAbstractMethodList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNAbstractMethod.class);
   }
 
   @Override
   @Nullable
-  public XJLNDocs getDocs() {
-    return findChildByClass(XJLNDocs.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNGenerics getGenerics() {
-    return findChildByClass(XJLNGenerics.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNInit getInit() {
-    return findChildByClass(XJLNInit.class);
+  public XJLNAccessModifier getAccessModifier() {
+    return findChildByClass(XJLNAccessModifier.class);
   }
 
   @Override
   @NotNull
-  public List<XJLNObjectCreation> getObjectCreationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNObjectCreation.class);
+  public List<XJLNField> getFieldList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNField.class);
   }
 
   @Override
   @NotNull
-  public XJLNParameterList getParameterList() {
-    return findNotNullChildByClass(XJLNParameterList.class);
+  public List<XJLNMethod> getMethodList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNMethod.class);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getIdentifier() {
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

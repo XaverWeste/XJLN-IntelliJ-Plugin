@@ -8,21 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface XJLNAbstractMethod extends PsiElement {
 
   @Nullable
-  XJLNDocs getDocs();
-
-  @Nullable
-  XJLNGenerics getGenerics();
+  XJLNAccessModifier getAccessModifier();
 
   @NotNull
-  XJLNParameterList getParameterList();
-
-  @Nullable
-  XJLNType getType();
-
-  @Nullable
   PsiElement getIdentifier();
-
-  @Nullable
-  PsiElement getOperator();
 
 }

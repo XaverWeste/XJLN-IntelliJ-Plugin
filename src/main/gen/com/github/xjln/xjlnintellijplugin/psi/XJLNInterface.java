@@ -5,19 +5,13 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface XJLNForStatement extends PsiElement {
+public interface XJLNInterface extends PsiElement {
 
   @NotNull
-  XJLNCalc getCalc();
+  List<XJLNAbstractMethod> getAbstractMethodList();
 
   @Nullable
-  XJLNMethodCode getMethodCode();
-
-  @Nullable
-  XJLNMethodStatement getMethodStatement();
-
-  @Nullable
-  XJLNType getType();
+  XJLNAccessModifier getAccessModifier();
 
   @NotNull
   PsiElement getIdentifier();

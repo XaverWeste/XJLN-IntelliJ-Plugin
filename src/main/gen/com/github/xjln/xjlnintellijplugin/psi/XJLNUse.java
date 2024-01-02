@@ -13,7 +13,4 @@ public interface XJLNUse extends PsiElement {
   @Nullable
   XJLNSingleUse getSingleUse();
 
-  @Nullable
-  XJLNUseFromPath getUseFromPath();
-
 }

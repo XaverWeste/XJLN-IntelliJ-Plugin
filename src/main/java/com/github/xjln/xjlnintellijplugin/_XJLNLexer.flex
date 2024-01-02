@@ -10,71 +10,71 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
 %%
 
 %{
-  public _XJLNLexer() {
+  public __XJLNLexer() {
     this((java.io.Reader)null);
   }
 %}
 
 %public
-%class _XJLNLexer
+%class __XJLNLexer
 %implements FlexLexer
 %function advance
 %type IElementType
 %unicode
 
 EOL=\R
-WHITE_SPACE=[\t\ ]+
+WHITE_SPACE=\s+
 
 NEW_LINE=\n
 IDENTIFIER=[a-zA-Z][a-zA-Z0-9]*
-INTEGER=[0-9]+
-NUMBER=[0-9+]\.[0-9]+
+NUMBER=[0-9]+\.[0-9]+[idslf]?
 OPERATOR=[-+*/%&|<>=!\^]+
 CHAR='.'
-DOC=##[^\n]*
-COMMENT=#[^[#\n]][^\n]*
+COMMENT=#[^[#\n]]*#?
 STRING=\"[^\"]*\"
 
 %%
 <YYINITIAL> {
-  {WHITE_SPACE}      { return WHITE_SPACE; }
+  {WHITE_SPACE}       { return WHITE_SPACE; }
 
-  "use"              { return KEYWORD_USE; }
-  "from"             { return KEYWORD_FROM; }
-  "as"               { return KEYWORD_AS; }
-  "def"              { return KEYWORD_DEF; }
-  "abstract"         { return KEYWORD_ABSTRACT; }
-  "inner"            { return KEYWORD_INNER; }
-  "const"            { return KEYWORD_CONST; }
-  "var"              { return KEYWORD_VAR; }
-  "main"             { return KEYWORD_MAIN; }
-  "init"             { return KEYWORD_INIT; }
-  "return"           { return KEYWORD_RETURN; }
-  "end"              { return KEYWORD_END; }
-  "if"               { return KEYWORD_IF; }
-  "else"             { return KEYWORD_ELSE; }
-  "while"            { return KEYWORD_WHILE; }
-  "for"              { return KEYWORD_FOR; }
-  "in"               { return KEYWORD_IN; }
-  "int"              { return KEYWORD_INT; }
-  "double"           { return KEYWORD_DOUBLE; }
-  "float"            { return KEYWORD_FLOAT; }
-  "long"             { return KEYWORD_LONG; }
-  "short"            { return KEYWORD_SHORT; }
-  "boolean"          { return KEYWORD_BOOLEAN; }
-  "char"             { return KEYWORD_CHAR; }
-  "byte"             { return KEYWORD_BYTE; }
-  ","                { return COMMA; }
+  "use"               { return KEYWORD_USE; }
+  "from"              { return KEYWORD_FROM; }
+  "as"                { return KEYWORD_AS; }
+  "def"               { return KEYWORD_DEF; }
+  "public"            { return KEYWORD_PUBLIC; }
+  "protected"         { return KEYWORD_PROTECTED; }
+  "private"           { return KEYWORD_PRIVATE; }
+  "static"            { return KEYWORD_STATIC; }
+  "abstract"          { return KEYWORD_ABSTRACT; }
+  "final"             { return KEYWORD_FINAL; }
+  "synchronised"      { return KEYWORD_SYNCHRONISED; }
+  "class"             { return KEYWORD_CLASS; }
+  "data"              { return KEYWORD_DATA; }
+  "type"              { return KEYWORD_TYPE; }
+  "interface"         { return KEYWORD_INTERFACE; }
+  "const"             { return KEYWORD_CONST; }
+  "init"              { return KEYWORD_INIT; }
+  "return"            { return KEYWORD_RETURN; }
+  "end"               { return KEYWORD_END; }
+  "if"                { return KEYWORD_IF; }
+  "else"              { return KEYWORD_ELSE; }
+  "while"             { return KEYWORD_WHILE; }
+  "int"               { return KEYWORD_INT; }
+  "double"            { return KEYWORD_DOUBLE; }
+  "float"             { return KEYWORD_FLOAT; }
+  "long"              { return KEYWORD_LONG; }
+  "short"             { return KEYWORD_SHORT; }
+  "boolean"           { return KEYWORD_BOOLEAN; }
+  "char"              { return KEYWORD_CHAR; }
+  "byte"              { return KEYWORD_BYTE; }
 
-  {NEW_LINE}         { return NEW_LINE; }
-  {IDENTIFIER}       { return IDENTIFIER; }
-  {INTEGER}          { return INTEGER; }
-  {NUMBER}           { return NUMBER; }
-  {OPERATOR}         { return OPERATOR; }
-  {CHAR}             { return CHAR; }
-  {DOC}              { return DOC; }
-  {COMMENT}          { return COMMENT; }
-  {STRING}           { return STRING; }
+  {NEW_LINE}          { return NEW_LINE; }
+  {IDENTIFIER}        { return IDENTIFIER; }
+  {NUMBER}            { return NUMBER; }
+  {OPERATOR}          { return OPERATOR; }
+  {CHAR}              { return CHAR; }
+  {COMMENT}           { return COMMENT; }
+  {STRING}            { return STRING; }
 
 }
 

@@ -28,21 +28,9 @@ public class XJLNTypeImpl extends ASTWrapperPsiElement implements XJLNType {
   }
 
   @Override
-  @Nullable
-  public XJLNArrayType getArrayType() {
-    return findChildByClass(XJLNArrayType.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNComplexType getComplexType() {
-    return findChildByClass(XJLNComplexType.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNPrimitiveType getPrimitiveType() {
-    return findChildByClass(XJLNPrimitiveType.class);
+  @NotNull
+  public XJLNDataTypeDef getDataTypeDef() {
+    return findNotNullChildByClass(XJLNDataTypeDef.class);
   }
 
 }

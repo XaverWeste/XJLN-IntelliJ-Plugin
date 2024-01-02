@@ -19,7 +19,6 @@ public class XJLNColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("String", XJLNSyntaxHighlighter.STRING),
             new AttributesDescriptor("Number", XJLNSyntaxHighlighter.NUMBER),
             new AttributesDescriptor("Identifier", XJLNSyntaxHighlighter.IDENTIFIER),
-            new AttributesDescriptor("Document", XJLNSyntaxHighlighter.DOCUMENT)
     };
 
     @Nullable
@@ -37,7 +36,7 @@ public class XJLNColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDemoText() {
-        return "use java/lang/System as system\n\nmain -> system:out:println(\"Hello World!\")\n\n#calculates the fibonacci numbers\ndef fib(int n) :: int\n    if (n == 0) | (n == 1) -> return 1\n    return fib(n - 1) + fib(n - 2)\n";
+        return "";//"use java/lang/System as system\n\nmain -> system:out:println(\"Hello World!\")\n\n#calculates the fibonacci numbers\ndef fib(int n) :: int\n    if (n == 0) | (n == 1) -> return 1\n    return fib(n - 1) + fib(n - 2)\n";
     }
 
     @Nullable

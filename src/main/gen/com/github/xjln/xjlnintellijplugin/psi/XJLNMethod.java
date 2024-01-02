@@ -8,30 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface XJLNMethod extends PsiElement {
 
   @Nullable
-  XJLNDocs getDocs();
-
-  @Nullable
-  XJLNGenerics getGenerics();
-
-  @Nullable
-  XJLNMethodCode getMethodCode();
-
-  @Nullable
-  XJLNMethodEqual getMethodEqual();
-
-  @Nullable
-  XJLNMethodStatement getMethodStatement();
-
-  @Nullable
-  XJLNMethodSwitch getMethodSwitch();
+  XJLNAccessModifier getAccessModifier();
 
   @NotNull
-  XJLNParameterList getParameterList();
-
-  @Nullable
-  XJLNType getType();
+  List<XJLNDatatype> getDatatypeList();
 
   @NotNull
-  PsiElement getIdentifier();
+  PsiElement getNewLine();
 
 }

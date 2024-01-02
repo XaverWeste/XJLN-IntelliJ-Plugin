@@ -8,21 +8,18 @@ import com.intellij.psi.PsiElement;
 public interface XJLNClazz extends PsiElement {
 
   @NotNull
-  List<XJLNClassArgument> getClassArgumentList();
+  List<XJLNAbstractMethod> getAbstractMethodList();
 
   @Nullable
-  XJLNDocs getDocs();
-
-  @Nullable
-  XJLNGenerics getGenerics();
-
-  @Nullable
-  XJLNInit getInit();
+  XJLNAccessModifier getAccessModifier();
 
   @NotNull
-  List<XJLNObjectCreation> getObjectCreationList();
+  List<XJLNField> getFieldList();
 
   @NotNull
-  XJLNParameterList getParameterList();
+  List<XJLNMethod> getMethodList();
+
+  @NotNull
+  PsiElement getIdentifier();
 
 }

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class XJLNUtil {
 
-    public static List<XJLNEnum> findEnums(Project project, String key) {
+    /*public static List<XJLNEnum> findEnums(Project project, String key) {
         List<XJLNEnum> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
                 FileTypeIndex.getFiles(XJLNFileType.INSTANCE, GlobalSearchScope.allScope(project));
@@ -47,5 +47,5 @@ public class XJLNUtil {
             }
         }
         return result;
-    }
+    }*/
 }

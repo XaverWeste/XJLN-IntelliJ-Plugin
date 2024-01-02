@@ -33,10 +33,4 @@ public class XJLNSingleUseImpl extends ASTWrapperPsiElement implements XJLNSingl
     return findNotNullChildByClass(XJLNPath.class);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
-  }
-
 }

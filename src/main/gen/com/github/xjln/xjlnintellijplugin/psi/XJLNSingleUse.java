@@ -10,7 +10,4 @@ public interface XJLNSingleUse extends PsiElement {
   @NotNull
   XJLNPath getPath();
 
-  @NotNull
-  PsiElement getIdentifier();
-
 }

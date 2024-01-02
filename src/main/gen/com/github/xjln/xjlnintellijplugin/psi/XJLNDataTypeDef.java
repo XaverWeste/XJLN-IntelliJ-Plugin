@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface XJLNArrayType extends PsiElement {
+public interface XJLNDataTypeDef extends PsiElement {
 
-  @NotNull
-  XJLNType getType();
+  @Nullable
+  XJLNAccessModifier getAccessModifier();
 
 }

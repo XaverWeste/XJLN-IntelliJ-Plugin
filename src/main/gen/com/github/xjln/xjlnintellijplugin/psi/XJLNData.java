@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface XJLNArrayCreation extends PsiElement {
+public interface XJLNData extends PsiElement {
 
   @NotNull
-  List<XJLNCalc> getCalcList();
+  XJLNDataTypeDef getDataTypeDef();
 
-  @Nullable
-  XJLNType getType();
+  @NotNull
+  List<XJLNDatatype> getDatatypeList();
 
 }

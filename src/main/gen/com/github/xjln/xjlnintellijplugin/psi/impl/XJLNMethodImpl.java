@@ -29,56 +29,20 @@ public class XJLNMethodImpl extends ASTWrapperPsiElement implements XJLNMethod {
 
   @Override
   @Nullable
-  public XJLNDocs getDocs() {
-    return findChildByClass(XJLNDocs.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNGenerics getGenerics() {
-    return findChildByClass(XJLNGenerics.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNMethodCode getMethodCode() {
-    return findChildByClass(XJLNMethodCode.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNMethodEqual getMethodEqual() {
-    return findChildByClass(XJLNMethodEqual.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNMethodStatement getMethodStatement() {
-    return findChildByClass(XJLNMethodStatement.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNMethodSwitch getMethodSwitch() {
-    return findChildByClass(XJLNMethodSwitch.class);
+  public XJLNAccessModifier getAccessModifier() {
+    return findChildByClass(XJLNAccessModifier.class);
   }
 
   @Override
   @NotNull
-  public XJLNParameterList getParameterList() {
-    return findNotNullChildByClass(XJLNParameterList.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNType getType() {
-    return findChildByClass(XJLNType.class);
+  public List<XJLNDatatype> getDatatypeList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNDatatype.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  public PsiElement getNewLine() {
+    return findNotNullChildByType(NEW_LINE);
   }
 
 }
