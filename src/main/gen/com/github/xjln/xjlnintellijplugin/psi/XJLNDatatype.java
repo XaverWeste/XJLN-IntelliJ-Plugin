@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface XJLNDatatype extends PsiElement {
 
-  @NotNull
+  @Nullable
   PsiElement getIdentifier();
 
 }

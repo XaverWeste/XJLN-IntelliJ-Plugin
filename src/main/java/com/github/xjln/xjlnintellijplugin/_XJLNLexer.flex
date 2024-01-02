@@ -23,11 +23,11 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
 %unicode
 
 EOL=\R
-WHITE_SPACE=\s+
+WHITE_SPACE=[\t\ ]+
 
 NEW_LINE=\n
 IDENTIFIER=[a-zA-Z][a-zA-Z0-9]*
-NUMBER=[0-9]+\.[0-9]+[idslf]?
+NUMBER=[0-9]+\.?[0-9]*[idslf]?
 OPERATOR=[-+*/%&|<>=!\^]+
 CHAR='.'
 COMMENT=#[^[#\n]]*#?

@@ -48,7 +48,7 @@
 
     NEW_LINE = "regexp:\n"
     IDENTIFIER = "regexp:[a-zA-Z][a-zA-Z0-9]*"
-    NUMBER = "regexp:[0-9]+\.[0-9]+[idslf]?"
+    NUMBER = "regexp:[0-9]+\.[0-9]*[idslf]?"
     OPERATOR = "regexp:[-+*/%&|<>=!^]+"
     CHAR = "regexp:'.'"
     COMMENT = "regexp:#[^[#\n]]*#?"
@@ -56,7 +56,9 @@
   ]
 }
 
-xjlnFile ::= ((use | data | type | interface | clazz | method | field | COMMENT)? NEW_LINE)* (use | data | type | interface | clazz | method | field | COMMENT)?
+xjlnFile ::= argument? (NEW_LINE argument?)*
+
+argument ::= use | field | data | type | interface | clazz | method | COMMENT
 
 use ::= KEYWORD_USE (single_use | multi_use)
 single_use ::= ((IDENTIFIER KEYWORD_FROM path) | path) (KEYWORD_AS IDENTIFIER)?
@@ -70,11 +72,11 @@ clazz ::= KEYWORD_DEF access_modifier? KEYWORD_CLASS (KEYWORD_ABSTRACT | KEYWORD
 
 data_type_def ::= KEYWORD_DEF access_modifier? KEYWORD_FINAL?
 
-field ::= access_modifier? (KEYWORD_STATIC)* type IDENTIFIER ("=" value)?
+field ::= access_modifier? KEYWORD_STATIC? datatype IDENTIFIER ("=" value)?
 abstract_method ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT IDENTIFIER
 method ::= KEYWORD_DEF access_modifier? (KEYWORD_STATIC | KEYWORD_SYNCHRONISED)* IDENTIFIER "(" (datatype IDENTIFIER ("," datatype IDENTIFIER)*)? ")" ("::" datatype)? NEW_LINE KEYWORD_END
 
 access_modifier ::= KEYWORD_PUBLIC | KEYWORD_PROTECTED | KEYWORD_PRIVATE
 
-datatype ::= IDENTIFIER
+datatype ::= IDENTIFIER | KEYWORD_INT | KEYWORD_SHORT | KEYWORD_LONG | KEYWORD_FLOAT | KEYWORD_DOUBLE | KEYWORD_BOOLEAN | KEYWORD_CHAR | KEYWORD_BYTE
 value ::= CHAR | NUMBER | STRING

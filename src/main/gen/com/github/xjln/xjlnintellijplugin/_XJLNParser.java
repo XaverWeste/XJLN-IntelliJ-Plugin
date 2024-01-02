@@ -4,8 +4,9 @@ package com.github.xjln.xjlnintellijplugin;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
 import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
 //import static com.github.xjln.xjlnintellijplugin.XJLNParserUtil.*;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
+
 import com.intellij.psi.tree.IElementType;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.TokenSet;
@@ -66,6 +67,24 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, KEYWORD_PUBLIC);
     if (!r) r = consumeToken(b, KEYWORD_PROTECTED);
     if (!r) r = consumeToken(b, KEYWORD_PRIVATE);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // use | field | data | type | interface | clazz | method | COMMENT
+  public static boolean argument(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "argument")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ARGUMENT, "<argument>");
+    r = use(b, l + 1);
+    if (!r) r = field(b, l + 1);
+    if (!r) r = data(b, l + 1);
+    if (!r) r = type(b, l + 1);
+    if (!r) r = interface_$(b, l + 1);
+    if (!r) r = clazz(b, l + 1);
+    if (!r) r = method(b, l + 1);
+    if (!r) r = consumeToken(b, COMMENT);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -252,26 +271,33 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER
+  // IDENTIFIER | KEYWORD_INT | KEYWORD_SHORT | KEYWORD_LONG | KEYWORD_FLOAT | KEYWORD_DOUBLE | KEYWORD_BOOLEAN | KEYWORD_CHAR | KEYWORD_BYTE
   public static boolean datatype(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "datatype")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, DATATYPE, "<datatype>");
     r = consumeToken(b, IDENTIFIER);
-    exit_section_(b, m, DATATYPE, r);
+    if (!r) r = consumeToken(b, KEYWORD_INT);
+    if (!r) r = consumeToken(b, KEYWORD_SHORT);
+    if (!r) r = consumeToken(b, KEYWORD_LONG);
+    if (!r) r = consumeToken(b, KEYWORD_FLOAT);
+    if (!r) r = consumeToken(b, KEYWORD_DOUBLE);
+    if (!r) r = consumeToken(b, KEYWORD_BOOLEAN);
+    if (!r) r = consumeToken(b, KEYWORD_CHAR);
+    if (!r) r = consumeToken(b, KEYWORD_BYTE);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // access_modifier? (KEYWORD_STATIC)* type IDENTIFIER ("=" value)?
+  // access_modifier? KEYWORD_STATIC? datatype IDENTIFIER ("=" value)?
   public static boolean field(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "field")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, FIELD, "<field>");
     r = field_0(b, l + 1);
     r = r && field_1(b, l + 1);
-    r = r && type(b, l + 1);
+    r = r && datatype(b, l + 1);
     r = r && consumeToken(b, IDENTIFIER);
     r = r && field_4(b, l + 1);
     exit_section_(b, l, m, r, false, null);
@@ -285,14 +311,10 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (KEYWORD_STATIC)*
+  // KEYWORD_STATIC?
   private static boolean field_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "field_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!consumeToken(b, KEYWORD_STATIC)) break;
-      if (!empty_element_parsed_guard_(b, "field_1", c)) break;
-    }
+    consumeToken(b, KEYWORD_STATIC);
     return true;
   }
 
@@ -690,7 +712,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ((use | data | type | interface | clazz | method | field | COMMENT)? NEW_LINE)* (use | data | type | interface | clazz | method | field | COMMENT)?
+  // argument? (NEW_LINE argument?)*
   static boolean xjlnFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile")) return false;
     boolean r;
@@ -701,70 +723,40 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ((use | data | type | interface | clazz | method | field | COMMENT)? NEW_LINE)*
+  // argument?
   private static boolean xjlnFile_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "xjlnFile_0")) return false;
+    argument(b, l + 1);
+    return true;
+  }
+
+  // (NEW_LINE argument?)*
+  private static boolean xjlnFile_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!xjlnFile_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "xjlnFile_0", c)) break;
+      if (!xjlnFile_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "xjlnFile_1", c)) break;
     }
     return true;
   }
 
-  // (use | data | type | interface | clazz | method | field | COMMENT)? NEW_LINE
-  private static boolean xjlnFile_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "xjlnFile_0_0")) return false;
+  // NEW_LINE argument?
+  private static boolean xjlnFile_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = xjlnFile_0_0_0(b, l + 1);
-    r = r && consumeToken(b, NEW_LINE);
+    r = consumeToken(b, NEW_LINE);
+    r = r && xjlnFile_1_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (use | data | type | interface | clazz | method | field | COMMENT)?
-  private static boolean xjlnFile_0_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "xjlnFile_0_0_0")) return false;
-    xjlnFile_0_0_0_0(b, l + 1);
+  // argument?
+  private static boolean xjlnFile_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "xjlnFile_1_0_1")) return false;
+    argument(b, l + 1);
     return true;
-  }
-
-  // use | data | type | interface | clazz | method | field | COMMENT
-  private static boolean xjlnFile_0_0_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "xjlnFile_0_0_0_0")) return false;
-    boolean r;
-    r = use(b, l + 1);
-    if (!r) r = data(b, l + 1);
-    if (!r) r = type(b, l + 1);
-    if (!r) r = interface_$(b, l + 1);
-    if (!r) r = clazz(b, l + 1);
-    if (!r) r = method(b, l + 1);
-    if (!r) r = field(b, l + 1);
-    if (!r) r = consumeToken(b, COMMENT);
-    return r;
-  }
-
-  // (use | data | type | interface | clazz | method | field | COMMENT)?
-  private static boolean xjlnFile_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "xjlnFile_1")) return false;
-    xjlnFile_1_0(b, l + 1);
-    return true;
-  }
-
-  // use | data | type | interface | clazz | method | field | COMMENT
-  private static boolean xjlnFile_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "xjlnFile_1_0")) return false;
-    boolean r;
-    r = use(b, l + 1);
-    if (!r) r = data(b, l + 1);
-    if (!r) r = type(b, l + 1);
-    if (!r) r = interface_$(b, l + 1);
-    if (!r) r = clazz(b, l + 1);
-    if (!r) r = method(b, l + 1);
-    if (!r) r = field(b, l + 1);
-    if (!r) r = consumeToken(b, COMMENT);
-    return r;
   }
 
 }

@@ -10,6 +10,7 @@ public interface XJLNTypes {
 
   IElementType ABSTRACT_METHOD = new XJLNElementType("ABSTRACT_METHOD");
   IElementType ACCESS_MODIFIER = new XJLNElementType("ACCESS_MODIFIER");
+  IElementType ARGUMENT = new XJLNElementType("ARGUMENT");
   IElementType CLAZZ = new XJLNElementType("CLAZZ");
   IElementType DATA = new XJLNElementType("DATA");
   IElementType DATATYPE = new XJLNElementType("DATATYPE");
@@ -70,6 +71,9 @@ public interface XJLNTypes {
       }
       else if (type == ACCESS_MODIFIER) {
         return new XJLNAccessModifierImpl(node);
+      }
+      else if (type == ARGUMENT) {
+        return new XJLNArgumentImpl(node);
       }
       else if (type == CLAZZ) {
         return new XJLNClazzImpl(node);

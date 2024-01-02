@@ -15,6 +15,10 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitArgument(@NotNull XJLNArgument o) {
+    visitPsiElement(o);
+  }
+
   public void visitClazz(@NotNull XJLNClazz o) {
     visitPsiElement(o);
   }

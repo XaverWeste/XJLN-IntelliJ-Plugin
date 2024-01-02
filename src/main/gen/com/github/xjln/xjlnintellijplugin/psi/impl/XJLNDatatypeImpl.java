@@ -28,9 +28,9 @@ public class XJLNDatatypeImpl extends ASTWrapperPsiElement implements XJLNDataty
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+    return findChildByType(IDENTIFIER);
   }
 
 }
