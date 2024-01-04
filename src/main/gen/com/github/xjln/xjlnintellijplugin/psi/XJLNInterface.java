@@ -14,6 +14,6 @@ public interface XJLNInterface extends PsiElement {
   XJLNAccessModifier getAccessModifier();
 
   @NotNull
-  PsiElement getIdentifier();
+  XJLNClazzName getClazzName();
 
 }

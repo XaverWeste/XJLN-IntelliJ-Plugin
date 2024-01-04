@@ -29,6 +29,12 @@ public class XJLNDataImpl extends ASTWrapperPsiElement implements XJLNData {
 
   @Override
   @NotNull
+  public XJLNClazzName getClazzName() {
+    return findNotNullChildByClass(XJLNClazzName.class);
+  }
+
+  @Override
+  @NotNull
   public XJLNDataTypeDef getDataTypeDef() {
     return findNotNullChildByClass(XJLNDataTypeDef.class);
   }

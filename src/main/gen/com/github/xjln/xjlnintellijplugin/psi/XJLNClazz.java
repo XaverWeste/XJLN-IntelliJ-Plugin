@@ -14,12 +14,12 @@ public interface XJLNClazz extends PsiElement {
   XJLNAccessModifier getAccessModifier();
 
   @NotNull
+  XJLNClazzName getClazzName();
+
+  @NotNull
   List<XJLNField> getFieldList();
 
   @NotNull
   List<XJLNMethod> getMethodList();
-
-  @NotNull
-  PsiElement getIdentifier();
 
 }

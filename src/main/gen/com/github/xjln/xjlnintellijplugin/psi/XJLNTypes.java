@@ -14,6 +14,7 @@ public interface XJLNTypes {
   IElementType ARGUMENT = new XJLNElementType("ARGUMENT");
   IElementType CLASS_NAME = new XJLNElementType("CLASS_NAME");
   IElementType CLAZZ = new XJLNElementType("CLAZZ");
+  IElementType CLAZZ_NAME = new XJLNElementType("CLAZZ_NAME");
   IElementType DATA = new XJLNElementType("DATA");
   IElementType DATATYPE = new XJLNElementType("DATATYPE");
   IElementType DATA_TYPE_DEF = new XJLNElementType("DATA_TYPE_DEF");
@@ -24,6 +25,7 @@ public interface XJLNTypes {
   IElementType PATH = new XJLNElementType("PATH");
   IElementType SINGLE_USE = new XJLNElementType("SINGLE_USE");
   IElementType TYPE = new XJLNElementType("TYPE");
+  IElementType TYPE_VALUE = new XJLNElementType("TYPE_VALUE");
   IElementType USE = new XJLNElementType("USE");
   IElementType VALUE = new XJLNElementType("VALUE");
 
@@ -86,6 +88,9 @@ public interface XJLNTypes {
       else if (type == CLAZZ) {
         return new XJLNClazzImpl(node);
       }
+      else if (type == CLAZZ_NAME) {
+        return new XJLNClazzNameImpl(node);
+      }
       else if (type == DATA) {
         return new XJLNDataImpl(node);
       }
@@ -115,6 +120,9 @@ public interface XJLNTypes {
       }
       else if (type == TYPE) {
         return new XJLNTypeImpl(node);
+      }
+      else if (type == TYPE_VALUE) {
+        return new XJLNTypeValueImpl(node);
       }
       else if (type == USE) {
         return new XJLNUseImpl(node);

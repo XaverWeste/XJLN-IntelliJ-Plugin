@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface XJLNData extends PsiElement {
 
   @NotNull
+  XJLNClazzName getClazzName();
+
+  @NotNull
   XJLNDataTypeDef getDataTypeDef();
 
   @NotNull

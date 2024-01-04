@@ -5,15 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface XJLNType extends PsiElement {
+public interface XJLNClazzName extends PsiElement {
 
   @NotNull
-  XJLNClazzName getClazzName();
-
-  @NotNull
-  XJLNDataTypeDef getDataTypeDef();
-
-  @NotNull
-  List<XJLNTypeValue> getTypeValueList();
+  PsiElement getIdentifier();
 
 }

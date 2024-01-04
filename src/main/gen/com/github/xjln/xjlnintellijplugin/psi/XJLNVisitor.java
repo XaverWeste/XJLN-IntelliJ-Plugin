@@ -31,6 +31,10 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitClazzName(@NotNull XJLNClazzName o) {
+    visitPsiElement(o);
+  }
+
   public void visitData(@NotNull XJLNData o) {
     visitPsiElement(o);
   }
@@ -68,6 +72,10 @@ public class XJLNVisitor extends PsiElementVisitor {
   }
 
   public void visitType(@NotNull XJLNType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTypeValue(@NotNull XJLNTypeValue o) {
     visitPsiElement(o);
   }
 

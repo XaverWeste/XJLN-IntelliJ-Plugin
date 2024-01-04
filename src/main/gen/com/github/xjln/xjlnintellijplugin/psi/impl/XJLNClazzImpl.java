@@ -41,6 +41,12 @@ public class XJLNClazzImpl extends ASTWrapperPsiElement implements XJLNClazz {
 
   @Override
   @NotNull
+  public XJLNClazzName getClazzName() {
+    return findNotNullChildByClass(XJLNClazzName.class);
+  }
+
+  @Override
+  @NotNull
   public List<XJLNField> getFieldList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNField.class);
   }
@@ -49,12 +55,6 @@ public class XJLNClazzImpl extends ASTWrapperPsiElement implements XJLNClazz {
   @NotNull
   public List<XJLNMethod> getMethodList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNMethod.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

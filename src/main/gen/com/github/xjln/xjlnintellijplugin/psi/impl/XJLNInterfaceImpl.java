@@ -41,8 +41,8 @@ public class XJLNInterfaceImpl extends ASTWrapperPsiElement implements XJLNInter
 
   @Override
   @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  public XJLNClazzName getClazzName() {
+    return findNotNullChildByClass(XJLNClazzName.class);
   }
 
 }

@@ -2,6 +2,7 @@ package com.github.xjln.xjlnintellijplugin;
 
 import com.github.xjln.xjlnintellijplugin.psi.*;
 import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNArgumentImpl;
+import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNTypeImpl;
 import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNUseImpl;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
@@ -10,23 +11,54 @@ import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class XJLNAnnotator implements Annotator {
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
-        if(element instanceof XJLNFile)
-            checkUses((XJLNFile) element, holder);
+        if(element instanceof XJLNFile) {
+            HashMap<String, String> uses = checkUses((XJLNFile) element, holder);
+            ArrayList<String> classes = checkTypes((XJLNFile) element, holder, uses);
+        }
     }
 
-    private void checkUses(XJLNFile file, AnnotationHolder holder){
+    private ArrayList<String> checkTypes(XJLNFile file, AnnotationHolder holder, HashMap<String, String> uses){
+        ArrayList<String> classes = new ArrayList<>();
+
+        for(PsiElement element:file.getChildren()) {
+            if (element instanceof XJLNArgumentImpl && element.getChildren()[0] instanceof XJLNTypeImpl) {
+                XJLNTypeImpl type = (XJLNTypeImpl) element.getChildren()[0];
+
+                if(classes.contains(type.getClazzName().getText()))
+                    holder.newAnnotation(HighlightSeverity.ERROR, "Class is already defined").range(type.getClazzName()).create();
+                else {
+                    if(uses.containsKey(type.getClazzName().getText()))
+                        holder.newAnnotation(HighlightSeverity.WARNING, type.getClazzName().getText() + " is already defined als used Class").range(type.getClazzName()).create();
+                    classes.add(type.getClazzName().getText());
+                }
+
+                ArrayList<String> values = new ArrayList<>();
+
+                for(XJLNTypeValue value:type.getTypeValueList()){
+                    if(values.contains(value.getText()))
+                        holder.newAnnotation(HighlightSeverity.ERROR, "Value is already defined").range(value).create();
+                    else
+                        values.add(value.getText());
+                }
+            }
+        }
+
+        return classes;
+    }
+
+    private HashMap<String, String> checkUses(XJLNFile file, AnnotationHolder holder){
         ArrayList<XJLNUseImpl> statements = new ArrayList<>();
         for(PsiElement element:file.getChildren())
             if(element instanceof XJLNArgumentImpl && element.getChildren()[0] instanceof XJLNUseImpl)
                 statements.add((XJLNUseImpl) element.getChildren()[0]);
 
-        ArrayList<String> aliases = new ArrayList<>();
-        ArrayList<String> uses = new ArrayList<>();
+        HashMap<String, String> uses = new HashMap<>();
 
         for(XJLNUseImpl statement:statements){
             if(statement.getMultiUse() != null){
@@ -34,17 +66,15 @@ public class XJLNAnnotator implements Annotator {
                 XJLNPath path = statement.getMultiUse().getPath();
 
                 for(XJLNClassName name:names){
-                    if(aliases.contains(name.getText()))
+                    if(uses.containsKey(name.getText()))
                         holder.newAnnotation(HighlightSeverity.ERROR, name.getText() + " is already defined").range(name).create();
-                    else
-                        aliases.add(name.getText());
 
                     String className = path.getText() + "/" + name.getText();
 
-                    if(uses.contains(className))
+                    if(uses.containsValue(className))
                         holder.newAnnotation(HighlightSeverity.WEAK_WARNING, className + " is already been used").range(name).create();
-                    else
-                        uses.add(className);
+
+                    uses.put(name.getText(), className);
 
                     if(classNotExist(className))
                         holder.newAnnotation(HighlightSeverity.ERROR, className + " did not exist").range(name).create();
@@ -66,26 +96,25 @@ public class XJLNAnnotator implements Annotator {
                     pathString = pathString + "/" + nameString;
 
                 if(alias != null){
-                    if(aliases.contains(alias.getText()))
+                    if(uses.containsKey(alias.getText()))
                         holder.newAnnotation(HighlightSeverity.ERROR, alias.getText() + " is already defined").range(alias).create();
-                    else
-                        aliases.add(alias.getText());
-                }else{
-                    if(aliases.contains(nameString))
-                        holder.newAnnotation(HighlightSeverity.ERROR, nameString + " is already defined").range(name == null ? path : name).create();
-                    else
-                        aliases.add(nameString);
-                }
 
-                if(uses.contains(pathString))
+                    nameString = alias.getText();
+                }else
+                    if(uses.containsKey(nameString))
+                        holder.newAnnotation(HighlightSeverity.ERROR, nameString + " is already defined").range(name == null ? path : name).create();
+
+                if(uses.containsValue(pathString))
                     holder.newAnnotation(HighlightSeverity.WEAK_WARNING, pathString + " is already been used").range(path).create();
-                else
-                    uses.add(pathString);
+
+                uses.put(nameString, pathString);
 
                 if(classNotExist(pathString))
                     holder.newAnnotation(HighlightSeverity.ERROR, pathString + " did not exist").range(name == null ? path : name).create();
             }
         }
+
+        return uses;
     }
 
     private boolean classNotExist(String name){

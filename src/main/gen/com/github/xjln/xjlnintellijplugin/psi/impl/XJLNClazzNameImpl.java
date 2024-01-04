@@ -11,14 +11,14 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.xjln.xjlnintellijplugin.psi.*;
 
-public class XJLNTypeImpl extends ASTWrapperPsiElement implements XJLNType {
+public class XJLNClazzNameImpl extends ASTWrapperPsiElement implements XJLNClazzName {
 
-  public XJLNTypeImpl(@NotNull ASTNode node) {
+  public XJLNClazzNameImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull XJLNVisitor visitor) {
-    visitor.visitType(this);
+    visitor.visitClazzName(this);
   }
 
   @Override
@@ -29,20 +29,8 @@ public class XJLNTypeImpl extends ASTWrapperPsiElement implements XJLNType {
 
   @Override
   @NotNull
-  public XJLNClazzName getClazzName() {
-    return findNotNullChildByClass(XJLNClazzName.class);
-  }
-
-  @Override
-  @NotNull
-  public XJLNDataTypeDef getDataTypeDef() {
-    return findNotNullChildByClass(XJLNDataTypeDef.class);
-  }
-
-  @Override
-  @NotNull
-  public List<XJLNTypeValue> getTypeValueList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNTypeValue.class);
+  public PsiElement getIdentifier() {
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

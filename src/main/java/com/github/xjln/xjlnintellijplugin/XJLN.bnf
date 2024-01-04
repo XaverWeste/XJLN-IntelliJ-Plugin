@@ -67,10 +67,13 @@ alias ::= IDENTIFIER
 multi_use ::= "{" class_name ("," class_name)* "}" KEYWORD_FROM path
 path ::= IDENTIFIER ("/" IDENTIFIER)*
 
-data ::= data_type_def KEYWORD_CONST? KEYWORD_DATA IDENTIFIER "=" "[" (datatype IDENTIFIER ("," datatype IDENTIFIER)*)? "]"
-type ::= data_type_def KEYWORD_TYPE IDENTIFIER "=" IDENTIFIER ("|" IDENTIFIER)*
-interface ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT? KEYWORD_INTERFACE IDENTIFIER "{" ((abstract_method | COMMENT)? NEW_LINE)* "}"
-clazz ::= KEYWORD_DEF access_modifier? KEYWORD_CLASS (KEYWORD_ABSTRACT | KEYWORD_FINAL)* IDENTIFIER "{" ((field | abstract_method | method | COMMENT)? NEW_LINE)* "}"
+data ::= data_type_def KEYWORD_CONST? KEYWORD_DATA clazz_name "=" "[" (datatype IDENTIFIER ("," datatype IDENTIFIER)*)? "]"
+type ::= data_type_def KEYWORD_TYPE clazz_name "=" type_value ("|" type_value)*
+interface ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT? KEYWORD_INTERFACE clazz_name "{" ((abstract_method | COMMENT)? NEW_LINE)* "}"
+clazz ::= KEYWORD_DEF access_modifier? KEYWORD_CLASS (KEYWORD_ABSTRACT | KEYWORD_FINAL)* clazz_name "{" ((field | abstract_method | method | COMMENT)? NEW_LINE)* "}"
+
+clazz_name ::= IDENTIFIER
+type_value ::= IDENTIFIER
 
 data_type_def ::= KEYWORD_DEF access_modifier? KEYWORD_FINAL?
 
