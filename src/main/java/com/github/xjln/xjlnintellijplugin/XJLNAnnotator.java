@@ -2,6 +2,7 @@ package com.github.xjln.xjlnintellijplugin;
 
 import com.github.xjln.xjlnintellijplugin.psi.*;
 import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNArgumentImpl;
+import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNInterfaceImpl;
 import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNTypeImpl;
 import com.github.xjln.xjlnintellijplugin.psi.impl.XJLNUseImpl;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -20,7 +21,33 @@ public class XJLNAnnotator implements Annotator {
         if(element instanceof XJLNFile) {
             HashMap<String, String> uses = checkUses((XJLNFile) element, holder);
             ArrayList<String> classes = checkTypes((XJLNFile) element, holder, uses);
+            classes = checkInterfaces((XJLNFile) element, holder, uses, classes);
         }
+    }
+
+    private ArrayList<String> checkInterfaces(XJLNFile file, AnnotationHolder holder, HashMap<String, String> uses, ArrayList<String> classes){
+        for(PsiElement element:file.getChildren()) {
+            if (element instanceof XJLNArgumentImpl && element.getChildren()[0] instanceof XJLNInterfaceImpl) {
+                XJLNInterfaceImpl clazz = (XJLNInterfaceImpl) element.getChildren()[0];
+
+                if(classes.contains(clazz.getClazzName().getText()))
+                    holder.newAnnotation(HighlightSeverity.ERROR, "Class is already defined").range(clazz.getClazzName()).create();
+                else {
+                    if(uses.containsKey(clazz.getClazzName().getText()))
+                        holder.newAnnotation(HighlightSeverity.WARNING, clazz.getClazzName().getText() + " is already defined als used Class").range(clazz.getClazzName()).create();
+                    classes.add(clazz.getClazzName().getText());
+                }
+
+                ArrayList<String> methods = new ArrayList<>();
+                for(XJLNAbstractMethod method:clazz.getAbstractMethodList()){
+                    if(methods.contains(method.getIdentifier().getText()))
+                        holder.newAnnotation(HighlightSeverity.ERROR, "Method is already defined").range(method).create();
+                    else
+                        methods.add(method.getIdentifier().getText());
+                }
+            }
+        }
+        return classes;
     }
 
     private ArrayList<String> checkTypes(XJLNFile file, AnnotationHolder holder, HashMap<String, String> uses){
