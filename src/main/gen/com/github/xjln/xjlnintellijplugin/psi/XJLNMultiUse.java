@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface XJLNMultiUse extends PsiElement {
 
   @NotNull
+  List<XJLNClassName> getClassNameList();
+
+  @NotNull
   XJLNPath getPath();
 
 }

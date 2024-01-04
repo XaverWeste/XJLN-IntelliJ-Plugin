@@ -5,6 +5,8 @@ import com.github.xjln.xjlnintellijplugin.psi.XJLNTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
+import java.util.ArrayList;
+
 public class XJLNPsiImplUtil {
 
     //public static PsiElement getEnumName(XJLNEnum element) {

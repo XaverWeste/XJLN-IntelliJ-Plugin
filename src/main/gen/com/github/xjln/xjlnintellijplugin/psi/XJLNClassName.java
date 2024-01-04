@@ -5,15 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface XJLNSingleUse extends PsiElement {
-
-  @Nullable
-  XJLNAlias getAlias();
-
-  @Nullable
-  XJLNClassName getClassName();
+public interface XJLNClassName extends PsiElement {
 
   @NotNull
-  XJLNPath getPath();
+  PsiElement getIdentifier();
 
 }

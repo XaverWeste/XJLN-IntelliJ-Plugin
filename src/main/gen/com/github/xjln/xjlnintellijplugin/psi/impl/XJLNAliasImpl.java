@@ -11,14 +11,14 @@ import static com.github.xjln.xjlnintellijplugin.psi.XJLNTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.xjln.xjlnintellijplugin.psi.*;
 
-public class XJLNSingleUseImpl extends ASTWrapperPsiElement implements XJLNSingleUse {
+public class XJLNAliasImpl extends ASTWrapperPsiElement implements XJLNAlias {
 
-  public XJLNSingleUseImpl(@NotNull ASTNode node) {
+  public XJLNAliasImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull XJLNVisitor visitor) {
-    visitor.visitSingleUse(this);
+    visitor.visitAlias(this);
   }
 
   @Override
@@ -28,21 +28,9 @@ public class XJLNSingleUseImpl extends ASTWrapperPsiElement implements XJLNSingl
   }
 
   @Override
-  @Nullable
-  public XJLNAlias getAlias() {
-    return findChildByClass(XJLNAlias.class);
-  }
-
-  @Override
-  @Nullable
-  public XJLNClassName getClassName() {
-    return findChildByClass(XJLNClassName.class);
-  }
-
-  @Override
   @NotNull
-  public XJLNPath getPath() {
-    return findNotNullChildByClass(XJLNPath.class);
+  public PsiElement getIdentifier() {
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

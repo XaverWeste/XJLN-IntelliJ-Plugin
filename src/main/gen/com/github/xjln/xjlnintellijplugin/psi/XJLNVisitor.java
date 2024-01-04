@@ -15,7 +15,15 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAlias(@NotNull XJLNAlias o) {
+    visitPsiElement(o);
+  }
+
   public void visitArgument(@NotNull XJLNArgument o) {
+    visitPsiElement(o);
+  }
+
+  public void visitClassName(@NotNull XJLNClassName o) {
     visitPsiElement(o);
   }
 

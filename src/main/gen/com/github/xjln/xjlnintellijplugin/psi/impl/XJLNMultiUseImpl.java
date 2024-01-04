@@ -29,6 +29,12 @@ public class XJLNMultiUseImpl extends ASTWrapperPsiElement implements XJLNMultiU
 
   @Override
   @NotNull
+  public List<XJLNClassName> getClassNameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNClassName.class);
+  }
+
+  @Override
+  @NotNull
   public XJLNPath getPath() {
     return findNotNullChildByClass(XJLNPath.class);
   }

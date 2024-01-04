@@ -61,8 +61,10 @@ xjlnFile ::= argument? (NEW_LINE argument?)*
 argument ::= use | field | data | type | interface | clazz | method | COMMENT
 
 use ::= KEYWORD_USE (single_use | multi_use)
-single_use ::= ((IDENTIFIER KEYWORD_FROM path) | path) (KEYWORD_AS IDENTIFIER)?
-multi_use ::= "{" IDENTIFIER ("," IDENTIFIER)* "}" KEYWORD_FROM path
+single_use ::= ((class_name KEYWORD_FROM path) | path) (KEYWORD_AS alias)?
+class_name ::= IDENTIFIER
+alias ::= IDENTIFIER
+multi_use ::= "{" class_name ("," class_name)* "}" KEYWORD_FROM path
 path ::= IDENTIFIER ("/" IDENTIFIER)*
 
 data ::= data_type_def KEYWORD_CONST? KEYWORD_DATA IDENTIFIER "=" "[" (datatype IDENTIFIER ("," datatype IDENTIFIER)*)? "]"
