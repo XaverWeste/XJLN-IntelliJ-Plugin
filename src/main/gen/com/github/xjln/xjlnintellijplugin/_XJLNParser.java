@@ -37,7 +37,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT IDENTIFIER
+  // KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT IDENTIFIER "(" parameterlist? ")" ("::" datatype)?
   public static boolean abstract_method(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "abstract_method")) return false;
     if (!nextTokenIs(b, KEYWORD_DEF)) return false;
@@ -46,6 +46,10 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, KEYWORD_DEF);
     r = r && abstract_method_1(b, l + 1);
     r = r && consumeTokens(b, 0, KEYWORD_ABSTRACT, IDENTIFIER);
+    r = r && consumeToken(b, "(");
+    r = r && abstract_method_5(b, l + 1);
+    r = r && consumeToken(b, ")");
+    r = r && abstract_method_7(b, l + 1);
     exit_section_(b, m, ABSTRACT_METHOD, r);
     return r;
   }
@@ -55,6 +59,31 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "abstract_method_1")) return false;
     access_modifier(b, l + 1);
     return true;
+  }
+
+  // parameterlist?
+  private static boolean abstract_method_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "abstract_method_5")) return false;
+    parameterlist(b, l + 1);
+    return true;
+  }
+
+  // ("::" datatype)?
+  private static boolean abstract_method_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "abstract_method_7")) return false;
+    abstract_method_7_0(b, l + 1);
+    return true;
+  }
+
+  // "::" datatype
+  private static boolean abstract_method_7_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "abstract_method_7_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, "::");
+    r = r && datatype(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -211,7 +240,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // data_type_def KEYWORD_CONST? KEYWORD_DATA clazz_name "=" "[" (datatype IDENTIFIER ("," datatype IDENTIFIER)*)? "]"
+  // data_type_def KEYWORD_CONST? KEYWORD_DATA clazz_name "=" "[" parameterlist? "]"
   public static boolean data(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "data")) return false;
     if (!nextTokenIs(b, KEYWORD_DEF)) return false;
@@ -236,46 +265,11 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (datatype IDENTIFIER ("," datatype IDENTIFIER)*)?
+  // parameterlist?
   private static boolean data_6(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "data_6")) return false;
-    data_6_0(b, l + 1);
+    parameterlist(b, l + 1);
     return true;
-  }
-
-  // datatype IDENTIFIER ("," datatype IDENTIFIER)*
-  private static boolean data_6_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "data_6_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = datatype(b, l + 1);
-    r = r && consumeToken(b, IDENTIFIER);
-    r = r && data_6_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // ("," datatype IDENTIFIER)*
-  private static boolean data_6_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "data_6_0_2")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!data_6_0_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "data_6_0_2", c)) break;
-    }
-    return true;
-  }
-
-  // "," datatype IDENTIFIER
-  private static boolean data_6_0_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "data_6_0_2_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, ",");
-    r = r && datatype(b, l + 1);
-    r = r && consumeToken(b, IDENTIFIER);
-    exit_section_(b, m, null, r);
-    return r;
   }
 
   /* ********************************************************** */
@@ -444,7 +438,7 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KEYWORD_DEF access_modifier? (KEYWORD_STATIC | KEYWORD_SYNCHRONISED)* IDENTIFIER "(" (datatype IDENTIFIER ("," datatype IDENTIFIER)*)? ")" ("::" datatype)? NEW_LINE KEYWORD_END
+  // KEYWORD_DEF access_modifier? (KEYWORD_STATIC | KEYWORD_SYNCHRONISED)* IDENTIFIER "(" parameterlist? ")" ("::" datatype)? NEW_LINE KEYWORD_END
   public static boolean method(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "method")) return false;
     if (!nextTokenIs(b, KEYWORD_DEF)) return false;
@@ -490,46 +484,11 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (datatype IDENTIFIER ("," datatype IDENTIFIER)*)?
+  // parameterlist?
   private static boolean method_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "method_5")) return false;
-    method_5_0(b, l + 1);
+    parameterlist(b, l + 1);
     return true;
-  }
-
-  // datatype IDENTIFIER ("," datatype IDENTIFIER)*
-  private static boolean method_5_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_5_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = datatype(b, l + 1);
-    r = r && consumeToken(b, IDENTIFIER);
-    r = r && method_5_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // ("," datatype IDENTIFIER)*
-  private static boolean method_5_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_5_0_2")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!method_5_0_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "method_5_0_2", c)) break;
-    }
-    return true;
-  }
-
-  // "," datatype IDENTIFIER
-  private static boolean method_5_0_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "method_5_0_2_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, ",");
-    r = r && datatype(b, l + 1);
-    r = r && consumeToken(b, IDENTIFIER);
-    exit_section_(b, m, null, r);
-    return r;
   }
 
   // ("::" datatype)?
@@ -584,6 +543,52 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, ",");
     r = r && class_name(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // datatype IDENTIFIER
+  public static boolean parameter(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, PARAMETER, "<parameter>");
+    r = datatype(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // parameter ("," parameter)*
+  public static boolean parameterlist(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameterlist")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, PARAMETERLIST, "<parameterlist>");
+    r = parameter(b, l + 1);
+    r = r && parameterlist_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ("," parameter)*
+  private static boolean parameterlist_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameterlist_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!parameterlist_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "parameterlist_1", c)) break;
+    }
+    return true;
+  }
+
+  // "," parameter
+  private static boolean parameterlist_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameterlist_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ",");
+    r = r && parameter(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }

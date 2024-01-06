@@ -34,6 +34,18 @@ public class XJLNAbstractMethodImpl extends ASTWrapperPsiElement implements XJLN
   }
 
   @Override
+  @Nullable
+  public XJLNDatatype getDatatype() {
+    return findChildByClass(XJLNDatatype.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNParameterlist getParameterlist() {
+    return findChildByClass(XJLNParameterlist.class);
+  }
+
+  @Override
   @NotNull
   public PsiElement getIdentifier() {
     return findNotNullChildByType(IDENTIFIER);

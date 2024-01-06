@@ -40,9 +40,9 @@ public class XJLNDataImpl extends ASTWrapperPsiElement implements XJLNData {
   }
 
   @Override
-  @NotNull
-  public List<XJLNDatatype> getDatatypeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNDatatype.class);
+  @Nullable
+  public XJLNParameterlist getParameterlist() {
+    return findChildByClass(XJLNParameterlist.class);
   }
 
 }

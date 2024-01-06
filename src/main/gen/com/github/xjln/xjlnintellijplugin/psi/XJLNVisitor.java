@@ -63,6 +63,14 @@ public class XJLNVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitParameter(@NotNull XJLNParameter o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParameterlist(@NotNull XJLNParameterlist o) {
+    visitPsiElement(o);
+  }
+
   public void visitPath(@NotNull XJLNPath o) {
     visitPsiElement(o);
   }

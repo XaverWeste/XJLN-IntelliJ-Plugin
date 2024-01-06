@@ -22,6 +22,8 @@ public interface XJLNTypes {
   IElementType INTERFACE = new XJLNElementType("INTERFACE");
   IElementType METHOD = new XJLNElementType("METHOD");
   IElementType MULTI_USE = new XJLNElementType("MULTI_USE");
+  IElementType PARAMETER = new XJLNElementType("PARAMETER");
+  IElementType PARAMETERLIST = new XJLNElementType("PARAMETERLIST");
   IElementType PATH = new XJLNElementType("PATH");
   IElementType SINGLE_USE = new XJLNElementType("SINGLE_USE");
   IElementType TYPE = new XJLNElementType("TYPE");
@@ -111,6 +113,12 @@ public interface XJLNTypes {
       }
       else if (type == MULTI_USE) {
         return new XJLNMultiUseImpl(node);
+      }
+      else if (type == PARAMETER) {
+        return new XJLNParameterImpl(node);
+      }
+      else if (type == PARAMETERLIST) {
+        return new XJLNParameterlistImpl(node);
       }
       else if (type == PATH) {
         return new XJLNPathImpl(node);

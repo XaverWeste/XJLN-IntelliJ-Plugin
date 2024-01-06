@@ -67,7 +67,7 @@ alias ::= IDENTIFIER
 multi_use ::= "{" class_name ("," class_name)* "}" KEYWORD_FROM path
 path ::= IDENTIFIER ("/" IDENTIFIER)*
 
-data ::= data_type_def KEYWORD_CONST? KEYWORD_DATA clazz_name "=" "[" (datatype IDENTIFIER ("," datatype IDENTIFIER)*)? "]"
+data ::= data_type_def KEYWORD_CONST? KEYWORD_DATA clazz_name "=" "[" parameterlist? "]"
 type ::= data_type_def KEYWORD_TYPE clazz_name "=" type_value ("|" type_value)*
 interface ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT? KEYWORD_INTERFACE clazz_name "{" ((abstract_method | COMMENT)? NEW_LINE)* "}"
 clazz ::= KEYWORD_DEF access_modifier? KEYWORD_CLASS (KEYWORD_ABSTRACT | KEYWORD_FINAL)* clazz_name "{" ((field | abstract_method | method | COMMENT)? NEW_LINE)* "}"
@@ -78,10 +78,13 @@ type_value ::= IDENTIFIER
 data_type_def ::= KEYWORD_DEF access_modifier? KEYWORD_FINAL?
 
 field ::= access_modifier? KEYWORD_STATIC? datatype IDENTIFIER ("=" value)?
-abstract_method ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT IDENTIFIER
-method ::= KEYWORD_DEF access_modifier? (KEYWORD_STATIC | KEYWORD_SYNCHRONISED)* IDENTIFIER "(" (datatype IDENTIFIER ("," datatype IDENTIFIER)*)? ")" ("::" datatype)? NEW_LINE KEYWORD_END
+abstract_method ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT IDENTIFIER "(" parameterlist? ")" ("::" datatype)?
+method ::= KEYWORD_DEF access_modifier? (KEYWORD_STATIC | KEYWORD_SYNCHRONISED)* IDENTIFIER "(" parameterlist? ")" ("::" datatype)? NEW_LINE KEYWORD_END
 
 access_modifier ::= KEYWORD_PUBLIC | KEYWORD_PROTECTED | KEYWORD_PRIVATE
+
+parameterlist ::= parameter ("," parameter)*
+parameter ::= datatype IDENTIFIER
 
 datatype ::= IDENTIFIER | KEYWORD_INT | KEYWORD_SHORT | KEYWORD_LONG | KEYWORD_FLOAT | KEYWORD_DOUBLE | KEYWORD_BOOLEAN | KEYWORD_CHAR | KEYWORD_BYTE
 value ::= CHAR | NUMBER | STRING

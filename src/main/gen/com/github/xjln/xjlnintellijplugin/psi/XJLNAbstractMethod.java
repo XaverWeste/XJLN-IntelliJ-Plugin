@@ -10,6 +10,12 @@ public interface XJLNAbstractMethod extends PsiElement {
   @Nullable
   XJLNAccessModifier getAccessModifier();
 
+  @Nullable
+  XJLNDatatype getDatatype();
+
+  @Nullable
+  XJLNParameterlist getParameterlist();
+
   @NotNull
   PsiElement getIdentifier();
 

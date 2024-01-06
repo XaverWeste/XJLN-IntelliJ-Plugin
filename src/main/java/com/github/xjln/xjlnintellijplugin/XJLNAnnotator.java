@@ -19,24 +19,17 @@ public class XJLNAnnotator implements Annotator {
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
         if(element instanceof XJLNFile) {
-            HashMap<String, String> uses = checkUses((XJLNFile) element, holder);
-            ArrayList<String> classes = checkTypes((XJLNFile) element, holder, uses);
-            classes = checkInterfaces((XJLNFile) element, holder, uses, classes);
+            ArrayList<String> classes = findClasses((XJLNFile) element, holder);
+            HashMap<String, String> uses = checkUses((XJLNFile) element, holder, classes);
+            checkTypes((XJLNFile) element, holder);
+            checkInterfaces((XJLNFile) element, holder, uses, classes);
         }
     }
 
-    private ArrayList<String> checkInterfaces(XJLNFile file, AnnotationHolder holder, HashMap<String, String> uses, ArrayList<String> classes){
+    private void checkInterfaces(XJLNFile file, AnnotationHolder holder, HashMap<String, String> uses, ArrayList<String> classes){
         for(PsiElement element:file.getChildren()) {
             if (element instanceof XJLNArgumentImpl && element.getChildren()[0] instanceof XJLNInterfaceImpl) {
                 XJLNInterfaceImpl clazz = (XJLNInterfaceImpl) element.getChildren()[0];
-
-                if(classes.contains(clazz.getClazzName().getText()))
-                    holder.newAnnotation(HighlightSeverity.ERROR, "Class is already defined").range(clazz.getClazzName()).create();
-                else {
-                    if(uses.containsKey(clazz.getClazzName().getText()))
-                        holder.newAnnotation(HighlightSeverity.WARNING, clazz.getClazzName().getText() + " is already defined als used Class").range(clazz.getClazzName()).create();
-                    classes.add(clazz.getClazzName().getText());
-                }
 
                 ArrayList<String> methods = new ArrayList<>();
                 for(XJLNAbstractMethod method:clazz.getAbstractMethodList()){
@@ -47,24 +40,12 @@ public class XJLNAnnotator implements Annotator {
                 }
             }
         }
-        return classes;
     }
 
-    private ArrayList<String> checkTypes(XJLNFile file, AnnotationHolder holder, HashMap<String, String> uses){
-        ArrayList<String> classes = new ArrayList<>();
-
+    private void checkTypes(XJLNFile file, AnnotationHolder holder){
         for(PsiElement element:file.getChildren()) {
             if (element instanceof XJLNArgumentImpl && element.getChildren()[0] instanceof XJLNTypeImpl) {
                 XJLNTypeImpl type = (XJLNTypeImpl) element.getChildren()[0];
-
-                if(classes.contains(type.getClazzName().getText()))
-                    holder.newAnnotation(HighlightSeverity.ERROR, "Class is already defined").range(type.getClazzName()).create();
-                else {
-                    if(uses.containsKey(type.getClazzName().getText()))
-                        holder.newAnnotation(HighlightSeverity.WARNING, type.getClazzName().getText() + " is already defined als used Class").range(type.getClazzName()).create();
-                    classes.add(type.getClazzName().getText());
-                }
-
                 ArrayList<String> values = new ArrayList<>();
 
                 for(XJLNTypeValue value:type.getTypeValueList()){
@@ -75,11 +56,9 @@ public class XJLNAnnotator implements Annotator {
                 }
             }
         }
-
-        return classes;
     }
 
-    private HashMap<String, String> checkUses(XJLNFile file, AnnotationHolder holder){
+    private HashMap<String, String> checkUses(XJLNFile file, AnnotationHolder holder, ArrayList<String> classes){
         ArrayList<XJLNUseImpl> statements = new ArrayList<>();
         for(PsiElement element:file.getChildren())
             if(element instanceof XJLNArgumentImpl && element.getChildren()[0] instanceof XJLNUseImpl)
@@ -93,7 +72,9 @@ public class XJLNAnnotator implements Annotator {
                 XJLNPath path = statement.getMultiUse().getPath();
 
                 for(XJLNClassName name:names){
-                    if(uses.containsKey(name.getText()))
+                    if(classes.contains(name.getText()))
+                        holder.newAnnotation(HighlightSeverity.ERROR, "Class is already defined").range(name).create();
+                    else if(uses.containsKey(name.getText()))
                         holder.newAnnotation(HighlightSeverity.ERROR, name.getText() + " is already defined").range(name).create();
 
                     String className = path.getText() + "/" + name.getText();
@@ -123,11 +104,15 @@ public class XJLNAnnotator implements Annotator {
                     pathString = pathString + "/" + nameString;
 
                 if(alias != null){
-                    if(uses.containsKey(alias.getText()))
+                    if(classes.contains(alias.getText()))
+                        holder.newAnnotation(HighlightSeverity.WARNING, "Class is already defined").range(alias).create();
+                    else if(uses.containsKey(alias.getText()))
                         holder.newAnnotation(HighlightSeverity.ERROR, alias.getText() + " is already defined").range(alias).create();
 
                     nameString = alias.getText();
                 }else
+                    if(classes.contains(nameString))
+                        holder.newAnnotation(HighlightSeverity.WARNING, "Class is already defined").range(name == null ? path : name).create();
                     if(uses.containsKey(nameString))
                         holder.newAnnotation(HighlightSeverity.ERROR, nameString + " is already defined").range(name == null ? path : name).create();
 
@@ -142,6 +127,35 @@ public class XJLNAnnotator implements Annotator {
         }
 
         return uses;
+    }
+
+    private ArrayList<String> findClasses(XJLNFile file, AnnotationHolder holder){
+        ArrayList<String> classes = new ArrayList<>();
+
+        for(PsiElement element : file.getChildren()){
+            if (element instanceof XJLNArgumentImpl) {
+                PsiElement first = element.getChildren()[0];
+
+                XJLNClazzName name = null;
+                if(first instanceof XJLNClazz)
+                    name = ((XJLNClazz) first).getClazzName();
+                else if(first instanceof XJLNType)
+                    name = ((XJLNType) first).getClazzName();
+                else if(first instanceof XJLNData)
+                    name = ((XJLNData) first).getClazzName();
+                else if(first instanceof XJLNInterface)
+                    name = ((XJLNInterface) first).getClazzName();
+
+                if(name != null) {
+                    if (classes.contains(name.getText()))
+                        holder.newAnnotation(HighlightSeverity.ERROR, "Class is already defined").range(name).create();
+                    else
+                        classes.add(name.getText());
+                }
+            }
+        }
+
+        return classes;
     }
 
     private boolean classNotExist(String name){
