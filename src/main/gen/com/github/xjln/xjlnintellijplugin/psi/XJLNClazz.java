@@ -16,8 +16,23 @@ public interface XJLNClazz extends PsiElement {
   @NotNull
   XJLNClazzName getClazzName();
 
+  @Nullable
+  XJLNContains getContains();
+
+  @Nullable
+  XJLNExtends getExtends();
+
   @NotNull
   List<XJLNField> getFieldList();
+
+  @Nullable
+  XJLNGenerics getGenerics();
+
+  @Nullable
+  XJLNImplements getImplements();
+
+  @NotNull
+  List<XJLNInit> getInitList();
 
   @NotNull
   List<XJLNMethod> getMethodList();

@@ -41,6 +41,12 @@ public class XJLNAbstractMethodImpl extends ASTWrapperPsiElement implements XJLN
 
   @Override
   @Nullable
+  public XJLNGenerics getGenerics() {
+    return findChildByClass(XJLNGenerics.class);
+  }
+
+  @Override
+  @Nullable
   public XJLNParameterlist getParameterlist() {
     return findChildByClass(XJLNParameterlist.class);
   }

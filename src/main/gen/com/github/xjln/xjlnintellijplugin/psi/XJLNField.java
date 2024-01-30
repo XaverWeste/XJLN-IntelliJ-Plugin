@@ -11,6 +11,9 @@ public interface XJLNField extends PsiElement {
   XJLNAccessModifier getAccessModifier();
 
   @NotNull
+  List<XJLNClassName> getClassNameList();
+
+  @NotNull
   XJLNDatatype getDatatype();
 
   @Nullable

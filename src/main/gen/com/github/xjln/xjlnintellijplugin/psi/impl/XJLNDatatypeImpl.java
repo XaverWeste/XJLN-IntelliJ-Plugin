@@ -29,6 +29,18 @@ public class XJLNDatatypeImpl extends ASTWrapperPsiElement implements XJLNDataty
 
   @Override
   @Nullable
+  public XJLNArrayType getArrayType() {
+    return findChildByClass(XJLNArrayType.class);
+  }
+
+  @Override
+  @NotNull
+  public List<XJLNClassName> getClassNameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNClassName.class);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getIdentifier() {
     return findChildByType(IDENTIFIER);
   }

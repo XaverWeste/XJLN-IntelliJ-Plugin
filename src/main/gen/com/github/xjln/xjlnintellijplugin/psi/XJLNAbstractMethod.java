@@ -14,6 +14,9 @@ public interface XJLNAbstractMethod extends PsiElement {
   XJLNDatatype getDatatype();
 
   @Nullable
+  XJLNGenerics getGenerics();
+
+  @Nullable
   XJLNParameterlist getParameterlist();
 
   @NotNull

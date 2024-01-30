@@ -46,9 +46,39 @@ public class XJLNClazzImpl extends ASTWrapperPsiElement implements XJLNClazz {
   }
 
   @Override
+  @Nullable
+  public XJLNContains getContains() {
+    return findChildByClass(XJLNContains.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNExtends getExtends() {
+    return findChildByClass(XJLNExtends.class);
+  }
+
+  @Override
   @NotNull
   public List<XJLNField> getFieldList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNField.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNGenerics getGenerics() {
+    return findChildByClass(XJLNGenerics.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNImplements getImplements() {
+    return findChildByClass(XJLNImplements.class);
+  }
+
+  @Override
+  @NotNull
+  public List<XJLNInit> getInitList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNInit.class);
   }
 
   @Override

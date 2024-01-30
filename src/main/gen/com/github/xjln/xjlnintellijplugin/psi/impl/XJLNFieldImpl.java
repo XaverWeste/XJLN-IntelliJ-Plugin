@@ -35,6 +35,12 @@ public class XJLNFieldImpl extends ASTWrapperPsiElement implements XJLNField {
 
   @Override
   @NotNull
+  public List<XJLNClassName> getClassNameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, XJLNClassName.class);
+  }
+
+  @Override
+  @NotNull
   public XJLNDatatype getDatatype() {
     return findNotNullChildByClass(XJLNDatatype.class);
   }

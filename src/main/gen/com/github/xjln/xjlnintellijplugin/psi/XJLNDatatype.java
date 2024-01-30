@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface XJLNDatatype extends PsiElement {
 
   @Nullable
+  XJLNArrayType getArrayType();
+
+  @NotNull
+  List<XJLNClassName> getClassNameList();
+
+  @Nullable
   PsiElement getIdentifier();
 
 }

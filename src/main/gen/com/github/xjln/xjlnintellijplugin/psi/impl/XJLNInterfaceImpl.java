@@ -45,4 +45,10 @@ public class XJLNInterfaceImpl extends ASTWrapperPsiElement implements XJLNInter
     return findNotNullChildByClass(XJLNClazzName.class);
   }
 
+  @Override
+  @Nullable
+  public XJLNGenerics getGenerics() {
+    return findChildByClass(XJLNGenerics.class);
+  }
+
 }

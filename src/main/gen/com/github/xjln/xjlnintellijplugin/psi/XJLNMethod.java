@@ -14,12 +14,24 @@ public interface XJLNMethod extends PsiElement {
   XJLNDatatype getDatatype();
 
   @Nullable
+  XJLNGenerics getGenerics();
+
+  @Nullable
+  XJLNMethodLong getMethodLong();
+
+  @Nullable
+  XJLNMethodMult getMethodMult();
+
+  @Nullable
+  XJLNMethodShort getMethodShort();
+
+  @Nullable
   XJLNParameterlist getParameterlist();
 
-  @NotNull
+  @Nullable
   PsiElement getIdentifier();
 
-  @NotNull
-  PsiElement getNewLine();
+  @Nullable
+  PsiElement getOperator();
 
 }

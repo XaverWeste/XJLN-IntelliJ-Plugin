@@ -42,5 +42,9 @@
         <annotator
             language="XJLN"
             implementationClass="com.github.xjln.xjlnintellijplugin.XJLNAnnotator"/>
+        <completion.contributor
+                language="XJLN"
+                implementationClass="com.github.xjln.xjlnintellijplugin.XJLNCompletionContributor"/>
+        <internalFileTemplate name="XJLN File"/>
     </extensions>
 </idea-plugin>

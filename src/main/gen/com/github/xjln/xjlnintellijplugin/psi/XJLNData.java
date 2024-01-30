@@ -14,6 +14,9 @@ public interface XJLNData extends PsiElement {
   XJLNDataTypeDef getDataTypeDef();
 
   @Nullable
+  XJLNGenerics getGenerics();
+
+  @Nullable
   XJLNParameterlist getParameterlist();
 
 }

@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface XJLNValue extends PsiElement {
 
   @Nullable
+  XJLNCall getCall();
+
+  @Nullable
   PsiElement getChar();
 
   @Nullable

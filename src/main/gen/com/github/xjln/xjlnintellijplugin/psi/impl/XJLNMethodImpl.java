@@ -41,20 +41,44 @@ public class XJLNMethodImpl extends ASTWrapperPsiElement implements XJLNMethod {
 
   @Override
   @Nullable
+  public XJLNGenerics getGenerics() {
+    return findChildByClass(XJLNGenerics.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNMethodLong getMethodLong() {
+    return findChildByClass(XJLNMethodLong.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNMethodMult getMethodMult() {
+    return findChildByClass(XJLNMethodMult.class);
+  }
+
+  @Override
+  @Nullable
+  public XJLNMethodShort getMethodShort() {
+    return findChildByClass(XJLNMethodShort.class);
+  }
+
+  @Override
+  @Nullable
   public XJLNParameterlist getParameterlist() {
     return findChildByClass(XJLNParameterlist.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+    return findChildByType(IDENTIFIER);
   }
 
   @Override
-  @NotNull
-  public PsiElement getNewLine() {
-    return findNotNullChildByType(NEW_LINE);
+  @Nullable
+  public PsiElement getOperator() {
+    return findChildByType(OPERATOR);
   }
 
 }

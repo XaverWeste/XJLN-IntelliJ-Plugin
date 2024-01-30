@@ -1,6 +1,6 @@
 {
   parserClass="com.github.xjln.xjlnintellijplugin._XJLNParser"
-  parserUtilClass="com.github.xjln.xjlnintellijplugin.XJLNParserUtil"
+  //parserUtilClass="com.github.xjln.xjlnintellijplugin.XJLNParserUtil"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
@@ -45,14 +45,22 @@
     KEYWORD_BOOLEAN = "boolean"
     KEYWORD_CHAR = "char"
     KEYWORD_BYTE = "byte"
+    KEYWORD_EXTENDS = "extends"
+    KEYWORD_CONTAINS = "contains"
+    KEYWORD_IMPLEMENTS = "implements"
+    KEYWORD_NULL = "null"
+    KEYWORD_THIS = "this"
+    //TODO true false
 
+    LAMBDA = "->"
     NEW_LINE = "regexp:\n"
     IDENTIFIER = "regexp:[a-zA-Z][a-zA-Z0-9]*"
-    NUMBER = "regexp:[0-9]+\.[0-9]*[idslf]?"
+    NUMBER = "regexp:[0-9]+(\.[0-9])*[idslf]?"
     OPERATOR = "regexp:[-+*/%&|<>=!^]+"
     CHAR = "regexp:'.'"
     COMMENT = "regexp:#[^[#\n]]*#?"
     STRING = "regexp:\"[^\"]*\""
+    COMMA = ","
   ]
 }
 
@@ -64,27 +72,56 @@ use ::= KEYWORD_USE (single_use | multi_use)
 single_use ::= ((class_name KEYWORD_FROM path) | path) (KEYWORD_AS alias)?
 class_name ::= IDENTIFIER
 alias ::= IDENTIFIER
-multi_use ::= "{" class_name ("," class_name)* "}" KEYWORD_FROM path
+multi_use ::= "{" class_name (COMMA class_name)* "}" KEYWORD_FROM path
 path ::= IDENTIFIER ("/" IDENTIFIER)*
 
-data ::= data_type_def KEYWORD_CONST? KEYWORD_DATA clazz_name "=" "[" parameterlist? "]"
+data ::= data_type_def KEYWORD_CONST? KEYWORD_DATA clazz_name generics? "=" "[" parameterlist? "]"
 type ::= data_type_def KEYWORD_TYPE clazz_name "=" type_value ("|" type_value)*
-interface ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT? KEYWORD_INTERFACE clazz_name "{" ((abstract_method | COMMENT)? NEW_LINE)* "}"
-clazz ::= KEYWORD_DEF access_modifier? KEYWORD_CLASS (KEYWORD_ABSTRACT | KEYWORD_FINAL)* clazz_name "{" ((field | abstract_method | method | COMMENT)? NEW_LINE)* "}"
+interface ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT? KEYWORD_INTERFACE clazz_name generics? "{" NEW_LINE ((abstract_method | COMMENT)? NEW_LINE)* "}"
+clazz ::= KEYWORD_DEF access_modifier? KEYWORD_CLASS (KEYWORD_ABSTRACT | KEYWORD_FINAL)* clazz_name generics? extends? contains? implements? "{" NEW_LINE ((field | abstract_method | method | init | COMMENT)? NEW_LINE)* "}"
 
 clazz_name ::= IDENTIFIER
 type_value ::= IDENTIFIER
 
 data_type_def ::= KEYWORD_DEF access_modifier? KEYWORD_FINAL?
 
-field ::= access_modifier? KEYWORD_STATIC? datatype IDENTIFIER ("=" value)?
-abstract_method ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT IDENTIFIER "(" parameterlist? ")" ("::" datatype)?
-method ::= KEYWORD_DEF access_modifier? (KEYWORD_STATIC | KEYWORD_SYNCHRONISED)* IDENTIFIER "(" parameterlist? ")" ("::" datatype)? NEW_LINE KEYWORD_END
+extends ::= KEYWORD_EXTENDS class_name
+contains ::= KEYWORD_CONTAINS class_name | ("{" (class_name (COMMA class_name)*)? "}")
+implements ::= KEYWORD_IMPLEMENTS class_name | ("{" (class_name (COMMA class_name)*)? "}")
+
+generics ::= "<" generic (COMMA generic)* ">"
+generic ::= class_name alias
+
+field ::= access_modifier? KEYWORD_STATIC? datatype ("<" class_name (COMMA class_name)* ">")? IDENTIFIER ("=" value)?
+abstract_method ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT IDENTIFIER generics? "(" parameterlist? ")" ("::" datatype)?
+method ::= KEYWORD_DEF access_modifier? (KEYWORD_STATIC | KEYWORD_SYNCHRONISED)* (IDENTIFIER | OPERATOR) generics? "(" parameterlist? ")" ("::" datatype)? (method_mult | method_short | method_long)
+init ::= KEYWORD_INIT "[" parameterlist? "]" (method_short | method_long)
+
+method_short ::= ("=" | LAMBDA) statement
+method_long ::= NEW_LINE (statement NEW_LINE+)* KEYWORD_END
+method_mult ::= "{" NEW_LINE method_mult_arg+ "}"
+method_mult_arg ::= "(" ((OPERATOR? value) (COMMA (OPERATOR? value))*)? ")" method_short | method_long NEW_LINE
 
 access_modifier ::= KEYWORD_PUBLIC | KEYWORD_PROTECTED | KEYWORD_PRIVATE
 
-parameterlist ::= parameter ("," parameter)*
+parameterlist ::= parameter (COMMA parameter)*
 parameter ::= datatype IDENTIFIER
 
-datatype ::= IDENTIFIER | KEYWORD_INT | KEYWORD_SHORT | KEYWORD_LONG | KEYWORD_FLOAT | KEYWORD_DOUBLE | KEYWORD_BOOLEAN | KEYWORD_CHAR | KEYWORD_BYTE
-value ::= CHAR | NUMBER | STRING
+datatype ::= (IDENTIFIER ("<" class_name (COMMA class_name)* ">")?) | KEYWORD_INT | KEYWORD_SHORT | KEYWORD_LONG | KEYWORD_FLOAT | KEYWORD_DOUBLE | KEYWORD_BOOLEAN | KEYWORD_CHAR | KEYWORD_BYTE | arrayType
+arrayType ::= "[" datatype "]"
+value ::= CHAR | NUMBER | STRING | KEYWORD_NULL | call
+
+statement ::= (KEYWORD_RETURN calc) | var | calc | if | while
+calc ::= calcArg (OPERATOR calcArg)*
+calcArg ::= (("(" calc ")") | value | call | arr)
+call ::= (KEYWORD_THIS | (IDENTIFIER ("<" class_name (COMMA class_name)* ">")? (("[" (calc (COMMA calc)*)? "]") | ("(" (calc (COMMA calc)*)? ")"))?)) (":" callArg)*
+callArg ::= ((IDENTIFIER ("(" (calc (COMMA calc)*)? ")")?) | NUMBER | ("(" calc ")"))
+var ::= datatype? IDENTIFIER ("=" (arr | calc))?
+arr ::= ("{" (value (COMMA value)*)? "}") | ("[" datatype (COMMA (NUMBER | calc))* "]")
+
+if ::= KEYWORD_IF calc ((LAMBDA statement (NEW_LINE else)?) | (statement_block (else | KEYWORD_END)))
+else ::= KEYWORD_ELSE (KEYWORD_IF calc)? ((LAMBDA statement (NEW_LINE else)?) | (statement_block (else | KEYWORD_END)))
+
+while ::= KEYWORD_WHILE calc ((statement_block KEYWORD_END) | (LAMBDA statement))
+
+statement_block ::= NEW_LINE (statement? NEW_LINE+)*
