@@ -1102,17 +1102,18 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // access_modifier? KEYWORD_STATIC? datatype ("<" class_name (COMMA class_name)* ">")? IDENTIFIER ("=" value)?
+  // access_modifier? KEYWORD_STATIC? KEYWORD_CONST? datatype ("<" class_name (COMMA class_name)* ">")? IDENTIFIER ("=" value)?
   public static boolean field(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "field")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, FIELD, "<field>");
     r = field_0(b, l + 1);
     r = r && field_1(b, l + 1);
+    r = r && field_2(b, l + 1);
     r = r && datatype(b, l + 1);
-    r = r && field_3(b, l + 1);
+    r = r && field_4(b, l + 1);
     r = r && consumeToken(b, IDENTIFIER);
-    r = r && field_5(b, l + 1);
+    r = r && field_6(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1131,40 +1132,47 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
+  // KEYWORD_CONST?
+  private static boolean field_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_2")) return false;
+    consumeToken(b, KEYWORD_CONST);
+    return true;
+  }
+
   // ("<" class_name (COMMA class_name)* ">")?
-  private static boolean field_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_3")) return false;
-    field_3_0(b, l + 1);
+  private static boolean field_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_4")) return false;
+    field_4_0(b, l + 1);
     return true;
   }
 
   // "<" class_name (COMMA class_name)* ">"
-  private static boolean field_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_3_0")) return false;
+  private static boolean field_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_4_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "<");
     r = r && class_name(b, l + 1);
-    r = r && field_3_0_2(b, l + 1);
+    r = r && field_4_0_2(b, l + 1);
     r = r && consumeToken(b, ">");
     exit_section_(b, m, null, r);
     return r;
   }
 
   // (COMMA class_name)*
-  private static boolean field_3_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_3_0_2")) return false;
+  private static boolean field_4_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_4_0_2")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!field_3_0_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "field_3_0_2", c)) break;
+      if (!field_4_0_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "field_4_0_2", c)) break;
     }
     return true;
   }
 
   // COMMA class_name
-  private static boolean field_3_0_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_3_0_2_0")) return false;
+  private static boolean field_4_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_4_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COMMA);
@@ -1174,15 +1182,15 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   // ("=" value)?
-  private static boolean field_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_5")) return false;
-    field_5_0(b, l + 1);
+  private static boolean field_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_6")) return false;
+    field_6_0(b, l + 1);
     return true;
   }
 
   // "=" value
-  private static boolean field_5_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "field_5_0")) return false;
+  private static boolean field_6_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_6_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "=");
@@ -2159,46 +2167,54 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // datatype? IDENTIFIER ("=" (arr | calc))?
+  // KEYWORD_CONST? datatype? IDENTIFIER ("=" (arr | calc))?
   public static boolean var(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "var")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VAR, "<var>");
     r = var_0(b, l + 1);
+    r = r && var_1(b, l + 1);
     r = r && consumeToken(b, IDENTIFIER);
-    r = r && var_2(b, l + 1);
+    r = r && var_3(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // datatype?
+  // KEYWORD_CONST?
   private static boolean var_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "var_0")) return false;
+    consumeToken(b, KEYWORD_CONST);
+    return true;
+  }
+
+  // datatype?
+  private static boolean var_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "var_1")) return false;
     datatype(b, l + 1);
     return true;
   }
 
   // ("=" (arr | calc))?
-  private static boolean var_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "var_2")) return false;
-    var_2_0(b, l + 1);
+  private static boolean var_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "var_3")) return false;
+    var_3_0(b, l + 1);
     return true;
   }
 
   // "=" (arr | calc)
-  private static boolean var_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "var_2_0")) return false;
+  private static boolean var_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "var_3_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "=");
-    r = r && var_2_0_1(b, l + 1);
+    r = r && var_3_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // arr | calc
-  private static boolean var_2_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "var_2_0_1")) return false;
+  private static boolean var_3_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "var_3_0_1")) return false;
     boolean r;
     r = arr(b, l + 1);
     if (!r) r = calc(b, l + 1);

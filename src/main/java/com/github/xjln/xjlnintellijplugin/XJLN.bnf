@@ -92,7 +92,7 @@ implements ::= KEYWORD_IMPLEMENTS class_name | ("{" (class_name (COMMA class_nam
 generics ::= "<" generic (COMMA generic)* ">"
 generic ::= class_name alias
 
-field ::= access_modifier? KEYWORD_STATIC? datatype ("<" class_name (COMMA class_name)* ">")? IDENTIFIER ("=" value)?
+field ::= access_modifier? KEYWORD_STATIC? KEYWORD_CONST? datatype ("<" class_name (COMMA class_name)* ">")? IDENTIFIER ("=" value)?
 abstract_method ::= KEYWORD_DEF access_modifier? KEYWORD_ABSTRACT IDENTIFIER generics? "(" parameterlist? ")" ("::" datatype)?
 method ::= KEYWORD_DEF access_modifier? (KEYWORD_STATIC | KEYWORD_SYNCHRONISED)* (IDENTIFIER | OPERATOR) generics? "(" parameterlist? ")" ("::" datatype)? (method_mult | method_short | method_long)
 init ::= KEYWORD_INIT "[" parameterlist? "]" (method_short | method_long)
@@ -116,7 +116,7 @@ calc ::= calcArg (OPERATOR calcArg)*
 calcArg ::= (("(" calc ")") | value | call | arr)
 call ::= (KEYWORD_THIS | (IDENTIFIER ("<" class_name (COMMA class_name)* ">")? (("[" (calc (COMMA calc)*)? "]") | ("(" (calc (COMMA calc)*)? ")"))?)) (":" callArg)*
 callArg ::= ((IDENTIFIER ("(" (calc (COMMA calc)*)? ")")?) | NUMBER | ("(" calc ")"))
-var ::= datatype? IDENTIFIER ("=" (arr | calc))?
+var ::= KEYWORD_CONST? datatype? IDENTIFIER ("=" (arr | calc))?
 arr ::= ("{" (value (COMMA value)*)? "}") | ("[" datatype (COMMA (NUMBER | calc))* "]")
 
 if ::= KEYWORD_IF calc ((LAMBDA statement (NEW_LINE else)?) | (statement_block (else | KEYWORD_END)))
