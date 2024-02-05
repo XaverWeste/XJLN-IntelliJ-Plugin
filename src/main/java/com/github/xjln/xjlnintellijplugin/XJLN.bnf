@@ -50,12 +50,13 @@
     KEYWORD_IMPLEMENTS = "implements"
     KEYWORD_NULL = "null"
     KEYWORD_THIS = "this"
-    //TODO true false
+    KEYWORD_TRUE = "true"
+    KEYWORD_FALSE = "false"
 
     LAMBDA = "->"
     NEW_LINE = "regexp:\n"
     IDENTIFIER = "regexp:[a-zA-Z][a-zA-Z0-9]*"
-    NUMBER = "regexp:[0-9]+(\.[0-9])*[idslf]?"
+    NUMBER = "regexp:[0-9]+(\.[0-9]+)?[idslf]?"
     OPERATOR = "regexp:[-+*/%&|<>=!^]+"
     CHAR = "regexp:'.'"
     COMMENT = "regexp:#[^[#\n]]*#?"
@@ -109,10 +110,10 @@ parameter ::= datatype IDENTIFIER
 
 datatype ::= (IDENTIFIER ("<" class_name (COMMA class_name)* ">")?) | KEYWORD_INT | KEYWORD_SHORT | KEYWORD_LONG | KEYWORD_FLOAT | KEYWORD_DOUBLE | KEYWORD_BOOLEAN | KEYWORD_CHAR | KEYWORD_BYTE | arrayType
 arrayType ::= "[" datatype "]"
-value ::= CHAR | NUMBER | STRING | KEYWORD_NULL | call
+value ::= KEYWORD_TRUE | KEYWORD_FALSE | CHAR | NUMBER | STRING | KEYWORD_NULL | call
 
 statement ::= (KEYWORD_RETURN calc) | var | calc | if | while
-calc ::= calcArg (OPERATOR calcArg)*
+calc ::= calcArg (OPERATOR OPERATOR? calcArg)* OPERATOR?
 calcArg ::= (("(" calc ")") | value | call | arr)
 call ::= (KEYWORD_THIS | (IDENTIFIER ("<" class_name (COMMA class_name)* ">")? (("[" (calc (COMMA calc)*)? "]") | ("(" (calc (COMMA calc)*)? ")"))?)) (":" callArg)*
 callArg ::= ((IDENTIFIER ("(" (calc (COMMA calc)*)? ")")?) | NUMBER | ("(" calc ")"))

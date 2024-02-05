@@ -27,7 +27,7 @@ WHITE_SPACE=[\t\ ]+
 
 NEW_LINE=\n
 IDENTIFIER=[a-zA-Z][a-zA-Z0-9]*
-NUMBER=[0-9]+(\.[0-9])*[idslf]?
+NUMBER=[0-9]+(\.[0-9]+)?[idslf]?
 OPERATOR=[-+*/%&|<>=!\^]+
 CHAR='.'
 COMMENT=#[^[#\n]]*#?
@@ -72,6 +72,8 @@ STRING=\"[^\"]*\"
   "implements"         { return KEYWORD_IMPLEMENTS; }
   "null"               { return KEYWORD_NULL; }
   "this"               { return KEYWORD_THIS; }
+  "true"               { return KEYWORD_TRUE; }
+  "false"              { return KEYWORD_FALSE; }
   "->"                 { return LAMBDA; }
   ","                  { return COMMA; }
 

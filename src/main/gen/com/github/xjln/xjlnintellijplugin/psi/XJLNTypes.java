@@ -71,6 +71,7 @@ public interface XJLNTypes {
   IElementType KEYWORD_ELSE = new XJLNTokenType("else");
   IElementType KEYWORD_END = new XJLNTokenType("end");
   IElementType KEYWORD_EXTENDS = new XJLNTokenType("extends");
+  IElementType KEYWORD_FALSE = new XJLNTokenType("false");
   IElementType KEYWORD_FINAL = new XJLNTokenType("final");
   IElementType KEYWORD_FLOAT = new XJLNTokenType("float");
   IElementType KEYWORD_FROM = new XJLNTokenType("from");
@@ -89,6 +90,7 @@ public interface XJLNTypes {
   IElementType KEYWORD_STATIC = new XJLNTokenType("static");
   IElementType KEYWORD_SYNCHRONISED = new XJLNTokenType("synchronised");
   IElementType KEYWORD_THIS = new XJLNTokenType("this");
+  IElementType KEYWORD_TRUE = new XJLNTokenType("true");
   IElementType KEYWORD_TYPE = new XJLNTokenType("type");
   IElementType KEYWORD_USE = new XJLNTokenType("use");
   IElementType KEYWORD_WHILE = new XJLNTokenType("while");

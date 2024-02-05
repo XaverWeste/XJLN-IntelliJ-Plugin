@@ -258,18 +258,19 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // calcArg (OPERATOR calcArg)*
+  // calcArg (OPERATOR OPERATOR? calcArg)* OPERATOR?
   public static boolean calc(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calc")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, CALC, "<calc>");
     r = calcArg(b, l + 1);
     r = r && calc_1(b, l + 1);
+    r = r && calc_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // (OPERATOR calcArg)*
+  // (OPERATOR OPERATOR? calcArg)*
   private static boolean calc_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calc_1")) return false;
     while (true) {
@@ -280,15 +281,30 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // OPERATOR calcArg
+  // OPERATOR OPERATOR? calcArg
   private static boolean calc_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "calc_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OPERATOR);
+    r = r && calc_1_0_1(b, l + 1);
     r = r && calcArg(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // OPERATOR?
+  private static boolean calc_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "calc_1_0_1")) return false;
+    consumeToken(b, OPERATOR);
+    return true;
+  }
+
+  // OPERATOR?
+  private static boolean calc_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "calc_2")) return false;
+    consumeToken(b, OPERATOR);
+    return true;
   }
 
   /* ********************************************************** */
@@ -2152,12 +2168,14 @@ public class _XJLNParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // CHAR | NUMBER | STRING | KEYWORD_NULL | call
+  // KEYWORD_TRUE | KEYWORD_FALSE | CHAR | NUMBER | STRING | KEYWORD_NULL | call
   public static boolean value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "value")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VALUE, "<value>");
-    r = consumeToken(b, CHAR);
+    r = consumeToken(b, KEYWORD_TRUE);
+    if (!r) r = consumeToken(b, KEYWORD_FALSE);
+    if (!r) r = consumeToken(b, CHAR);
     if (!r) r = consumeToken(b, NUMBER);
     if (!r) r = consumeToken(b, STRING);
     if (!r) r = consumeToken(b, KEYWORD_NULL);
